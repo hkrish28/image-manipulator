@@ -34,7 +34,7 @@ public interface Pixel {
    * channels in the pixel
    *
    */
-  Pixel transformPixel(Matrix transformCoefficients) throws IllegalArgumentException;
+  Pixel transformPixel(ColorChannel transformCoefficients) throws IllegalArgumentException;
 
   /**
    * Get the value for a given channel in the pixel.

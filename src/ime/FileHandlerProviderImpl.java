@@ -1,8 +1,8 @@
 package ime;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * This implementation of the PhysicsBallProvider uses a static map to keep track of the specific
@@ -25,15 +25,22 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
    * Checks with the enum map of the class to map the input string to an implementation of
    * {@link FileHandlerProvider} class.
    *
-   * @param ballType Input determining the type of PhysicsBall to be returned
+   * @param fileName Input determining the type of PhysicsBall to be returned
    * @return object of physics ball
    */
-  public FileHandler getFileHandler(String ballType) {
-    FileFormatEnum type = validateBallType(ballType);
+  public FileHandler getFileHandler(String fileName) {
+    try {
+      String[] filePathComponents = fileName.split("\\.");
+      fileName = filePathComponents[filePathComponents.length-1];
+    }
+    catch(Exception e){
+      System.out.println("Extension directly provided.");
+    }
+    FileFormatEnum type = validateFileType(fileName);
     return FILE_FORMAT_ENUM_MAP.get(type);
   }
 
-  private FileFormatEnum validateBallType(String ballType) {
+  private FileFormatEnum validateFileType(String ballType) {
     try {
       return FileFormatEnum.valueOf(ballType);
     } catch (IllegalArgumentException e) {

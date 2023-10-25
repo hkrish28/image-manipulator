@@ -1,15 +1,15 @@
 package ime;
 
-import java.io.File;
+import java.util.List;
 
 public class PngFileHandler implements FileHandler {
   @Override
-  public void loadFile(File filename) {
-
+  public List<ColorChannel> loadFile(String filename) {
+    return null;
   }
 
   @Override
-  public void saveFile(File filename) {
+  public void saveFile(Image image, String filename) {
 
   }
 }

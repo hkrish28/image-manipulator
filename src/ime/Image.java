@@ -1,6 +1,8 @@
 package ime;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,17 +22,17 @@ public interface Image {
    */
   int getHeight();
 
-  /**
-   * Given an image of supported extension, load the contents into the object.
-   * @param filename the image file
-   */
-  void loadImage(File filename);
+//  /**
+//   * Given an image of supported extension, load the contents into the object.
+//   * @param filename the image file
+//   */
+//  void loadImage(String filename) throws FileNotFoundException;
 
   /**
    * Save this object into the given file.
    * @param filename the file to save this object into
    */
-  void saveImage(File filename);
+  void saveImage(String filename) throws IOException;
 
   /**
    * Split this image into its respective color channels.
@@ -38,11 +40,11 @@ public interface Image {
    */
   List<Image> splitIntoColorChannels();
 
-  /**
-   * Combine the color channels into o single image.
-   * @param colorChannelImages List of images to be combined.
-   */
-  void combine(List<Image> colorChannelImages);
+//  /**
+//   * Combine the color channels into o single image.
+//   * @param colorChannelImages List of images to be combined.
+//   */
+//  void combine(List<Image> colorChannelImages);
 
   /**
    * Brighten this image by the given brightness constant and return the new image.
@@ -81,12 +83,13 @@ public interface Image {
   Image flipVertically();
 
   /**
-   * For a given position, find the value of the pixel.
+   * For a given position, find the value of the pixel for a given color channel.
+   * @param colorChannel the colorChannel of the pixel
    * @param row the row position of the pixel
    * @param col the column position of the pixel
    * @return the value of the pixel
    */
-  float getPixelValue(int row, int col);
+  float getPixelValue(int colorChannel, int row, int col);
 
   /**
    * For a given position, find the intensity of the pixel.
@@ -115,5 +118,8 @@ public interface Image {
    * @return the sepia image of this image object
    */
   Image sepia();
+
+  int getColorChannelCount();
+
 
 }

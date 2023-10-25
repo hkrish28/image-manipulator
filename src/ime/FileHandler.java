@@ -1,10 +1,12 @@
 package ime;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 public interface FileHandler {
 
-  void loadFile(File filename);
+  List<ColorChannel> loadFile(String filename) throws FileNotFoundException;
 
-  void saveFile(File filename);
+  public void saveFile(Image image, String filename) throws IOException;
 }
