@@ -17,6 +17,10 @@ public class PixelImpl implements Pixel {
     }
   }
 
+  public PixelImpl(int channelCount) {
+    values = new float[channelCount];
+  }
+
   public int getColorChannelCount() {
     return values.length;
   }

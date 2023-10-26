@@ -26,13 +26,13 @@ public class ImageUtil {
     try {
       test = new ImagePixelImpl(filename);
       test = test.brighten(50);
-//      test = test.flipHorizontally();
-//      test = test.flipVertically();
+      test = test.flipHorizontally();
+      test = test.flipVertically();
       test = test.darken(100);
-//      List<Image> test2 = test.splitIntoColorChannels();
-//      test2.get(0).saveImage("./src/outred.ppm");
-//      test2.get(1).saveImage("./src/outgreen.ppm");
-//      test2.get(2).saveImage("./src/outblue.ppm");
+      List<Image> test2 = test.splitIntoColorChannels();
+      test2.get(0).saveImage("./src/outred.ppm");
+      test2.get(1).saveImage("./src/outgreen.ppm");
+      test2.get(2).saveImage("./src/outblue.ppm");
       test.saveImage("./src/out.ppm");
     }
     catch (FileNotFoundException e){

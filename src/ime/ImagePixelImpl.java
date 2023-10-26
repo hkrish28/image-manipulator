@@ -2,6 +2,7 @@ package ime;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePixelImpl implements Image {
@@ -57,7 +58,26 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public List<Image> splitIntoColorChannels() {
-    return null;
+    List<Image> result = new ArrayList<>();
+    int channelCount = this.pixels[0][0].getColorChannelCount();
+    List<Pixel[][]> resultPixels = new ArrayList<>(channelCount);
+
+    for (int i = 0; i < channelCount; i++) {
+      resultPixels.add(new PixelImpl[height][width]);
+    }
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        for (int k = 0; k < channelCount; k++) {
+          Pixel colorChannelPixel = new PixelImpl(channelCount);
+          colorChannelPixel.setColorChannel(k, this.pixels[i][j].getChannelValue(k));
+          resultPixels.get(k)[i][j] = colorChannelPixel;
+        }
+      }
+    }
+    for (int i = 0; i < channelCount; i++) {
+      result.add(new ImagePixelImpl(resultPixels.get(i)));
+    }
+    return result;
   }
 
   @Override
@@ -88,12 +108,24 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image flipHorizontally() {
-    return null;
+    Pixel[][] result = new Pixel[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        result[i][j] = new PixelImpl(pixels[i][width - j - 1]);
+      }
+    }
+    return new ImagePixelImpl(result);
   }
 
   @Override
   public Image flipVertically() {
-    return null;
+    Pixel[][] result = new Pixel[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        result[i][j] = new PixelImpl(pixels[height - i - 1][j]);
+      }
+    }
+    return new ImagePixelImpl(result);
   }
 
   @Override
