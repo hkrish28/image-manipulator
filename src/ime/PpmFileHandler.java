@@ -58,7 +58,7 @@ public class PpmFileHandler extends AbstractFileHandler {
       }
       builder.append(System.lineSeparator());
     }
-    FileOutputStream fos = new FileOutputStream("./src/out.ppm");
+    FileOutputStream fos = new FileOutputStream(filename);
     fos.write(builder.toString().getBytes());
     fos.close();
 
@@ -77,7 +77,7 @@ public class PpmFileHandler extends AbstractFileHandler {
         }
         if (pixelValue == 255) {
           return pixelValue;
-        } else if (pixelValue > 255) {
+        } else if (pixelValue > max) {
           max = pixelValue;
         }
       }

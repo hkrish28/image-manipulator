@@ -40,17 +40,28 @@ public class ImageImpl implements Image {
 
   @Override
   public Image flipHorizontally() {
-    return null;
+    List<ColorChannel> resultingChannels = new ArrayList<>();
+    for (int i = 0; i < colorChannels.size(); i++) {
+      resultingChannels.add(colorChannels.get(i).reverseHorizontally());
+    }
+
+    return new ImageImpl(resultingChannels);
   }
 
   @Override
   public Image flipVertically() {
-    return null;
+
+    List<ColorChannel> resultingChannels = new ArrayList<>();
+    for (int i = 0; i < colorChannels.size(); i++) {
+      resultingChannels.add(colorChannels.get(i).reverseVertically());
+    }
+
+    return new ImageImpl(resultingChannels);
   }
 
   @Override
-  public float getPixelValue(int colorChannel,int row, int col) {
-    return colorChannels.get(colorChannel).get(row,col);
+  public float getPixelValue(int colorChannel, int row, int col) {
+    return colorChannels.get(colorChannel).get(row, col);
   }
 
   @Override
@@ -63,20 +74,26 @@ public class ImageImpl implements Image {
     return 0;
   }
 
-//  @Override
-//  public void loadImage(String filename) throws FileNotFoundException {
-//
-//
-//  }
-
   @Override
   public void saveImage(String filename) throws IOException {
-    fileHandlerProvider.getFileHandler(filename).saveFile(this,filename);
+    fileHandlerProvider.getFileHandler(filename).saveFile(this, filename);
   }
 
   @Override
   public List<Image> splitIntoColorChannels() {
-    return null;
+    List<Image> result = new ArrayList<>();
+    for (int i = 0; i < getColorChannelCount(); i++) {
+      List<ColorChannel> singleColorChannel = new ArrayList<>();
+      for (int j = 0; j < i; j++) {
+        singleColorChannel.add(new ArrayColorChannel(width, height));
+      }
+      singleColorChannel.add(this.colorChannels.get(i));
+      for (int j = i + 1; j < getColorChannelCount(); j++) {
+        singleColorChannel.add(new ArrayColorChannel(width, height));
+      }
+      result.add(new ImageImpl(singleColorChannel));
+    }
+    return result;
   }
 
 //  @Override
@@ -87,7 +104,7 @@ public class ImageImpl implements Image {
   @Override
   public Image brighten(float brightnessConstant) {
     List<ColorChannel> resultingChannels = new ArrayList<>();
-    for(int i = 0; i < colorChannels.size(); i++){
+    for (int i = 0; i < colorChannels.size(); i++) {
       resultingChannels.add(colorChannels.get(i).brighten(brightnessConstant));
     }
     return new ImageImpl(resultingChannels);
@@ -95,7 +112,7 @@ public class ImageImpl implements Image {
 
   @Override
   public Image darken(float darknessConstant) {
-    return null;
+    return this.brighten(-1 * darknessConstant);
   }
 
   @Override
@@ -140,7 +157,7 @@ public class ImageImpl implements Image {
     return null;
   }
 
-  public int getColorChannelCount(){
+  public int getColorChannelCount() {
     return this.colorChannels.size();
   }
 }

@@ -40,6 +40,8 @@ public interface ColorChannel {
 
   ColorChannel brighten(float constant);
 
+  ColorChannel darken(float constant);
+
   ColorChannel reverseHorizontally();
 
   ColorChannel reverseVertically();

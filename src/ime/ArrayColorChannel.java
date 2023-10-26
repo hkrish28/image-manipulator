@@ -17,6 +17,7 @@ public class ArrayColorChannel implements ColorChannel {
   public ArrayColorChannel(int width, int height) {
     this.width = width;
     this.height = height;
+    this.pixels = new float[height][width];
   }
 
   void validateIndices(int i, int j) {
@@ -69,15 +70,20 @@ public class ArrayColorChannel implements ColorChannel {
     float[][] result = new float[this.height][this.width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        result[i][j] = Math.min(255, pixels[i][j] + constant);
+        result[i][j] = Math.max(0, (Math.min(255, pixels[i][j] + constant)));
       }
     }
     return new ArrayColorChannel(result);
   }
 
   @Override
+  public ColorChannel darken(float constant) {
+    return this.brighten(-1*constant);
+  }
+
+  @Override
   public ColorChannel reverseHorizontally() {
-    float[][] result = new float[width][height];
+    float[][] result = new float[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         result[i][j] = pixels[i][width - j - 1];
@@ -88,7 +94,7 @@ public class ArrayColorChannel implements ColorChannel {
 
   @Override
   public ColorChannel reverseVertically() {
-    float[][] result = new float[width][height];
+    float[][] result = new float[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         result[i][j] = pixels[height - i - 1][j];

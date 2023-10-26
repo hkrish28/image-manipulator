@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
@@ -24,8 +25,14 @@ public class ImageUtil {
     try {
       test = new ImageImpl(filename);
       test = test.brighten(50);
+      test = test.flipHorizontally();
+      test = test.flipVertically();
+      test = test.darken(100);
+      List<Image> test2 = test.splitIntoColorChannels();
+      test2.get(0).saveImage("./src/outred.ppm");
+      test2.get(1).saveImage("./src/outgreen.ppm");
+      test2.get(2).saveImage("./src/outblue.ppm");
       test.saveImage("./src/out.ppm");
-      System.out.println("HI");
     }
     catch (FileNotFoundException e){
       System.out.println("File missing. Cannot perform the operation");

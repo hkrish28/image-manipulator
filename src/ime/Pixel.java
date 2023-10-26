@@ -56,6 +56,6 @@ public interface Pixel {
    * @param channel the color channel
    * @param value the value for the color channel to be set
    */
-  void setColorChannel(int channel , float value);
+  void setColorChannel(int i , float value);
 
 }
