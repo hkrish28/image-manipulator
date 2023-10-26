@@ -44,57 +44,29 @@ public class controller implements ImageProcessingController {
 
           switch (command) {
             case "load":
-              Image toLoad = new ImageImpl();
-              toLoad.loadImage(tokens[1]);
-              imageFilesMap.put(tokens[2], toLoad);
+              processLoad(tokens);
               break;
             case "save":
-              String imageNameToSave = tokens[2];
-              Image fileToSave = imageFilesMap.get(tokens[1]);
-              if (fileToSave != null) {
-                fileToSave.saveImage(imageNameToSave);
-              } else {
-                throw new IllegalArgumentException("image not found " + fileToSave);
-              }
+              processSave(tokens);
               break;
             case "brighten":
-              float brightnessConstant = Float.parseFloat(tokens[1]);
-              Image fileToBrighten = imageFilesMap.get(tokens[2]);
-              fileToBrighten.brighten(brightnessConstant);
-              String newName = tokens[3];
-              imageFilesMap.put(newName, fileToBrighten);
+              processB(tokens);
               break;
-            case "flip":
-              String flipType = tokens[0];
-              Image fileToFlip = imageFilesMap.get(tokens[1]);
-
-              if ("horizontal-flip".equals(flipType)) {
-                fileToFlip.flipHorizontally();
-                imageFilesMap.put(tokens[2], fileToFlip);
-              } else if ("vertical-flip".equals(flipType)) {
-                fileToFlip.flipVertically();
-                imageFilesMap.put(tokens[2], fileToFlip);
-              } else {
-                throw new IllegalArgumentException("Unsupported flip type: " + flipType);
-              }
+            case "horizontal-flip":
+              processHorizontalFlip(tokens);
+              break;
+            case "vertical-flip":
+              processVerticalFlip(tokens);
               break;
             case "rgb-split":
-              Image fileToSplit = imageFilesMap.get(tokens[1]);
-              List<Image> colorChannel = fileToSplit.splitIntoColorChannels();
-              imageFilesMap.put(tokens[2], colorChannel.get(0));
-              imageFilesMap.put(tokens[3], colorChannel.get(1));
-              imageFilesMap.put(tokens[4], colorChannel.get(2));
+              processSplit(tokens);
+              break;
             case "rgb-combine":
-              Image red = imageFilesMap.get(tokens[2]);
-              List<Image> gb = new ArrayList<>();
-              gb.add(imageFilesMap.get(tokens[3]));
-              gb.add(imageFilesMap.get(tokens[4]));
-              red.combine(gb);
-              imageFilesMap.put(tokens[1], red);
+              processCombine(tokens);
+              break;
             case "value-component":
-              Image fileToFilter = imageFilesMap.get(tokens[1]);
-              fileToFilter.greyScale();
-              imageFilesMap.put(tokens[2], fileToFilter);
+              processGrey(tokens);
+              break;
           }
 
         }
@@ -104,5 +76,61 @@ public class controller implements ImageProcessingController {
     }
   }
 
+  private void processLoad(String[] tokens) {
+    Image toLoad = new ImageImpl();
+    toLoad.loadImage(tokens[1]);
+    imageFilesMap.put(tokens[2], toLoad);
+  }
+
+  private void processSave(String[] tokens) {
+    String imageNameToSave = tokens[2];
+    Image fileToSave = imageFilesMap.get(tokens[1]);
+    if (fileToSave != null) {
+      fileToSave.saveImage(imageNameToSave);
+    } else {
+      throw new IllegalArgumentException("image not found " + fileToSave);
+    }
+  }
+  private void processB(String[] tokens){
+    float brightnessConstant = Float.parseFloat(tokens[1]);
+    Image fileToBrighten = imageFilesMap.get(tokens[2]);
+    fileToBrighten.brighten(brightnessConstant);
+    String newName = tokens[3];
+    imageFilesMap.put(newName, fileToBrighten);
+
+  }
+  private  void processHorizontalFlip(String[] tokens) {
+    Image fileToFlip = imageFilesMap.get(tokens[1]);
+    fileToFlip.flipHorizontally();
+    imageFilesMap.put(tokens[2], fileToFlip);
+  }
+  private void processVerticalFlip(String[] tokens){
+    Image fileToFlip = imageFilesMap.get(tokens[1]);
+    fileToFlip.flipVertically();
+    imageFilesMap.put(tokens[2], fileToFlip);
+  }
+  private void processSplit(String[] tokens){
+    Image fileToSplit = imageFilesMap.get(tokens[1]);
+    List<Image> colorChannel = fileToSplit.splitIntoColorChannels();
+    imageFilesMap.put(tokens[2], colorChannel.get(0));
+    imageFilesMap.put(tokens[3], colorChannel.get(1));
+    imageFilesMap.put(tokens[4], colorChannel.get(2));
+  }
+  private void processCombine(String[] tokens){
+    Image red = imageFilesMap.get(tokens[2]);
+    List<Image> gb = new ArrayList<>();
+    gb.add(imageFilesMap.get(tokens[3]));
+    gb.add(imageFilesMap.get(tokens[4]));
+    red.combine(gb);
+    imageFilesMap.put(tokens[1], red);
+  }
+  private void processGrey(String[] tokens){
+    Image fileToFilter = imageFilesMap.get(tokens[1]);
+    fileToFilter.greyScale();
+    imageFilesMap.put(tokens[2], fileToFilter);
+  }
+
 }
+
+
 
