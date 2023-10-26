@@ -49,18 +49,19 @@ public interface Pixel {
    * @throws IllegalArgumentException if the list size is not the same as the number of color
    * channels in the pixel
    */
-  void setColor(List<Float> colorChannelValues) throws IllegalArgumentException;
+  void setColor(float[] colorChannelValues) throws IllegalArgumentException;
 
   /**
    * Set the value for a given channel in the pixel.
    * @param channel the color channel
    * @param value the value for the color channel to be set
    */
-  void setColorChannel(int i , float value);
+  void setColorChannel(int channel , float value);
 
   Pixel brighten(float brightnessConstant);
 
   int getColorChannelCount();
 
+  float[] getChannelValues();
 
 }

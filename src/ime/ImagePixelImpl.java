@@ -3,6 +3,7 @@ package ime;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ImagePixelImpl implements Image {
@@ -20,7 +21,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pixels[i][j] = new PixelImpl(pixelValues[i][j]);
+        pixels[i][j] = new PixelRgb(pixelValues[i][j]);
       }
     }
 
@@ -36,7 +37,7 @@ public class ImagePixelImpl implements Image {
     //validation required
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pixels[i][j] = new PixelImpl(pixelValues[i][j]);
+        pixels[i][j] = new PixelRgb(pixelValues[i][j]);
       }
     }
   }
@@ -63,12 +64,12 @@ public class ImagePixelImpl implements Image {
     List<Pixel[][]> resultPixels = new ArrayList<>(channelCount);
 
     for (int i = 0; i < channelCount; i++) {
-      resultPixels.add(new PixelImpl[height][width]);
+      resultPixels.add(new PixelRgb[height][width]);
     }
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         for (int k = 0; k < channelCount; k++) {
-          Pixel colorChannelPixel = new PixelImpl(channelCount);
+          Pixel colorChannelPixel = new PixelRgb();
           colorChannelPixel.setColorChannel(k, this.pixels[i][j].getChannelValue(k));
           resultPixels.get(k)[i][j] = colorChannelPixel;
         }
@@ -81,8 +82,29 @@ public class ImagePixelImpl implements Image {
   }
 
   @Override
+  public Image combine(List<Image> images) {
+    if (images.size() != this.getChannelCount() - 1) {
+      throw new IllegalArgumentException("Invalid number of images");
+    }
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float[] pixelValues = new float[this.getChannelCount()];
+        pixelValues[0] = this.pixels[i][j].getChannelValues()[0];
+        for (int k = 1; k < this.getChannelCount(); k++) {
+          pixelValues[k] = images.get(k - 1).getPixelValues(i, j)[k];
+        }
+        resultPixels[i][j] = new PixelRgb(pixelValues);
+      }
+    }
+
+    return new ImagePixelImpl(resultPixels);
+  }
+
+  @Override
   public Image brighten(float brightnessConstant) {
-    Pixel[][] resultPixels = new PixelImpl[height][width];
+    Pixel[][] resultPixels = new PixelRgb[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         resultPixels[i][j] = pixels[i][j].brighten(brightnessConstant);
@@ -111,7 +133,7 @@ public class ImagePixelImpl implements Image {
     Pixel[][] result = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        result[i][j] = new PixelImpl(pixels[i][width - j - 1]);
+        result[i][j] = new PixelRgb(pixels[i][width - j - 1]);
       }
     }
     return new ImagePixelImpl(result);
@@ -122,40 +144,68 @@ public class ImagePixelImpl implements Image {
     Pixel[][] result = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        result[i][j] = new PixelImpl(pixels[height - i - 1][j]);
+        result[i][j] = new PixelRgb(pixels[height - i - 1][j]);
       }
     }
     return new ImagePixelImpl(result);
   }
 
   @Override
-  public float getPixelValue(int colorChannel, int row, int col) {
+  public float[] getPixelValues(int row, int col) {
     //validation
-    return pixels[row][col].getChannelValue(colorChannel);
+    return pixels[row][col].getChannelValues();
+  }
+
+
+  @Override
+  public Image getIntensityImage() {
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float pixelIntensity = pixels[i][j].getLuma();
+        float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
+        Arrays.fill(greyscale, pixelIntensity);
+        resultPixels[i][j] = new PixelRgb(greyscale);
+      }
+    }
+    return new ImagePixelImpl(resultPixels);
   }
 
   @Override
-  public float getPixelIntensity(int row, int col) {
-    return 0;
+  public Image getLumaImage() {
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float pixelIntensity = pixels[i][j].getLuma();
+        float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
+        Arrays.fill(greyscale, pixelIntensity);
+        resultPixels[i][j] = new PixelRgb(greyscale);
+      }
+    }
+    return new ImagePixelImpl(resultPixels);
   }
 
   @Override
-  public float getPixelLuma(int row, int col) {
-    return 0;
+  public Image getValueImage() {
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float pixelIntensity = pixels[i][j].getIntensity();
+        float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
+        Arrays.fill(greyscale, pixelIntensity);
+        resultPixels[i][j] = new PixelRgb(greyscale);
+      }
+    }
+    return new ImagePixelImpl(resultPixels);
   }
 
   @Override
-  public Image greyScale() {
+  public Image getSepia() {
     return null;
   }
 
   @Override
-  public Image sepia() {
-    return null;
-  }
-
-  @Override
-  public int getColorChannelCount() {
+  public int getChannelCount() {
     //validation
     return pixels[0][0].getColorChannelCount();
   }

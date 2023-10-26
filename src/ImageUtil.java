@@ -1,11 +1,11 @@
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
 import ime.Image;
-import ime.ImageImpl;
 import ime.ImagePixelImpl;
 
 
@@ -33,7 +33,14 @@ public class ImageUtil {
       test2.get(0).saveImage("./src/outred.ppm");
       test2.get(1).saveImage("./src/outgreen.ppm");
       test2.get(2).saveImage("./src/outblue.ppm");
+      test = test.getValueImage();
       test.saveImage("./src/out.ppm");
+      test = test2.get(0).combine(Arrays.asList(test2.get(1),test2.get(2)));
+      test.saveImage("./src/out2.ppm");
+      test = test.getLumaImage();
+      test.saveImage("./src/luma.ppm");
+      test = test.getIntensityImage();
+      test.saveImage("./src/intensity.ppm");
     }
     catch (FileNotFoundException e){
       System.out.println("File missing. Cannot perform the operation");

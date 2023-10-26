@@ -1,7 +1,5 @@
 package ime;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,11 +38,11 @@ public interface Image {
    */
   List<Image> splitIntoColorChannels();
 
-//  /**
-//   * Combine the color channels into o single image.
-//   * @param colorChannelImages List of images to be combined.
-//   */
-//  void combine(List<Image> colorChannelImages);
+  /**
+   * Combine the color channels images into o single image.
+   * @param images List of images to be combined.
+   */
+  Image combine(List<Image> images);
 
   /**
    * Brighten this image by the given brightness constant and return the new image.
@@ -84,42 +82,41 @@ public interface Image {
 
   /**
    * For a given position, find the value of the pixel for a given color channel.
-   * @param colorChannel the colorChannel of the pixel
    * @param row the row position of the pixel
    * @param col the column position of the pixel
    * @return the value of the pixel
    */
-  float getPixelValue(int colorChannel, int row, int col);
+  float[] getPixelValues(int row, int col);
 
   /**
-   * For a given position, find the intensity of the pixel.
-   * @param row the row position of the pixel
-   * @param col the column position of the pixel
-   * @return the intensity of the pixel
+   * Convert this image into its intensity greyscale and return the copy of it.
+   * @return the greyscale image of its intensity
    */
-  float getPixelIntensity(int row, int col);
+  Image getIntensityImage();
 
   /**
-   * For a given position, find the luma of the pixel.
-   * @param row the row position of the pixel
-   * @param col the column position of the pixel
-   * @return the luma of the pixel
+   * Convert this image into its luma greyscale and return the copy of it.
+   * @return the greyscale image of its luma
    */
-  float getPixelLuma(int row, int col);
+  public Image getLumaImage();
 
   /**
-   * Convert this image into greyscale and return the copy of it.
-   * @return the greyscale image of this image object
+   * Convert this image into its value greyscale and return the copy of it.
+   * @return the greyscale image of its values
    */
-  Image greyScale();
+  Image getValueImage();
 
   /**
    * Convert this image into sepia and return the copy of it.
    * @return the sepia image of this image object
    */
-  Image sepia();
+  Image getSepia();
 
-  int getColorChannelCount();
+  /**
+   * Get the number of color channels in the image.
+   * @return the number of color channels
+   */
+  int getChannelCount();
 
 
 }

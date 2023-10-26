@@ -79,9 +79,9 @@ public class PpmFileHandler extends AbstractFileHandler {
     builder.append(findMaxValue(image) + System.lineSeparator());
     for (int i = 0; i < image.getHeight(); i++) {
       for (int j = 0; j < image.getWidth(); j++) {
-        for (int k = 0; k < image.getColorChannelCount(); k++) {
-          int channelValue = (int) image.getPixelValue(k, i, j);
-          builder.append(channelValue + " ");
+        float[] channelValues = image.getPixelValues(i, j);
+        for (int k = 0; k < image.getChannelCount(); k++) {
+          builder.append((int) channelValues[k] + " ");
         }
         builder.append(" ");
       }
@@ -98,10 +98,10 @@ public class PpmFileHandler extends AbstractFileHandler {
     for (int i = 0; i < image.getHeight(); i++) {
       for (int j = 0; j < image.getWidth(); j++) {
         int pixelValue = 0;
-        for (int k = 0; k < image.getColorChannelCount(); k++) {
-          int channelValue = (int) image.getPixelValue(k, i, j);
-          if (channelValue > pixelValue) {
-            pixelValue = channelValue;
+        float[] channelValues = image.getPixelValues(i, j);
+        for (int k = 0; k < image.getChannelCount(); k++) {
+          if (channelValues[k] > pixelValue) {
+            pixelValue = (int) channelValues[k];
           }
         }
         if (pixelValue == 255) {
