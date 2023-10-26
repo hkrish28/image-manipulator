@@ -43,6 +43,35 @@ public class PpmFileHandler extends AbstractFileHandler {
   }
 
   @Override
+  public float[][][] loadFileBase(String filename) throws FileNotFoundException {
+
+    Scanner sc = this.getScanner(filename);
+    String token;
+
+    token = sc.next();
+    if (!token.equals("P3")) {
+      System.out.println("Invalid PPM file: plain RAW file should begin with P3");
+    }
+    int width = sc.nextInt();
+    System.out.println("Width of image: " + width);
+    int height = sc.nextInt();
+    System.out.println("Height of image: " + height);
+    int maxValue = sc.nextInt();
+    System.out.println("Maximum value of a color in this file (usually 255): " + maxValue);
+    float[][][] pixelValues = new float[height][width][3];
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        pixelValues[i][j][0] = sc.nextInt();
+        pixelValues[i][j][1] = sc.nextInt();
+        pixelValues[i][j][2] = sc.nextInt();
+      }
+    }
+    return pixelValues;
+  }
+
+
+  @Override
   public void saveFile(Image image, String filename) throws IOException {
     StringBuilder builder = new StringBuilder();
     builder.append("P3" + System.lineSeparator());

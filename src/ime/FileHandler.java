@@ -9,4 +9,6 @@ public interface FileHandler {
   List<ColorChannel> loadFile(String filename) throws FileNotFoundException;
 
   public void saveFile(Image image, String filename) throws IOException;
+
+  float[][][] loadFileBase(String filename) throws FileNotFoundException;
 }

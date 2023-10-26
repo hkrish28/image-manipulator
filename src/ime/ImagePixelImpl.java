@@ -12,20 +12,32 @@ public class ImagePixelImpl implements Image {
 
   Pixel[][] pixels;
 
-//  public ImagePixelImpl(Pixel[][] colorChannels) {
-//    this.colorChannels = colorChannels;
-//    width = colorChannels.get(0).getWidth();
-//    height = colorChannels.get(0).getHeight();
-//    fileHandlerProvider = new FileHandlerProviderImpl();
-//  }
+  public ImagePixelImpl(Pixel[][] pixelValues) {
+    fileHandlerProvider = new FileHandlerProviderImpl();
+    height = pixelValues.length;
+    width = pixelValues[0].length;
+    pixels = new Pixel[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        pixels[i][j] = new PixelImpl(pixelValues[i][j]);
+      }
+    }
+
+  }
 
   public ImagePixelImpl(String fileName) throws FileNotFoundException {
     fileHandlerProvider = new FileHandlerProviderImpl();
-    List<ColorChannel> colorChannels =
-            fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
-//    this.colorChannels = colorChannels;
-    width = colorChannels.get(0).getWidth();
-    height = colorChannels.get(0).getHeight();
+    float[][][] pixelValues =
+            fileHandlerProvider.getFileHandler(fileName).loadFileBase(fileName);
+    width = pixelValues[0].length;
+    height = pixelValues.length;
+    pixels = new Pixel[height][width];
+    //validation required
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        pixels[i][j] = new PixelImpl(pixelValues[i][j]);
+      }
+    }
   }
 
   @Override
@@ -40,7 +52,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public void saveImage(String filename) throws IOException {
-
+    fileHandlerProvider.getFileHandler(filename).saveFile(this, filename);
   }
 
   @Override
@@ -50,12 +62,18 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image brighten(float brightnessConstant) {
-    return null;
+    Pixel[][] resultPixels = new PixelImpl[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        resultPixels[i][j] = pixels[i][j].brighten(brightnessConstant);
+      }
+    }
+    return new ImagePixelImpl(resultPixels);
   }
 
   @Override
   public Image darken(float darknessConstant) {
-    return null;
+    return this.brighten(-darknessConstant);
   }
 
   @Override
@@ -80,7 +98,8 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public float getPixelValue(int colorChannel, int row, int col) {
-    return 0;
+    //validation
+    return pixels[row][col].getChannelValue(colorChannel);
   }
 
   @Override
@@ -105,6 +124,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public int getColorChannelCount() {
-    return 0;
+    //validation
+    return pixels[0][0].getColorChannelCount();
   }
 }

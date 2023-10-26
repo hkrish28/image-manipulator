@@ -58,4 +58,9 @@ public interface Pixel {
    */
   void setColorChannel(int i , float value);
 
+  Pixel brighten(float brightnessConstant);
+
+  int getColorChannelCount();
+
+
 }

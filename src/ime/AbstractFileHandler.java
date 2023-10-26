@@ -21,4 +21,5 @@ public abstract class AbstractFileHandler implements FileHandler {
     sc = new Scanner(builder.toString());
     return sc;
   }
+
 }

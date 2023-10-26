@@ -10,6 +10,17 @@ public class PixelImpl implements Pixel {
     values = pixelValues;
   }
 
+  public PixelImpl(Pixel pixelValues) {
+    values = new float[pixelValues.getColorChannelCount()];
+    for (int i = 0; i < values.length; i++) {
+      values[i] = pixelValues.getChannelValue(i);
+    }
+  }
+
+  public int getColorChannelCount() {
+    return values.length;
+  }
+
   @Override
   public float getValue() {
     float max = 0;
@@ -42,6 +53,7 @@ public class PixelImpl implements Pixel {
 
   @Override
   public float getChannelValue(int channel) {
+    //validation
     return values[channel];
   }
 
@@ -62,9 +74,12 @@ public class PixelImpl implements Pixel {
     values[i] = value;
   }
 
-  public void brighten(float brightnessConstant) {
+  public Pixel brighten(float brightnessConstant) {
+    float[] result = new float[values.length];
     for (int i = 0; i < values.length; i++) {
-
+      result[i] = Math.max(0, Math.min(255, values[i] + brightnessConstant));
     }
+    return new PixelImpl(result);
   }
+
 }

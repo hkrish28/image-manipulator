@@ -1,5 +1,6 @@
 package ime;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class JpgFileHandler implements FileHandler {
@@ -11,5 +12,10 @@ public class JpgFileHandler implements FileHandler {
   @Override
   public void saveFile(Image image, String filename){
 
+  }
+
+  @Override
+  public float[][][] loadFileBase(String filename) throws FileNotFoundException {
+    return new float[0][][];
   }
 }
