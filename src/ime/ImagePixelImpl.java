@@ -259,7 +259,7 @@ public class ImagePixelImpl implements Image {
               }
             }
           }
-          filterValues[k] = sum;
+          filterValues[k] = Math.max(0,Math.min(255,sum));
         }
         resultPixel[i][j] = new PixelRgb(filterValues);
       }

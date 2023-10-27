@@ -70,7 +70,7 @@ public class PixelRgb implements Pixel {
         for (int j = 0; j < COLOR_CHANNEL_COUNT; j++) {
           sum+= transformCoefficients[i][j] * values[j];
         }
-        result[i] =  sum;
+        result[i] = Math.max(0,Math.min(255,sum));
       }
     return new PixelRgb(result);
     }
