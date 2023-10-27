@@ -156,6 +156,22 @@ public class ScriptController implements ImageProcessingController {
     return null; // Command not found
   }
 
+  public void processScriptFile(String scriptFileName) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        // Ignore lines that start with #
+        if (!line.trim().startsWith("#")) {
+          // Trim leading and trailing whitespaces
+          line = line.trim();
+          // Call the controller's executeScript method with the current line
+          imageProcessingController.executeScript(line);
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
 
 
