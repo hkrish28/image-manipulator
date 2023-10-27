@@ -41,6 +41,8 @@ public class ImageUtil {
       test.saveImage("./src/luma.ppm");
       test = test.getIntensityImage();
       test.saveImage("./src/intensity.ppm");
+      test = test.getSepia();
+      test.saveImage("./src/sepia.ppm");
     }
     catch (FileNotFoundException e){
       System.out.println("File missing. Cannot perform the operation");

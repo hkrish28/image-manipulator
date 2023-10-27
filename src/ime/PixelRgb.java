@@ -1,14 +1,12 @@
 package ime;
 
-import java.util.List;
-
 public class PixelRgb implements Pixel {
 
+  private static final int COLOR_CHANNEL_COUNT = 3;
   private float[] values;
-  private static final int COLOR_CHANNEL_COUNT=3;
 
   public PixelRgb(float[] pixelValues) {
-    if(pixelValues.length != COLOR_CHANNEL_COUNT){
+    if (pixelValues.length != COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Number of values provided to the pixel is incorrect");
     }
     values = pixelValues;
@@ -48,10 +46,10 @@ public class PixelRgb implements Pixel {
   @Override
   public float getIntensity() {
     float sum = 0;
-    for(int i = 0; i< getColorChannelCount(); i++){
+    for (int i = 0; i < getColorChannelCount(); i++) {
       sum += values[i];
     }
-    return sum/getColorChannelCount();
+    return sum / getColorChannelCount();
   }
 
   @Override
@@ -62,13 +60,24 @@ public class PixelRgb implements Pixel {
   }
 
   @Override
-  public Pixel transformPixel(ColorChannel transformCoefficients) throws IllegalArgumentException {
-    return null;
-  }
+  public Pixel transformPixel(float[][] transformCoefficients) throws IllegalArgumentException {
+    if (transformCoefficients.length != COLOR_CHANNEL_COUNT || transformCoefficients[0].length != COLOR_CHANNEL_COUNT) {
+      throw new IllegalArgumentException("Invalid transformation matrix provided");
+    }
+    float[] result = new float[COLOR_CHANNEL_COUNT];
+    for (int i = 0; i < COLOR_CHANNEL_COUNT; i++) {
+        float sum = 0;
+        for (int j = 0; j < COLOR_CHANNEL_COUNT; j++) {
+          sum+= transformCoefficients[i][j] * values[j];
+        }
+        result[i] =  sum;
+      }
+    return new PixelRgb(result);
+    }
 
   @Override
   public float getChannelValue(int channel) {
-    if(channel< 0 || channel > COLOR_CHANNEL_COUNT){
+    if (channel < 0 || channel > COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Invalid color channel");
     }
     return values[channel];

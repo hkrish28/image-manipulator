@@ -201,12 +201,29 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getSepia() {
-    return null;
+    return performColorTransformation(ImageEnum.RGB.getSepiaTransformer());
   }
 
   @Override
   public int getChannelCount() {
     //validation
     return pixels[0][0].getColorChannelCount();
+  }
+
+    /**
+   * Given a matrix of coefficients for the color channels, return an image that is the color
+   * transformed version of this image.
+   *
+   * @param transformCoefficients the matrix containing the coefficients for the color channels
+   * @return the Image after color transformation
+   */
+  private Image performColorTransformation(float[][] transformCoefficients) {
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+    for(int i =0; i< height; i++){
+      for(int j=0; j< width; j++){
+        resultPixels[i][j] = pixels[i][j].transformPixel(transformCoefficients);
+      }
+    }
+    return new ImagePixelImpl(resultPixels);
   }
 }
