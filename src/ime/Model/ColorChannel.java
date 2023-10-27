@@ -1,4 +1,4 @@
-package ime;
+package ime.Model;
 
 /**
  * This interface represents a 2D matrix of values which supports certain operations with other

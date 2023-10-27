@@ -1,4 +1,4 @@
-package ime;
+package ime.Model;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

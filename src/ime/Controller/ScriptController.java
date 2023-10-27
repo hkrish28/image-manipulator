@@ -1,40 +1,49 @@
-package ime;
+package ime.Controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
+import ime.Model.Image;
+import ime.Model.ImagePixelImpl;
+import ime.Model.ImageRepository;
+import ime.Model.ImageRepositoryImpl;
 
 /**
  * The `controller` class implements the ImageProcessingController interface and provides
  * functionality to execute image processing commands specified in a script file.
  */
 
-public class controller implements ImageProcessingController {
+public class ScriptController implements ImageProcessingController {
 
-  /**
-   * map for storing the image with its name as the key.
-   */
-  private Map<String, Image> imageFilesMap;
+  ImageRepository imgRepo;
+  Scanner in;
 
   /**
    * Constructs a new controller instance with an empty image files map.
    */
-  public controller() {
+  public ScriptController(Scanner in) {
 
-    this.imageFilesMap = new HashMap<>();
+    this.imgRepo = new ImageRepositoryImpl();
+    this.in = in;
+
   }
 
-  /**
-   * Executes image processing commands specified in a script file.
-   *
-   * @param scriptFileName The path to the script file containing image processing commands.
-   */
   @Override
-  public void executeScript(String scriptFileName) {
+  public void execute(){
+    String scriptFileName = in.next();
+    executeScript(scriptFileName);
+  }
+
+
+  private void executeScript(String scriptFileName) {
     try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -79,7 +88,7 @@ public class controller implements ImageProcessingController {
   }
 
   private void processLoad(String[] tokens) {
-    Image toLoad = new ImageImpl();
+    Image toLoad = new ImagePixelImpl();
     toLoad.loadImage(tokens[1]);
     imageFilesMap.put(tokens[2], toLoad);
   }
@@ -146,6 +155,7 @@ public class controller implements ImageProcessingController {
     }
     return null; // Command not found
   }
+
 }
 
 

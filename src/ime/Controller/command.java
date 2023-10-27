@@ -1,4 +1,4 @@
-package ime;
+package ime.Controller;
 
 /**
  * enum command to save the commands possible from the script.

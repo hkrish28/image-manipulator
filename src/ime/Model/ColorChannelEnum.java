@@ -1,4 +1,4 @@
-package ime;
+package ime.Model;
 
 public enum ColorChannelEnum {
   RED,

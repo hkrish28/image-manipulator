@@ -5,8 +5,8 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
-import ime.Image;
-import ime.ImagePixelImpl;
+import ime.Model.Image;
+import ime.Model.ImagePixelImpl;
 
 
 /**

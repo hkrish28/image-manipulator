@@ -1,4 +1,4 @@
-package ime;
+package ime.Model;
 
 /**
  * FileHandlerProvider provides a factory method to get different implementations of

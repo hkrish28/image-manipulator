@@ -1,6 +1,4 @@
-package ime;
-
-import java.util.List;
+package ime.Model;
 
 /**
  * This class is a representation of a unit in an image. It is a representation of various color
