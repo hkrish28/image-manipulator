@@ -26,6 +26,13 @@ public class ImageUtil {
     try {
       test = new ImagePixelImpl(filename);
       test = test.brighten(50);
+      test = test.blur();
+      test.saveImage("./src/blur.ppm");
+      test = test.blur();
+      test = test.blur();
+      test = test.blur();
+      test = test.blur();
+      test.saveImage("./src/blurred.ppm");
       test = test.flipHorizontally();
       test = test.flipVertically();
       test = test.darken(100);
@@ -43,6 +50,7 @@ public class ImageUtil {
       test.saveImage("./src/intensity.ppm");
       test = test.getSepia();
       test.saveImage("./src/sepia.ppm");
+
     }
     catch (FileNotFoundException e){
       System.out.println("File missing. Cannot perform the operation");

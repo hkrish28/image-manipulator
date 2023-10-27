@@ -120,7 +120,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image blur() {
-    return null;
+    return applyFilter(ImageEnum.RGB.getBlurFilter());
   }
 
   @Override
@@ -210,7 +210,7 @@ public class ImagePixelImpl implements Image {
     return pixels[0][0].getColorChannelCount();
   }
 
-    /**
+  /**
    * Given a matrix of coefficients for the color channels, return an image that is the color
    * transformed version of this image.
    *
@@ -219,11 +219,51 @@ public class ImagePixelImpl implements Image {
    */
   private Image performColorTransformation(float[][] transformCoefficients) {
     Pixel[][] resultPixels = new PixelRgb[height][width];
-    for(int i =0; i< height; i++){
-      for(int j=0; j< width; j++){
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
         resultPixels[i][j] = pixels[i][j].transformPixel(transformCoefficients);
       }
     }
     return new ImagePixelImpl(resultPixels);
+  }
+
+  /**
+   * Given a filter, apply it to the image and return the result which is a new image.
+   *
+   * @param filter the filter to be applied.
+   * @return the image result after performing the filter on the original image.
+   */
+  private Image applyFilter(float[][] filter) {
+    int filterHeight = filter.length;
+    int filterWidth = filter[0].length;
+    Pixel[][] resultPixel = new PixelRgb[height][width];
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        int leftOffset = i - filterWidth / 2;
+        int rightOffset = i + filterWidth / 2;
+        int topOffset = j - filterHeight / 2;
+        int bottomOffset = j + filterHeight / 2;
+        float[] filterValues = new float[this.getChannelCount()];
+        for (int k = 0; k < this.getChannelCount(); k++) {
+          float sum = 0;
+
+          for (int m = 0; m < filter.length; m++) {
+            for (int n = 0; n < filter[0].length; n++) {
+              try {
+                sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
+                        .getChannelValues()[k];
+              }
+              catch(IndexOutOfBoundsException e){
+                System.out.println("Expected ");
+              }
+            }
+          }
+          filterValues[k] = sum;
+        }
+        resultPixel[i][j] = new PixelRgb(filterValues);
+      }
+    }
+    return new ImagePixelImpl(resultPixel);
   }
 }
