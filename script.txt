@@ -1,5 +1,5 @@
 #load koala.ppm and call it 'koala'
-load images/sample.ppm koala
+load images/koala.ppm koala
 
 #brighten koala by adding 10
 brighten 10 koala koala-brighter
@@ -20,7 +20,7 @@ save images/koala-brighter.ppm koala-brighter
 save images/koala-gs.ppm koala-greyscale
 
 #overwrite koala with another file
-load images/upper.ppm koala
+load images/blur.ppm koala
 
 #give the koala a red tint
 rgb-split koala koala-red koala-green koala-blue

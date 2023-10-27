@@ -26,11 +26,6 @@ public interface Image {
 //   */
 //  void loadImage(String filename) throws FileNotFoundException;
 
-  /**
-   * Save this object into the given file.
-   * @param filename the file to save this object into
-   */
-  void saveImage(String filename) throws IOException;
 
   /**
    * Split this image into its respective color channels.

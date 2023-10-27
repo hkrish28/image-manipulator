@@ -52,8 +52,8 @@ public class ScriptController implements ImageProcessingController {
       view.displayMessage("Invalid command statement provided");
       return;
     }
-    String commandStr = tokens[0];
-    Command commandKeyword = getCommandEnum(commandStr);
+
+    CommandEnum commandKeyword = getCommandEnum(tokens[0]);
     if (commandKeyword != null) {
       switch (commandKeyword) {
         case load:
@@ -144,8 +144,8 @@ public class ScriptController implements ImageProcessingController {
     imgRepo.toValueGreyScale(imageName, newImage);
   }
 
-  private Command getCommandEnum(String commandStr) {
-    for (Command cmd : Command.values()) {
+  private CommandEnum getCommandEnum(String commandStr) {
+    for (CommandEnum cmd : CommandEnum.values()) {
       if (cmd.getRepresentation().equals(commandStr)) {
         return cmd;
       }
@@ -157,10 +157,10 @@ public class ScriptController implements ImageProcessingController {
     try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
       String line;
       while ((line = reader.readLine()) != null) {
+        // Trim leading and trailing whitespaces
+        line = line.trim();
         // Ignore lines that start with #
-        if (!line.trim().startsWith("#")) {
-          // Trim leading and trailing whitespaces
-          line = line.trim();
+        if (!(line.startsWith("#") || line.isEmpty())) {
           // Call the controller's executeScript method with the current line
           executeCommand(line);
         }

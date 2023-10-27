@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class ImageRepositoryImpl implements ImageRepository {
 
+  private final FileHandlerProvider fileHandlerProvider;
   /**
    * map for storing the image with its name as the key.
    */
@@ -16,11 +17,14 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
+    fileHandlerProvider = new FileHandlerProviderImpl();
+
   }
 
   @Override
   public void loadImage(String fileName, String imageName) throws FileNotFoundException {
-    Image newImage = new ImagePixelImpl(fileName);
+    float[][][] imagePixels = fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
+    Image newImage = new ImagePixelImpl(imagePixels);
     imageMap.put(imageName, newImage);
   }
 
@@ -29,7 +33,8 @@ public class ImageRepositoryImpl implements ImageRepository {
     if (imageMap.get(imageName) == null) {
       throw new IllegalArgumentException("image name invalid");
     } else {
-      imageMap.get(imageName).saveImage(fileName);
+      Image image = imageMap.get(imageName);
+      fileHandlerProvider.getFileHandler(fileName).saveFile(image, fileName);
     }
   }
 

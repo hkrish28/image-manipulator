@@ -8,14 +8,12 @@ import java.util.List;
 
 public class ImagePixelImpl implements Image {
 
-  private final FileHandlerProvider fileHandlerProvider;
   private final int width;
   private final int height;
 
   Pixel[][] pixels;
 
   public ImagePixelImpl(Pixel[][] pixelValues) {
-    fileHandlerProvider = new FileHandlerProviderImpl();
     height = pixelValues.length;
     width = pixelValues[0].length;
     pixels = new Pixel[height][width];
@@ -27,10 +25,7 @@ public class ImagePixelImpl implements Image {
 
   }
 
-  public ImagePixelImpl(String fileName) throws FileNotFoundException {
-    fileHandlerProvider = new FileHandlerProviderImpl();
-    float[][][] pixelValues =
-            fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
+  public ImagePixelImpl(float[][][] pixelValues){
     width = pixelValues[0].length;
     height = pixelValues.length;
     pixels = new Pixel[height][width];
@@ -50,11 +45,6 @@ public class ImagePixelImpl implements Image {
   @Override
   public int getHeight() {
     return this.height;
-  }
-
-  @Override
-  public void saveImage(String filename) throws IOException {
-    fileHandlerProvider.getFileHandler(filename).saveFile(this, filename);
   }
 
   @Override
@@ -253,13 +243,12 @@ public class ImagePixelImpl implements Image {
               try {
                 sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
                         .getChannelValues()[k];
-              }
-              catch(IndexOutOfBoundsException e){
+              } catch (IndexOutOfBoundsException e) {
                 System.out.println("Expected ");
               }
             }
           }
-          filterValues[k] = Math.max(0,Math.min(255,sum));
+          filterValues[k] = Math.max(0, Math.min(255, sum));
         }
         resultPixel[i][j] = new PixelRgb(filterValues);
       }
