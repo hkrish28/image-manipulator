@@ -1,20 +1,18 @@
 package ime.Controller;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import ime.Model.Image;
-import ime.Model.ImagePixelImpl;
 import ime.Model.ImageRepository;
 import ime.Model.ImageRepositoryImpl;
+import ime.View.View;
+import ime.View.ViewImpl;
 
 /**
  * The `controller` class implements the ImageProcessingController interface and provides
@@ -24,6 +22,8 @@ import ime.Model.ImageRepositoryImpl;
 public class ScriptController implements ImageProcessingController {
 
   ImageRepository imgRepo;
+
+  View view;
   Scanner in;
 
   /**
@@ -33,17 +33,18 @@ public class ScriptController implements ImageProcessingController {
 
     this.imgRepo = new ImageRepositoryImpl();
     this.in = in;
+    this.view = new ViewImpl(System.out);
 
   }
 
   @Override
-  public void execute(){
+  public void execute() {
     String scriptFileName = in.next();
-    executeScript(scriptFileName);
+    processScriptFile(scriptFileName);
   }
 
 
-  private void executeScript(String scriptFileName) {
+  private void executeCommand(String scriptFileName) {
     try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -88,18 +89,22 @@ public class ScriptController implements ImageProcessingController {
   }
 
   private void processLoad(String[] tokens) {
-    Image toLoad = new ImagePixelImpl();
-    toLoad.loadImage(tokens[1]);
-    imageFilesMap.put(tokens[2], toLoad);
+    String path = tokens[1];
+    String imageName = tokens[2];
+    try {
+      imgRepo.loadImage(path, imageName);
+    } catch (FileNotFoundException e) {
+      view.displayMessage("File not found to load");
+    }
   }
 
   private void processSave(String[] tokens) {
-    String imageNameToSave = tokens[2];
-    Image fileToSave = imageFilesMap.get(tokens[1]);
-    if (fileToSave != null) {
-      fileToSave.saveImage(imageNameToSave);
-    } else {
-      throw new IllegalArgumentException("image not found " + fileToSave);
+    String imageName = tokens[2];
+    String fileName = tokens[1];
+    try {
+      this.imgRepo.saveImage(fileName, imageName);
+    } catch (Exception e) {
+      view.displayMessage("Exception occured during save" + e.getMessage());
     }
   }
 
@@ -165,7 +170,7 @@ public class ScriptController implements ImageProcessingController {
           // Trim leading and trailing whitespaces
           line = line.trim();
           // Call the controller's executeScript method with the current line
-          imageProcessingController.executeScript(line);
+          executeCommand(line);
         }
       }
     } catch (IOException e) {

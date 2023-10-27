@@ -1,5 +1,7 @@
 package ime.Model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +18,19 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void loadImage(String fileName, String imageName) {
-
+  public void loadImage(String fileName, String imageName) throws FileNotFoundException {
+    Image newImage = new ImagePixelImpl(fileName);
+    imageFilesMap.put(imageName, newImage);
   }
 
   @Override
-  public void saveImage(String fileName, String imageName) {
-
+  public void saveImage(String fileName, String imageName) throws IOException {
+      if(imageFilesMap.get(imageName) == null){
+        throw new IllegalArgumentException("image name invalid");
+      }
+      else{
+        imageFilesMap.get(imageName).saveImage(fileName);
+      }
   }
 
   @Override

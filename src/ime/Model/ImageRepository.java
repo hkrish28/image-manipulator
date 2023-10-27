@@ -1,11 +1,13 @@
 package ime.Model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public interface ImageRepository {
-  void loadImage(String fileName, String imageName);
+  void loadImage(String fileName, String imageName) throws FileNotFoundException;
 
-  void saveImage(String fileName, String imageName);
+  void saveImage(String fileName, String imageName) throws IOException;
 
   /**
    * Split this image into its respective color channels.

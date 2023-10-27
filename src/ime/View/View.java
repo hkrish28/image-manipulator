@@ -8,5 +8,5 @@ import java.io.PrintStream;
  */
 public interface View {
 
-  PrintStream displayMessage(String message);
+  void displayMessage(String message);
 }
