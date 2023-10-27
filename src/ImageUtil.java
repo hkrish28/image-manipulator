@@ -26,12 +26,12 @@ public class ImageUtil {
     try {
       test = new ImagePixelImpl(filename);
       test = test.brighten(50);
-      test = test.blur();
+      test = test.sharpen();
       test.saveImage("./src/blur.ppm");
-      test = test.blur();
-      test = test.blur();
-      test = test.blur();
-      test = test.blur();
+      test = test.sharpen();
+      test = test.sharpen();
+      test = test.sharpen();
+      test = test.sharpen();
       test.saveImage("./src/blurred.ppm");
       test = test.flipHorizontally();
       test = test.flipVertically();

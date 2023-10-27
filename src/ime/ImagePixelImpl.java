@@ -125,7 +125,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image sharpen() {
-    return null;
+    return applyFilter(ImageEnum.RGB.getSharpFilter());
   }
 
   @Override
