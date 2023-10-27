@@ -25,12 +25,11 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void saveImage(String fileName, String imageName) throws IOException {
-      if(imageFilesMap.get(imageName) == null){
-        throw new IllegalArgumentException("image name invalid");
-      }
-      else{
-        imageFilesMap.get(imageName).saveImage(fileName);
-      }
+    if (imageFilesMap.get(imageName) == null) {
+      throw new IllegalArgumentException("image name invalid");
+    } else {
+      imageFilesMap.get(imageName).saveImage(fileName);
+    }
   }
 
   @Override
@@ -44,12 +43,12 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void brightenImage(String imageNameSrc, String imageNameDest, int brightnessConstant) {
+  public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant) {
 
   }
 
   @Override
-  public void darkenenImage(String imageNameSrc, String imageNameDest, int darknessConstant) {
+  public void darkenenImage(String imageNameSrc, String imageNameDest, float darknessConstant) {
 
   }
 

@@ -3,7 +3,7 @@ package ime.Controller;
 /**
  * enum command to save the commands possible from the script.
  */
-public enum command {
+public enum Command {
   load("load"),
   save("save"),
   brighten("brighten"),
@@ -19,7 +19,7 @@ public enum command {
    *
    * @param s is the value of command from the script.
    */
-  command(String s) {
+  Command(String s) {
     this.s = s;
   }
 

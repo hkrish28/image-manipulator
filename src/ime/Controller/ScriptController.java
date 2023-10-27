@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import ime.Model.Image;
 import ime.Model.ImageRepository;
 import ime.Model.ImageRepositoryImpl;
 import ime.View.View;
@@ -39,53 +38,51 @@ public class ScriptController implements ImageProcessingController {
 
   @Override
   public void execute() {
+    view.displayMessage("Please enter the command script file: ");
     String scriptFileName = in.next();
     processScriptFile(scriptFileName);
+    view.displayMessage("Script file execution complete.");
   }
 
 
-  private void executeCommand(String scriptFileName) {
-    try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] tokens = line.split(" ");
-        if (tokens.length >= 2) {
-          String commandStr = tokens[0];
-          command command = getCommandEnum(commandStr);
-          if (command != null) {
-            switch (command) {
-              case load:
-                processLoad(tokens);
-                break;
-              case save:
-                processSave(tokens);
-                break;
-              case brighten:
-                processB(tokens);
-                break;
-              case horizontalFlip:
-                processHorizontalFlip(tokens);
-                break;
-              case verticalFlip:
-                processVerticalFlip(tokens);
-                break;
-              case rgb_split:
-                processSplit(tokens);
-                break;
-              case rgb_combine:
-                processCombine(tokens);
-                break;
-              case value_component:
-                processGrey(tokens);
-                break;
-            }
-          }
+  private void executeCommand(String command) {
 
-        }
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+    String[] tokens = command.split(" ");
+    if (tokens.length < 2) {
+      view.displayMessage("Invalid command statement provided");
+      return;
     }
+    String commandStr = tokens[0];
+    Command commandKeyword = getCommandEnum(commandStr);
+    if (commandKeyword != null) {
+      switch (commandKeyword) {
+        case load:
+          processLoad(tokens);
+          break;
+        case save:
+          processSave(tokens);
+          break;
+        case brighten:
+          processB(tokens);
+          break;
+        case horizontalFlip:
+          processHorizontalFlip(tokens);
+          break;
+        case verticalFlip:
+          processVerticalFlip(tokens);
+          break;
+        case rgb_split:
+          processSplit(tokens);
+          break;
+        case rgb_combine:
+          processCombine(tokens);
+          break;
+        case value_component:
+          processValueGreyScale(tokens);
+          break;
+      }
+    }
+
   }
 
   private void processLoad(String[] tokens) {
@@ -104,56 +101,51 @@ public class ScriptController implements ImageProcessingController {
     try {
       this.imgRepo.saveImage(fileName, imageName);
     } catch (Exception e) {
-      view.displayMessage("Exception occured during save" + e.getMessage());
+      view.displayMessage("Exception occurerd during save" + e.getMessage());
     }
   }
 
   private void processB(String[] tokens) {
     float brightnessConstant = Float.parseFloat(tokens[1]);
-    Image fileToBrighten = imageFilesMap.get(tokens[2]);
-    fileToBrighten.brighten(brightnessConstant);
-    String newName = tokens[3];
-    imageFilesMap.put(newName, fileToBrighten);
+    String imageName = tokens[2];
+    String newImage = tokens[3];
+    imgRepo.brightenImage(imageName, newImage, brightnessConstant);
 
   }
 
   private void processHorizontalFlip(String[] tokens) {
-    Image fileToFlip = imageFilesMap.get(tokens[1]);
-    fileToFlip.flipHorizontally();
-    imageFilesMap.put(tokens[2], fileToFlip);
+    String imageName = tokens[1];
+    String newImage = tokens[1];
+    imgRepo.flipImageHorizontally(imageName, newImage);
   }
 
   private void processVerticalFlip(String[] tokens) {
-    Image fileToFlip = imageFilesMap.get(tokens[1]);
-    fileToFlip.flipVertically();
-    imageFilesMap.put(tokens[2], fileToFlip);
+    String imageName = tokens[1];
+    String newImage = tokens[1];
+    imgRepo.flipImageHorizontally(imageName, newImage);
   }
 
   private void processSplit(String[] tokens) {
-    Image fileToSplit = imageFilesMap.get(tokens[1]);
-    List<Image> colorChannel = fileToSplit.splitIntoColorChannels();
-    imageFilesMap.put(tokens[2], colorChannel.get(0));
-    imageFilesMap.put(tokens[3], colorChannel.get(1));
-    imageFilesMap.put(tokens[4], colorChannel.get(2));
+    String srcImage = tokens[1];
+    List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
+    imgRepo.splitImageIntoColorChannels(srcImage, colorChannelsImages);
   }
 
   private void processCombine(String[] tokens) {
-    Image red = imageFilesMap.get(tokens[2]);
-    List<Image> gb = new ArrayList<>();
-    gb.add(imageFilesMap.get(tokens[3]));
-    gb.add(imageFilesMap.get(tokens[4]));
-    red.combine(gb);
-    imageFilesMap.put(tokens[1], red);
+    String destImage = tokens[1];
+    List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
+    imgRepo.combineImages(colorChannelsImages, destImage);
+
   }
 
-  private void processGrey(String[] tokens) {
-    Image fileToFilter = imageFilesMap.get(tokens[1]);
-    fileToFilter.greyScale();
-    imageFilesMap.put(tokens[2], fileToFilter);
+  private void processValueGreyScale(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.toValueGreyScale(imageName, newImage);
   }
 
-  private command getCommandEnum(String commandStr) {
-    for (command cmd : command.values()) {
+  private Command getCommandEnum(String commandStr) {
+    for (Command cmd : Command.values()) {
       if (cmd.getRepresentation().equals(commandStr)) {
         return cmd;
       }
@@ -174,7 +166,7 @@ public class ScriptController implements ImageProcessingController {
         }
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      view.displayMessage("Invalid script location/file." + e.getMessage());
     }
   }
 }
