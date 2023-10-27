@@ -63,7 +63,7 @@ public class ScriptController implements ImageProcessingController {
           processSave(tokens);
           break;
         case brighten:
-          processB(tokens);
+          processBrighten(tokens);
           break;
         case horizontalFlip:
           processHorizontalFlip(tokens);
@@ -101,11 +101,11 @@ public class ScriptController implements ImageProcessingController {
     try {
       this.imgRepo.saveImage(fileName, imageName);
     } catch (Exception e) {
-      view.displayMessage("Exception occurerd during save" + e.getMessage());
+      view.displayMessage("Exception occurred during save" + e.getMessage());
     }
   }
 
-  private void processB(String[] tokens) {
+  private void processBrighten(String[] tokens) {
     float brightnessConstant = Float.parseFloat(tokens[1]);
     String imageName = tokens[2];
     String newImage = tokens[3];
@@ -115,13 +115,13 @@ public class ScriptController implements ImageProcessingController {
 
   private void processHorizontalFlip(String[] tokens) {
     String imageName = tokens[1];
-    String newImage = tokens[1];
+    String newImage = tokens[2];
     imgRepo.flipImageHorizontally(imageName, newImage);
   }
 
   private void processVerticalFlip(String[] tokens) {
     String imageName = tokens[1];
-    String newImage = tokens[1];
+    String newImage = tokens[2];
     imgRepo.flipImageHorizontally(imageName, newImage);
   }
 

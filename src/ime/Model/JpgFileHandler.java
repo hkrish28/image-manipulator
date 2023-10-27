@@ -4,10 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public class JpgFileHandler implements FileHandler {
-  @Override
-  public List<ColorChannel> loadFile(String filename) {
-    return null;
-  }
 
   @Override
   public void saveFile(Image image, String filename){
@@ -15,7 +11,7 @@ public class JpgFileHandler implements FileHandler {
   }
 
   @Override
-  public float[][][] loadFileBase(String filename) throws FileNotFoundException {
+  public float[][][] loadFile(String filename) throws FileNotFoundException {
     return new float[0][][];
   }
 }

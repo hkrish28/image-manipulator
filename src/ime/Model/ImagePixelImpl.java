@@ -30,7 +30,7 @@ public class ImagePixelImpl implements Image {
   public ImagePixelImpl(String fileName) throws FileNotFoundException {
     fileHandlerProvider = new FileHandlerProviderImpl();
     float[][][] pixelValues =
-            fileHandlerProvider.getFileHandler(fileName).loadFileBase(fileName);
+            fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
     width = pixelValues[0].length;
     height = pixelValues.length;
     pixels = new Pixel[height][width];

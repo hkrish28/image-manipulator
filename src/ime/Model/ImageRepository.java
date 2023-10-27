@@ -79,5 +79,5 @@ public interface ImageRepository {
    * Convert this image into sepia and return the copy of it.
    * @return the sepia image of this image object
    */
-  void toSepiaImage(Image imageNameSrc, Image imageNameDest);
+  void toSepiaImage(Image imageNameSrc, String imageNameDest);
 }
