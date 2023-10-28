@@ -1,7 +1,5 @@
 package ime.Model;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +23,7 @@ public class ImagePixelImpl implements Image {
 
   }
 
-  public ImagePixelImpl(float[][][] pixelValues){
+  public ImagePixelImpl(float[][][] pixelValues) {
     width = pixelValues[0].length;
     height = pixelValues.length;
     pixels = new Pixel[height][width];
@@ -51,22 +49,9 @@ public class ImagePixelImpl implements Image {
   public List<Image> splitIntoColorChannels() {
     List<Image> result = new ArrayList<>();
     int channelCount = this.pixels[0][0].getColorChannelCount();
-    List<Pixel[][]> resultPixels = new ArrayList<>(channelCount);
 
     for (int i = 0; i < channelCount; i++) {
-      resultPixels.add(new PixelRgb[height][width]);
-    }
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        for (int k = 0; k < channelCount; k++) {
-          Pixel colorChannelPixel = new PixelRgb();
-          colorChannelPixel.setColorChannel(k, this.pixels[i][j].getChannelValue(k));
-          resultPixels.get(k)[i][j] = colorChannelPixel;
-        }
-      }
-    }
-    for (int i = 0; i < channelCount; i++) {
-      result.add(new ImagePixelImpl(resultPixels.get(i)));
+      result.add(toChannel(i));
     }
     return result;
   }
@@ -200,6 +185,21 @@ public class ImagePixelImpl implements Image {
     return pixels[0][0].getColorChannelCount();
   }
 
+  @Override
+  public Image toRedChannel() {
+    return toChannel(0);
+  }
+
+  @Override
+  public Image toGreenChannel() {
+    return toChannel(1);
+  }
+
+  @Override
+  public Image toBlueChannel() {
+    return toChannel(2);
+  }
+
   /**
    * Given a matrix of coefficients for the color channels, return an image that is the color
    * transformed version of this image.
@@ -254,5 +254,23 @@ public class ImagePixelImpl implements Image {
       }
     }
     return new ImagePixelImpl(resultPixel);
+  }
+
+  private Image toChannel(int channel) {
+    int channelCount = this.pixels[0][0].getColorChannelCount();
+    if (channel >= channelCount || channel < 0) {
+      throw new IllegalArgumentException("Invalid channel provided");
+    }
+    Pixel[][] resultPixels = new PixelRgb[height][width];
+
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        Pixel colorChannelPixel = new PixelRgb();
+        colorChannelPixel.setColorChannel(channel, this.pixels[i][j].getChannelValue(channel));
+        resultPixels[i][j] = colorChannelPixel;
+      }
+    }
+
+    return new ImagePixelImpl(resultPixels);
   }
 }

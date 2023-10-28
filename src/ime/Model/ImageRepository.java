@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ImageRepository {
-  void loadImage(String fileName, String imageName) throws FileNotFoundException;
+  void loadImage(String fileName, String imageName) throws IOException;
 
   void saveImage(String fileName, String imageName) throws IOException;
 
@@ -79,5 +79,11 @@ public interface ImageRepository {
    * Convert this image into sepia and return the copy of it.
    * @return the sepia image of this image object
    */
-  void toSepiaImage(Image imageNameSrc, String imageNameDest);
+  void toSepiaImage(String imageNameSrc, String imageNameDest);
+
+  void toRedChannelImage(String imageNameSrc, String imageNameDest);
+
+  void toGreenChannelImage(String imageNameSrc, String imageNameDest);
+
+  void toBlueChannelImage(String imageNameSrc, String imageNameDest);
 }

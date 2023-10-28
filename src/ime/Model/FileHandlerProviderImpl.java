@@ -15,8 +15,8 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
   private static Map<FileFormatEnum, FileHandler> generateFileHandlerClassMap() {
     Map<FileFormatEnum, FileHandler> fileHandlers = new HashMap<>();
     fileHandlers.put(FileFormatEnum.ppm, new PpmFileHandler());
-    fileHandlers.put(FileFormatEnum.jpeg, new JpgFileHandler());
-    fileHandlers.put(FileFormatEnum.png, new PngFileHandler());
+    fileHandlers.put(FileFormatEnum.jpg, new CommonFileHandler());
+    fileHandlers.put(FileFormatEnum.png, new CommonFileHandler());
     return fileHandlers;
   }
 
@@ -39,9 +39,9 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
     return FILE_FORMAT_ENUM_MAP.get(type);
   }
 
-  private FileFormatEnum validateFileType(String ballType) {
+  private FileFormatEnum validateFileType(String fileType) {
     try {
-      return FileFormatEnum.valueOf(ballType);
+      return FileFormatEnum.valueOf(fileType);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Invalid file format provided.");
     }

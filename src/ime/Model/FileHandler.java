@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FileHandler {
 
-  float[][][] loadFile(String filename) throws FileNotFoundException;
+  float[][][] loadFile(String filename) throws IOException;
 
   public void saveFile(Image image, String filename) throws IOException;
 

@@ -22,7 +22,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void loadImage(String fileName, String imageName) throws FileNotFoundException {
+  public void loadImage(String fileName, String imageName) throws IOException {
     float[][][] imagePixels = fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
     Image newImage = new ImagePixelImpl(imagePixels);
     imageMap.put(imageName, newImage);
@@ -112,8 +112,26 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void toSepiaImage(Image imageNameSrc, String imageNameDest) {
+  public void toSepiaImage(String imageNameSrc, String imageNameDest) {
     Image newImage = imageMap.get(imageNameSrc).getSepia();
+    imageMap.put(imageNameDest, newImage);
+  }
+
+  @Override
+  public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
+    Image newImage = imageMap.get(imageNameSrc).toRedChannel();
+    imageMap.put(imageNameDest, newImage);
+  }
+
+  @Override
+  public void toGreenChannelImage(String imageNameSrc, String imageNameDest) {
+    Image newImage = imageMap.get(imageNameSrc).toGreenChannel();
+    imageMap.put(imageNameDest, newImage);
+  }
+
+  @Override
+  public void toBlueChannelImage(String imageNameSrc, String imageNameDest) {
+    Image newImage = imageMap.get(imageNameSrc).toBlueChannel();
     imageMap.put(imageNameDest, newImage);
   }
 }

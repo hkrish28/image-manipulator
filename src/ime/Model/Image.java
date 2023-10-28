@@ -113,5 +113,10 @@ public interface Image {
    */
   int getChannelCount();
 
+  Image toRedChannel();
+
+  Image toGreenChannel();
+
+  Image toBlueChannel();
 
 }

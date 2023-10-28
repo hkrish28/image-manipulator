@@ -1,7 +1,6 @@
 package ime.Controller;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -80,17 +79,42 @@ public class ScriptController implements ImageProcessingController {
         case value_component:
           processValueGreyScale(tokens);
           break;
+        case red_component:
+          processRedChannel(tokens);
+          break;
+        case green_component:
+          processGreenChannel(tokens);
+          break;
+        case blue_component:
+          processBlueChannel(tokens);
+          break;
+        case luma_component:
+          processLumaGreyScale(tokens);
+          break;
+        case intensity_component:
+          processIntensityGreyScale(tokens);
+          break;
+        case blur:
+          processBlur(tokens);
+          break;
+        case sharpen:
+          processSharpen(tokens);
+          break;
+        case sepia:
+          processSepia(tokens);
+          break;
       }
     }
 
   }
+
 
   private void processLoad(String[] tokens) {
     String path = tokens[1];
     String imageName = tokens[2];
     try {
       imgRepo.loadImage(path, imageName);
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       view.displayMessage("File not found to load");
     }
   }
@@ -135,13 +159,60 @@ public class ScriptController implements ImageProcessingController {
     String destImage = tokens[1];
     List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
     imgRepo.combineImages(colorChannelsImages, destImage);
+  }
 
+  private void processRedChannel(String[] tokens) {
+    String srcImage = tokens[1];
+    String destImage = tokens[2];
+    imgRepo.toRedChannelImage(srcImage, destImage);
+  }
+
+  private void processGreenChannel(String[] tokens) {
+    String srcImage = tokens[1];
+    String destImage = tokens[2];
+    imgRepo.toGreenChannelImage(srcImage, destImage);
+  }
+
+  private void processBlueChannel(String[] tokens) {
+    String srcImage = tokens[1];
+    String destImage = tokens[2];
+    imgRepo.toBlueChannelImage(srcImage, destImage);
   }
 
   private void processValueGreyScale(String[] tokens) {
     String imageName = tokens[1];
     String newImage = tokens[2];
     imgRepo.toValueGreyScale(imageName, newImage);
+  }
+
+  private void processLumaGreyScale(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.toLumaGreyScale(imageName, newImage);
+  }
+
+  private void processIntensityGreyScale(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.toIntensityGreyScale(imageName, newImage);
+  }
+
+  private void processBlur(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.blurImage(imageName, newImage);
+  }
+
+  private void processSharpen(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.sharpenImage(imageName, newImage);
+  }
+
+  private void processSepia(String[] tokens) {
+    String imageName = tokens[1];
+    String newImage = tokens[2];
+    imgRepo.toSepiaImage(imageName, newImage);
   }
 
   private CommandEnum getCommandEnum(String commandStr) {
