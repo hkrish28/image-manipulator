@@ -1,5 +1,12 @@
 load images/manhattan-small.png manhattan
 
+rgb-split manhattan manhattan-red manhattan-green manhattan-blue
+save out/manhattan-blue.png manhattan-blue
+save out/manhattan-red.png manhattan-red
+save out/manhattan-green.png manhattan-green
+rgb-combine manhattan-combined manhattan-red manhattan-green manhattan-blue
+save out/manhattan-combined.png manhattan-combined
+
 blur manhattan manhattan-blur
 save out/manhattan-blur.jpg manhattan-blur
 
