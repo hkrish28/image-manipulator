@@ -137,7 +137,7 @@ public class ImagePixelImpl implements Image {
     Pixel[][] resultPixels = new PixelRgb[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        float pixelIntensity = pixels[i][j].getLuma();
+        float pixelIntensity = pixels[i][j].getIntensity();
         float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
         Arrays.fill(greyscale, pixelIntensity);
         resultPixels[i][j] = new PixelRgb(greyscale);
@@ -242,7 +242,7 @@ public class ImagePixelImpl implements Image {
             for (int n = 0; n < filter[0].length; n++) {
               try {
                 sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-                        .getChannelValues()[k];
+                    .getChannelValues()[k];
               } catch (IndexOutOfBoundsException e) {
                 System.out.println("Expected ");
               }
