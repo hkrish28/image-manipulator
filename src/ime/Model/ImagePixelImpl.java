@@ -31,8 +31,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pixels[i][j] = this.imageType.generatePixel();
-        pixels[i][j].setColor(pixelValues[i][j].getChannelValues());
+        setPixelValue(this.pixels, i, j, pixelValues[i][j].getChannelValues());
       }
     }
   }
@@ -47,8 +46,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pixels[i][j] = this.imageType.generatePixel();
-        pixels[i][j].setColor(pixelValues[i][j]);
+        setPixelValue(this.pixels, i, j, pixelValues[i][j]);
       }
     }
   }
@@ -89,8 +87,7 @@ public class ImagePixelImpl implements Image {
         for (int k = 1; k < this.getChannelCount(); k++) {
           pixelValues[k] = images.get(k - 1).getPixelValues(i, j)[k];
         }
-        resultPixels[i][j] = this.imageType.generatePixel();
-        resultPixels[i][j].setColor(pixelValues);
+        setPixelValue(resultPixels, i, j, pixelValues);
       }
     }
 
@@ -125,26 +122,24 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image flipHorizontally() {
-    Pixel[][] result = new Pixel[height][width];
+    Pixel[][] resultPixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        result[i][j] = imageType.generatePixel();
-        result[i][j].setColor(pixels[i][width - j - 1].getChannelValues());
+        setPixelValue(resultPixels, i, j, pixels[i][width - j - 1].getChannelValues());
       }
     }
-    return new ImagePixelImpl(result, imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   @Override
   public Image flipVertically() {
-    Pixel[][] result = new Pixel[height][width];
+    Pixel[][] resultPixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        result[i][j] = imageType.generatePixel();
-        result[i][j].setColor(pixels[height - i - 1][j].getChannelValues());
+        setPixelValue(resultPixels, i, j, pixels[height - i - 1][j].getChannelValues());
       }
     }
-    return new ImagePixelImpl(result, imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   @Override
@@ -164,8 +159,7 @@ public class ImagePixelImpl implements Image {
         float pixelIntensity = pixels[i][j].getIntensity();
         float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
         Arrays.fill(greyscale, pixelIntensity);
-        resultPixels[i][j] = imageType.generatePixel();
-        resultPixels[i][j].setColor(greyscale);
+        setPixelValue(resultPixels, i, j, greyscale);
       }
     }
     return new ImagePixelImpl(resultPixels, imageType);
@@ -179,8 +173,7 @@ public class ImagePixelImpl implements Image {
         float luma = pixels[i][j].getLuma();
         float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
         Arrays.fill(greyscale, luma);
-        resultPixels[i][j] = imageType.generatePixel();
-        resultPixels[i][j].setColor(greyscale);
+        setPixelValue(resultPixels, i, j, greyscale);
       }
     }
     return new ImagePixelImpl(resultPixels, imageType);
@@ -194,8 +187,7 @@ public class ImagePixelImpl implements Image {
         float pixelIntensity = pixels[i][j].getValue();
         float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
         Arrays.fill(greyscale, pixelIntensity);
-        resultPixels[i][j] = imageType.generatePixel();
-        resultPixels[i][j].setColor(greyscale);
+        setPixelValue(resultPixels, i, j, greyscale);
       }
     }
     return new ImagePixelImpl(resultPixels, imageType);
@@ -271,8 +263,7 @@ public class ImagePixelImpl implements Image {
 
           filterValues[k] = Math.max(0, Math.min(255, sum));
         }
-        resultPixel[i][j] = imageType.generatePixel();
-        resultPixel[i][j].setColor(filterValues);
+        setPixelValue(resultPixel, i, j, filterValues);
       }
     }
     return new ImagePixelImpl(resultPixel, imageType);
@@ -315,5 +306,10 @@ public class ImagePixelImpl implements Image {
     }
 
     return new ImagePixelImpl(resultPixels, imageType);
+  }
+
+  private void setPixelValue(Pixel[][] resultPixels, int i, int j, float[] channelValues) {
+    resultPixels[i][j] = imageType.generatePixel();
+    resultPixels[i][j].setColor(channelValues);
   }
 }

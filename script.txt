@@ -13,6 +13,9 @@ save out/manhattan-blur.jpg manhattan-blur
 sharpen manhattan manhattan-sharpen
 save out/manhattan-sharpen.ppm manhattan-sharpen
 
+sepia manhattan manhattan-sepia
+save out/manhattan-sepia.ppm manhattan-sepia
+
 #load koala.ppm and call it 'koala'
 load images/koala.ppm koala
 
@@ -25,17 +28,23 @@ vertical-flip koala koala-vertical
 #flip the vertically flipped koala horizontally
 horizontal-flip koala-vertical koala-vertical-horizontal
 
+save out/koala-vertical-horizontal.png koala-vertical-horizontal
+save out/koala-vertical.jpg koala-vertical
+
 #create a greyscale using only the value component, as an image koala-greyscale
 value-component koala koala-greyscale
+
+luma-component koala koala-luma
+
+intensity-component koala koala-intensity
 
 #save koala-brighter
 save out/koala-brighter.ppm koala-brighter
 
 #save koala-greyscale
 save out/koala-gs.ppm koala-greyscale
-
-#overwrite koala with another file
-load images/blur.ppm koala
+save out/koala-luma.png koala-greyscale
+save out/koala-intensity.jpg koala-intensity
 
 #give the koala a red tint
 rgb-split koala koala-red koala-green koala-blue
@@ -46,3 +55,8 @@ brighten 50 koala-red koala-red
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine koala-red-tint koala-red koala-green koala-blue
 save out/koala-red-tint.ppm koala-red-tint
+
+#overwrite koala with another file
+load images/koala-gs.ppm koala
+
+save out/koala-overwritten.ppm koala
