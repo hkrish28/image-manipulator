@@ -1,6 +1,5 @@
 package ime.Model;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,59 +30,83 @@ public interface ImageRepository {
    * Darken this image by the given darkness constant and return the new image.
    * @param darknessConstant the constant factor for the image to be darkened by
    */
-  void darkenenImage(String imageNameSrc, String imageNameDest, float darknessConstant);
+  void darkenImage(String imageNameSrc, String imageNameDest, float darknessConstant);
 
   /**
-   * Blur the image using appropriate filter and return the new blurred image.
-   * @return blurred copy of the original.
+   * Blur the source image using appropriate filter and save the blurred image into destination.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void blurImage(String imageNameSrc, String imageNameDest);
 
   /**
-   * Sharpen the image using appropriate filter and return the new blurred image.
-   * @return blurred copy of the original.
+   * Sharpen the source image using appropriate filter and save the sharpened image into
+   * the destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void sharpenImage(String imageNameSrc, String imageNameDest);
 
   /**
-   * Horizontally flip the image and return the new flipped image.
-   * @return horizontally flipped image
+   * Horizontally flip the source image and save it into destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void flipImageHorizontally(String imageNameSrc, String imageNameDest);
 
   /**
-   * Vertically flip the image and return the new flipped image.
-   * @return vertically flipped image
+   * Vertically flip the source image and save it into destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void flipImageVertically(String imageNameSrc, String imageNameDest);
 
   /**
-   * Convert this image into its intensity greyscale and return the copy of it.
-   * @return the greyscale image of its intensity
+   * Transform the source image into its intensity greyscale and save it into destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void toIntensityGreyScale(String imageNameSrc, String imageNameDest);
 
   /**
-   * Convert this image into its luma greyscale and return the copy of it.
-   * @return the greyscale image of its luma
+   * Transform the source image into its luma greyscale and save it into the destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void toLumaGreyScale(String imageNameSrc, String imageNameDest);
 
   /**
-   * Convert this image into its value greyscale and return the copy of it.
-   * @return the greyscale image of its values
+   * Transform the source image into its value greyscale and save it into the destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void toValueGreyScale(String imageNameSrc, String imageNameDest);
 
   /**
-   * Convert this image into sepia and return the copy of it.
-   * @return the sepia image of this image object
+   * Transform the source image into sepia and save it into the destination image.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
    */
   void toSepiaImage(String imageNameSrc, String imageNameDest);
 
+  /**
+   * Get the red component image of the source image and save it into destination.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
+   */
   void toRedChannelImage(String imageNameSrc, String imageNameDest);
 
+  /**
+   * Get the green component image of the source image and save it into destination.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
+   */
   void toGreenChannelImage(String imageNameSrc, String imageNameDest);
 
+  /**
+   * Get the blue component image of the source image and save it into destination.
+   * @param imageNameSrc source image name
+   * @param imageNameDest destination image name
+   */
   void toBlueChannelImage(String imageNameSrc, String imageNameDest);
 }

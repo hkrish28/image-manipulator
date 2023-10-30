@@ -1,6 +1,5 @@
 package ime.Model;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,13 +18,6 @@ public interface Image {
    * @return the height of the image
    */
   int getHeight();
-
-//  /**
-//   * Given an image of supported extension, load the contents into the object.
-//   * @param filename the image file
-//   */
-//  void loadImage(String filename) throws FileNotFoundException;
-
 
   /**
    * Split this image into its respective color channels.
@@ -113,10 +105,22 @@ public interface Image {
    */
   int getChannelCount();
 
-  Image toRedChannel();
+  /**
+   * Return the red component of the image as a new copy. Original image should not be changed.
+   * @return red component of the image
+   */
+  Image getRedComponent();
 
-  Image toGreenChannel();
+  /**
+   * Return the green component of the image as a new copy. Original image should not be changed.
+   * @return green component of the image
+   */
+  Image getGreenComponent();
 
-  Image toBlueChannel();
+  /**
+   * Return the blue component of the image as a new copy. Original image should not be changed.
+   * @return blue component of the image
+   */
+  Image getBlueComponent();
 
 }

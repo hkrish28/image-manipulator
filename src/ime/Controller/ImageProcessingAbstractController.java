@@ -43,6 +43,9 @@ public abstract class ImageProcessingAbstractController implements ImageProcessi
         case brighten:
           processBrighten(tokens);
           break;
+        case darken:
+          processDarken(tokens);
+          break;
         case horizontalFlip:
           processHorizontalFlip(tokens);
           break;
@@ -113,7 +116,13 @@ public abstract class ImageProcessingAbstractController implements ImageProcessi
     String imageName = tokens[2];
     String newImage = tokens[3];
     imgRepo.brightenImage(imageName, newImage, brightnessConstant);
+  }
 
+  private void processDarken(String[] tokens) {
+    float brightnessConstant = Float.parseFloat(tokens[1]);
+    String imageName = tokens[2];
+    String newImage = tokens[3];
+    imgRepo.darkenImage(imageName, newImage, brightnessConstant);
   }
 
   private void processHorizontalFlip(String[] tokens) {
@@ -125,7 +134,7 @@ public abstract class ImageProcessingAbstractController implements ImageProcessi
   private void processVerticalFlip(String[] tokens) {
     String imageName = tokens[1];
     String newImage = tokens[2];
-    imgRepo.flipImageHorizontally(imageName, newImage);
+    imgRepo.flipImageVertically(imageName, newImage);
   }
 
   private void processSplit(String[] tokens) {

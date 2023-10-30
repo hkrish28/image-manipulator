@@ -1,11 +1,14 @@
 package ime.Model;
 
-public class PixelRgb implements Pixel {
+/**
+ * This class represents an RGB pixel and supported operations of it.
+ */
+public class RgbPixel implements Pixel {
 
   private static final int COLOR_CHANNEL_COUNT = 3;
   private float[] values;
 
-  public PixelRgb(float[] pixelValues) {
+  public RgbPixel(float[] pixelValues) {
     if (pixelValues.length != COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Number of values provided to the pixel is incorrect");
     }
@@ -13,7 +16,7 @@ public class PixelRgb implements Pixel {
     values = pixelValues;
   }
 
-  public PixelRgb() {
+  public RgbPixel() {
     values = new float[COLOR_CHANNEL_COUNT];
   }
 
@@ -33,6 +36,7 @@ public class PixelRgb implements Pixel {
     }
   }
 
+  @Override
   public int getColorChannelCount() {
     return COLOR_CHANNEL_COUNT;
   }
@@ -80,7 +84,7 @@ public class PixelRgb implements Pixel {
       }
       result[i] = Math.max(0, Math.min(255, sum));
     }
-    return new PixelRgb(result);
+    return new RgbPixel(result);
   }
 
   @Override
@@ -111,12 +115,12 @@ public class PixelRgb implements Pixel {
     values[i] = value;
   }
 
+  @Override
   public Pixel brighten(float brightnessConstant) {
     float[] result = new float[values.length];
     for (int i = 0; i < values.length; i++) {
       result[i] = Math.max(0, Math.min(255, values[i] + brightnessConstant));
     }
-    return new PixelRgb(result);
+    return new RgbPixel(result);
   }
-
 }

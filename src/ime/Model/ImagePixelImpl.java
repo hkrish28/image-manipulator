@@ -71,6 +71,7 @@ public class ImagePixelImpl implements Image {
     if (images.size() != this.getChannelCount() - 1) {
       throw new IllegalArgumentException("Invalid number of images");
     }
+
     Pixel[][] resultPixels = new Pixel[height][width];
 
     for (int i = 0; i < height; i++) {
@@ -85,7 +86,7 @@ public class ImagePixelImpl implements Image {
       }
     }
 
-    return new ImagePixelImpl(resultPixels,imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   @Override
@@ -96,7 +97,7 @@ public class ImagePixelImpl implements Image {
         resultPixels[i][j] = pixels[i][j].brighten(brightnessConstant);
       }
     }
-    return new ImagePixelImpl(resultPixels,imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   @Override
@@ -174,7 +175,7 @@ public class ImagePixelImpl implements Image {
         resultPixels[i][j].setColor(greyscale);
       }
     }
-    return new ImagePixelImpl(resultPixels,imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   @Override
@@ -203,18 +204,29 @@ public class ImagePixelImpl implements Image {
   }
 
   @Override
-  public Image toRedChannel() {
-    return toChannel(0);
+  public Image getRedComponent() {
+    int index = getColorChannelIndex(ColorChannel.RED);
+    return toChannel(index);
+  }
+
+  private int getColorChannelIndex(ColorChannel colorChannel) {
+    int index = imageType.colorChannels.indexOf(colorChannel);
+    if (index < 0) {
+      throw new IllegalArgumentException("red component can not be obtained for the given image");
+    }
+    return index;
   }
 
   @Override
-  public Image toGreenChannel() {
-    return toChannel(1);
+  public Image getGreenComponent() {
+    int index = getColorChannelIndex(ColorChannel.GREEN);
+    return toChannel(index);
   }
 
   @Override
-  public Image toBlueChannel() {
-    return toChannel(2);
+  public Image getBlueComponent() {
+    int index = getColorChannelIndex(ColorChannel.BLUE);
+    return toChannel(index);
   }
 
   /**
@@ -279,6 +291,7 @@ public class ImagePixelImpl implements Image {
   }
 
   private Image toChannel(int channel) {
+
     int channelCount = this.pixels[0][0].getColorChannelCount();
     if (channel >= channelCount || channel < 0) {
       throw new IllegalArgumentException("Invalid channel provided");
