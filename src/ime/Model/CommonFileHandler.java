@@ -6,10 +6,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * This file handler supports loading and saving of RGB files in JPG and PNG formats.
+ */
 public class CommonFileHandler implements FileHandler {
 
   @Override
-  public void saveFile(Image image, String filename) throws IOException {
+  public void saveImage(Image image, String filename) throws IOException {
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -31,7 +34,7 @@ public class CommonFileHandler implements FileHandler {
   }
 
   @Override
-  public float[][][] loadFile(String filename) throws IOException {
+  public float[][][] loadImage(String filename) throws IOException {
     BufferedImage bufferedImage = ImageIO.read(new File(filename));
     int width = bufferedImage.getWidth();
     System.out.println("Width of image: " + width);

@@ -1,12 +1,16 @@
 package ime.Model;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This implementation of {@link ImageRepository} stores multiple images as a map between the
+ * tagged name of the image to its actual {@link Image} object. It makes use of
+ * {@link FileHandlerProvider} to perform functions like load and save of images.
+ */
 public class ImageRepositoryImpl implements ImageRepository {
 
   private final FileHandlerProvider fileHandlerProvider;
@@ -22,9 +26,9 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void loadImage(String fileName, String imageName) throws IOException {
-    float[][][] imagePixels = fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
-    Image newImage = new ImagePixelImpl(imagePixels);
+  public void loadImage(String filePath, String imageName) throws IOException {
+    float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
+    Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
     imageMap.put(imageName, newImage);
   }
 
@@ -34,7 +38,7 @@ public class ImageRepositoryImpl implements ImageRepository {
       throw new IllegalArgumentException("image name invalid");
     } else {
       Image image = imageMap.get(imageName);
-      fileHandlerProvider.getFileHandler(fileName).saveFile(image, fileName);
+      fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
     }
   }
 
@@ -64,7 +68,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void darkenenImage(String imageNameSrc, String imageNameDest, float darknessConstant) {
+  public void darkenImage(String imageNameSrc, String imageNameDest, float darknessConstant) {
     Image newImage = imageMap.get(imageNameSrc).darken(darknessConstant);
     imageMap.put(imageNameDest, newImage);
   }
@@ -119,19 +123,19 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
-    Image newImage = imageMap.get(imageNameSrc).toRedChannel();
+    Image newImage = imageMap.get(imageNameSrc).getRedComponent();
     imageMap.put(imageNameDest, newImage);
   }
 
   @Override
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest) {
-    Image newImage = imageMap.get(imageNameSrc).toGreenChannel();
+    Image newImage = imageMap.get(imageNameSrc).getGreenComponent();
     imageMap.put(imageNameDest, newImage);
   }
 
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest) {
-    Image newImage = imageMap.get(imageNameSrc).toBlueChannel();
+    Image newImage = imageMap.get(imageNameSrc).getBlueComponent();
     imageMap.put(imageNameDest, newImage);
   }
 }
