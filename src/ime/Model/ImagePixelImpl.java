@@ -268,6 +268,7 @@ public class ImagePixelImpl implements Image {
         float[] filterValues = new float[this.getChannelCount()];
         for (int k = 0; k < this.getChannelCount(); k++) {
           float sum = getConvolutionProduct(i, j, filter, k);
+
           filterValues[k] = Math.max(0, Math.min(255, sum));
         }
         resultPixel[i][j] = imageType.generatePixel();
