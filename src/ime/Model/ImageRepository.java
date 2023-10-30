@@ -3,10 +3,30 @@ package ime.Model;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * An Image Repository is a class that manages multiple images and performs operations on them.
+ * It is able to tag an image to a particular name and also save images that it has already tagged.
+ */
 public interface ImageRepository {
-  void loadImage(String fileName, String imageName) throws IOException;
 
-  void saveImage(String fileName, String imageName) throws IOException;
+  /**
+   * This method is used to load an image at a given file path and tag it the given name for the
+   * image.
+   * @param filePath the path at which the file is present to be loaded.
+   * @param imageName the name for the image to be associated with
+   * @throws IOException if any error occurs during the loading of the image or if the file does not
+   * exist at the file path.
+   */
+  void loadImage(String filePath, String imageName) throws IOException;
+
+  /**
+   * This method is used to save a tagged image to a given file path.
+   * @param filePath the path at which the image is to be saved.
+   * @param imageName the name of the image to be saved.
+   * @throws IOException if any error occurs during the loadig of the image or if the file does not
+   * exist at the file path.
+   */
+  void saveImage(String filePath, String imageName) throws IOException;
 
   /**
    * Split this image into its respective color channels.

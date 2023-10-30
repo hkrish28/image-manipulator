@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This implementation of {@link ImageRepository} stores multiple images as a map between the
+ * tagged name of the image to its actual {@link Image} object. It makes use of
+ * {@link FileHandlerProvider} to perform functions like load and save of images.
+ */
 public class ImageRepositoryImpl implements ImageRepository {
 
   private final FileHandlerProvider fileHandlerProvider;
@@ -21,9 +26,9 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void loadImage(String fileName, String imageName) throws IOException {
-    float[][][] imagePixels = fileHandlerProvider.getFileHandler(fileName).loadImage(fileName);
-    Image newImage = new ImagePixelImpl(imagePixels, ImageEnum.RGB);
+  public void loadImage(String filePath, String imageName) throws IOException {
+    float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
+    Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
     imageMap.put(imageName, newImage);
   }
 

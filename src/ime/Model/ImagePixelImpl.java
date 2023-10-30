@@ -4,16 +4,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ime.Model.ImageConstants.BLUR_FILTER;
+import static ime.Model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.Model.ImageConstants.SHARPEN_FILTER;
+
+/**
+ * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has
+ * an associated image type to it which can be any one of the types listed in {@link ImageType}.
+ */
 public class ImagePixelImpl implements Image {
 
   private final int width;
   private final int height;
 
-  private final ImageEnum imageType;
+  private final ImageType imageType;
 
   Pixel[][] pixels;
 
-  public ImagePixelImpl(Pixel[][] pixelValues, ImageEnum imageType) {
+  public ImagePixelImpl(Pixel[][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
       throw new IllegalArgumentException("Image should contain at least one pixel");
     }
@@ -29,7 +37,7 @@ public class ImagePixelImpl implements Image {
     }
   }
 
-  public ImagePixelImpl(float[][][] pixelValues, ImageEnum imageType) {
+  public ImagePixelImpl(float[][][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
       throw new IllegalArgumentException("Image should contain at least one pixel");
     }
@@ -107,12 +115,12 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image blur() {
-    return applyFilter(ImageEnum.RGB.blurFilter);
+    return applyFilter(BLUR_FILTER);
   }
 
   @Override
   public Image sharpen() {
-    return applyFilter(ImageEnum.RGB.sharpFilter);
+    return applyFilter(SHARPEN_FILTER);
   }
 
   @Override
@@ -195,7 +203,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getSepia() {
-    return performColorTransformation(ImageEnum.RGB.sepiaTransformer);
+    return performColorTransformation(SEPIA_TRANSFORMER);
   }
 
   @Override
@@ -209,14 +217,6 @@ public class ImagePixelImpl implements Image {
     return toChannel(index);
   }
 
-  private int getColorChannelIndex(ColorChannel colorChannel) {
-    int index = imageType.colorChannels.indexOf(colorChannel);
-    if (index < 0) {
-      throw new IllegalArgumentException("red component can not be obtained for the given image");
-    }
-    return index;
-  }
-
   @Override
   public Image getGreenComponent() {
     int index = getColorChannelIndex(ColorChannel.GREEN);
@@ -227,6 +227,14 @@ public class ImagePixelImpl implements Image {
   public Image getBlueComponent() {
     int index = getColorChannelIndex(ColorChannel.BLUE);
     return toChannel(index);
+  }
+
+  private int getColorChannelIndex(ColorChannel colorChannel) {
+    int index = imageType.colorChannels.indexOf(colorChannel);
+    if (index < 0) {
+      throw new IllegalArgumentException("red component can not be obtained for the given image");
+    }
+    return index;
   }
 
   /**
