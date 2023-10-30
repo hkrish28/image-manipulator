@@ -1,32 +1,32 @@
 package ime.Model;
 
+import java.util.function.Supplier;
+
+import static ime.Model.ImageConstants.RGB_BLUR;
+import static ime.Model.ImageConstants.RGB_SEPIA;
+import static ime.Model.ImageConstants.RGB_SHARPEN;
+
 public enum ImageEnum {
-  RGB(new float[][]{{0.393f, 0.769f, 0.189f}, {0.349f, 0.686f, 0.168f}, {0.272f, 0.534f, 0.131f}},
-          new float[][]{{1 / 16f, 1 / 8f, 1 / 16f}, {1 / 8f, 1 / 4f, 1 / 8f}, {1 / 16f, 1 / 8f, 1 / 16f}},
-          new float[][]{{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}, {-1 / 8f, 1 / 4f, 1 / 4f, 1 / 4f, -1 / 8f},
-                  {-1 / 8f, 1 / 4f, 1, 1 / 4f, -1 / 8f}, {-1 / 8f, 1 / 4f, 1 / 4f, 1 / 4f, -1 / 8f},
-                  {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
-          });
+  RGB(RGB_SEPIA,
+          RGB_BLUR,
+          RGB_SHARPEN,
+          PixelRgb::new);
 
-  private float[][] sepiaTransformer;
-  private float[][] blurFilter;
-  private float[][] sharpFilter;
+  public final float[][] sepiaTransformer;
+  public final float[][] blurFilter;
+  public final float[][] sharpFilter;
 
-  private ImageEnum(float[][] sepiaTransformer, float[][] blurFilter, float[][] sharpFilter) {
+  private Supplier<Pixel> pixelSupplier;
+
+  ImageEnum(float[][] sepiaTransformer, float[][] blurFilter, float[][] sharpFilter,
+            Supplier<Pixel> pixelSupplier) {
     this.sepiaTransformer = sepiaTransformer;
     this.blurFilter = blurFilter;
     this.sharpFilter = sharpFilter;
+    this.pixelSupplier = pixelSupplier;
   }
 
-  public float[][] getSepiaTransformer() {
-    return sepiaTransformer;
-  }
-
-  public float[][] getBlurFilter() {
-    return blurFilter;
-  }
-
-  public float[][] getSharpFilter() {
-    return sharpFilter;
+  public Pixel generatePixel() {
+    return pixelSupplier.get();
   }
 }

@@ -9,19 +9,28 @@ public class PixelRgb implements Pixel {
     if (pixelValues.length != COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Number of values provided to the pixel is incorrect");
     }
+    validatePixelValues(pixelValues);
     values = pixelValues;
-  }
-
-  public PixelRgb(Pixel pixels) {
-    values = new float[COLOR_CHANNEL_COUNT];
-    float[] pixelValues = pixels.getChannelValues();
-    for (int i = 0; i < COLOR_CHANNEL_COUNT; i++) {
-      values[i] = pixelValues[i];
-    }
   }
 
   public PixelRgb() {
     values = new float[COLOR_CHANNEL_COUNT];
+  }
+
+  private static void validateChannelValue(float pixelValue) {
+    if (pixelValue < 0 || pixelValue > 255) {
+      throw new IllegalArgumentException("All channels in the pixel should have a value " +
+              "between 0 and 255");
+    }
+  }
+
+  private void validatePixelValues(float[] pixelValues) {
+    if (COLOR_CHANNEL_COUNT != pixelValues.length) {
+      throw new IllegalArgumentException("Incorrect number of values passed to set pixel values");
+    }
+    for (int i = 0; i < COLOR_CHANNEL_COUNT; i++) {
+      validateChannelValue(pixelValues[i]);
+    }
   }
 
   public int getColorChannelCount() {
@@ -54,7 +63,6 @@ public class PixelRgb implements Pixel {
 
   @Override
   public float getLuma() {
-    //rgb specific
     return (float) (0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2]);
 
   }
@@ -66,14 +74,14 @@ public class PixelRgb implements Pixel {
     }
     float[] result = new float[COLOR_CHANNEL_COUNT];
     for (int i = 0; i < COLOR_CHANNEL_COUNT; i++) {
-        float sum = 0;
-        for (int j = 0; j < COLOR_CHANNEL_COUNT; j++) {
-          sum+= transformCoefficients[i][j] * values[j];
-        }
-        result[i] = Math.max(0,Math.min(255,sum));
+      float sum = 0;
+      for (int j = 0; j < COLOR_CHANNEL_COUNT; j++) {
+        sum += transformCoefficients[i][j] * values[j];
       }
-    return new PixelRgb(result);
+      result[i] = Math.max(0, Math.min(255, sum));
     }
+    return new PixelRgb(result);
+  }
 
   @Override
   public float getChannelValue(int channel) {
@@ -85,25 +93,21 @@ public class PixelRgb implements Pixel {
 
   @Override
   public float[] getChannelValues() {
-    //validation
-    //LOOK IF REFERENCE ISSUES ARISE
-    return values;
+    return values.clone();
   }
 
   @Override
   public void setColor(float[] colorChannelValues) throws IllegalArgumentException {
-    if (COLOR_CHANNEL_COUNT != colorChannelValues.length) {
-      throw new IllegalArgumentException("Incorrect number of values passed to set pixel values");
-    }
-    //validation pending
-    for (int i = 0; i < COLOR_CHANNEL_COUNT; i++) {
-      values[i] = colorChannelValues[i];
-    }
+    validatePixelValues(colorChannelValues);
+    values = colorChannelValues.clone();
   }
 
   @Override
   public void setColorChannel(int i, float value) {
-    //validation pending
+    if (i < 0 || i >= COLOR_CHANNEL_COUNT) {
+      throw new IllegalArgumentException("");
+    }
+    validateChannelValue(value);
     values[i] = value;
   }
 

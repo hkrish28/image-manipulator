@@ -24,7 +24,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   @Override
   public void loadImage(String fileName, String imageName) throws IOException {
     float[][][] imagePixels = fileHandlerProvider.getFileHandler(fileName).loadFile(fileName);
-    Image newImage = new ImagePixelImpl(imagePixels);
+    Image newImage = new ImagePixelImpl(imagePixels, ImageEnum.RGB);
     imageMap.put(imageName, newImage);
   }
 
