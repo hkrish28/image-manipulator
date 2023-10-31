@@ -7,7 +7,6 @@ public enum CommandEnum {
   load("load"),
   save("save"),
   brighten("brighten"),
-  darken("darken"),
   blur("blur"),
   sharpen("sharpen"),
   sepia("sepia"),
@@ -20,7 +19,10 @@ public enum CommandEnum {
   red_component("red-component"),
   green_component("green-component"),
   blue_component("blue-component"),
-  rgb_combine("rgb-combine");
+  rgb_combine("rgb-combine"),
+  run("run"),
+  exit("exit");
+
   private final String command;
 
   /**

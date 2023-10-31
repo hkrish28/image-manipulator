@@ -106,11 +106,6 @@ public class ImagePixelImpl implements Image {
   }
 
   @Override
-  public Image darken(float darknessConstant) {
-    return this.brighten(-darknessConstant);
-  }
-
-  @Override
   public Image blur() {
     return applyFilter(BLUR_FILTER);
   }

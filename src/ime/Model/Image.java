@@ -38,12 +38,6 @@ public interface Image {
   Image brighten(float brightnessConstant);
 
   /**
-   * Darken this image by the given darkness constant and return the new image.
-   * @param darknessConstant the constant factor for the image to be darkened by
-   */
-  Image darken(float darknessConstant);
-
-  /**
    * Blur the image using appropriate filter and return the new blurred image.
    * @return blurred copy of the original.
    */
