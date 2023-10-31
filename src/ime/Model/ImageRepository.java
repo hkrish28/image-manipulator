@@ -46,11 +46,6 @@ public interface ImageRepository {
    */
   void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant);
 
-  /**
-   * Darken this image by the given darkness constant and return the new image.
-   * @param darknessConstant the constant factor for the image to be darkened by
-   */
-  void darkenImage(String imageNameSrc, String imageNameDest, float darknessConstant);
 
   /**
    * Blur the source image using appropriate filter and save the blurred image into destination.

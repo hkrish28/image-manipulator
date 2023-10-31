@@ -68,12 +68,6 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void darkenImage(String imageNameSrc, String imageNameDest, float darknessConstant) {
-    Image newImage = imageMap.get(imageNameSrc).darken(darknessConstant);
-    imageMap.put(imageNameDest, newImage);
-  }
-
-  @Override
   public void blurImage(String imageNameSrc, String imageNameDest) {
     Image newImage = imageMap.get(imageNameSrc).blur();
     imageMap.put(imageNameDest, newImage);
