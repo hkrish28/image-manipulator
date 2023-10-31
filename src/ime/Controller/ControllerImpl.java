@@ -27,10 +27,10 @@ public class ControllerImpl implements ImageProcessingController {
   /**
    * Constructs a new controller instance with an empty image files map.
    */
-  public ControllerImpl(Scanner in) {
-    this.imgRepo = new ImageRepositoryImpl();
+  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo) {
+    this.imgRepo = imgRepo;
     this.in = in;
-    this.view = new ViewImpl(System.out);
+    this.view = view;
 
   }
 
