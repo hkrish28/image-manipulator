@@ -36,10 +36,7 @@ public class ControllerImpl implements ImageProcessingController {
 
   protected boolean executeCommand(String command) {
     String[] tokens = command.split(" ");
-    if (tokens.length < 2) {
-      view.displayMessage("Invalid command statement provided");
-      return false;
-    }
+
     boolean end = false;
     CommandEnum commandKeyword = getCommandEnum(tokens[0]);
     if (commandKeyword != null) {
