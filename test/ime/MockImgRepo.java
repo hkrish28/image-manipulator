@@ -16,7 +16,7 @@ public class MockImgRepo implements ImageRepository {
   }
   @Override
   public void loadImage(String filePath, String imageName) throws IOException {
-    methodCallLogger.append("loadImage called "+ filePath + " and " + imageName + " passed");
+    methodCallLogger.append("loadImage called "+ filePath + " and " + imageName + " passed\n");
     if(fail) {
       throw new IOException("Image Repository failed");
     }
@@ -24,77 +24,107 @@ public class MockImgRepo implements ImageRepository {
 
   @Override
   public void saveImage(String filePath, String imageName) throws IOException {
-    throw new IOException("Image Repository failed");
+    methodCallLogger.append("saveImage called "+ filePath + " and " + imageName + " passed\n");
+    if(fail){
+    throw new IOException("Image Repository failed");}
   }
 
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames) {
-    throw new IllegalArgumentException("Image Repository failed");
+    methodCallLogger.append("splitImage called "+ srcImage + " and " + destImageNames + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Image Repository failed");}
   }
 
   @Override
   public void combineImages(List<String> images, String imageDestName) {
-    throw new IllegalArgumentException("Image Repository failed");
+    methodCallLogger.append("combineImage called "+ images + " and " + imageDestName + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Image Repository failed");}
   }
 
   @Override
   public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("brightenImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void blurImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("blurImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void sharpenImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("sharpenImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void flipImageHorizontally(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void flipImageVertically(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest) {
-    throw new IllegalArgumentException("Source Name invalid");
+    methodCallLogger.append("loadImage called "+ imageNameSrc + " and " + imageNameDest + " passed\n");
+    if(fail){
+    throw new IllegalArgumentException("Source Name invalid");}
   }
 
   public String getLogger(){
