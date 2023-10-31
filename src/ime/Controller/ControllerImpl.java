@@ -1,5 +1,7 @@
 package ime.Controller;
 
+import ime.Model.ImageRepository;
+import ime.View.View;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,17 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import ime.Model.ImageRepository;
-import ime.Model.ImageRepositoryImpl;
-import ime.View.View;
-import ime.View.ViewImpl;
-
 /**
  * The `controller` class implements the ImageProcessingController interface and provides
  * functionality to execute image processing commands specified in a script file.
  */
 
 public class ControllerImpl implements ImageProcessingController {
+
   protected ImageRepository imgRepo;
 
   protected View view;
@@ -31,7 +29,6 @@ public class ControllerImpl implements ImageProcessingController {
     this.imgRepo = imgRepo;
     this.in = in;
     this.view = view;
-
   }
 
   protected boolean executeCommand(String command) {
@@ -117,6 +114,7 @@ public class ControllerImpl implements ImageProcessingController {
       String path = tokens[1];
       String imageName = tokens[2];
       imgRepo.loadImage(path, imageName);
+      view.displayMessage("Loaded successfully.");
     } catch (IOException e) {
       view.displayMessage(e.getMessage());
     }
@@ -128,115 +126,183 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[2];
       String fileName = tokens[1];
       this.imgRepo.saveImage(fileName, imageName);
+      view.displayMessage("Saved successfully.");
     } catch (IOException e) {
       view.displayMessage(e.getMessage());
     }
   }
 
   private void processBrighten(String[] tokens) {
-    validateTokenCount(4, tokens.length);
-    float brightnessConstant = Float.parseFloat(tokens[1]);
-    String imageName = tokens[2];
-    String newImage = tokens[3];
-    imgRepo.brightenImage(imageName, newImage, brightnessConstant);
+    try {
+      validateTokenCount(4, tokens.length);
+      float brightnessConstant = Float.parseFloat(tokens[1]);
+      String imageName = tokens[2];
+      String newImage = tokens[3];
+      imgRepo.brightenImage(imageName, newImage, brightnessConstant);
+      view.displayMessage("Brightened successfully.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processScriptRun(String[] tokens) {
-    validateTokenCount(2, tokens.length);
-    processScriptFile(tokens[1]);
-    view.displayMessage("Script file execution complete.");
+    try {
+      validateTokenCount(2, tokens.length);
+      processScriptFile(tokens[1]);
+      view.displayMessage("Script file execution complete.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processHorizontalFlip(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.flipImageHorizontally(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.flipImageHorizontally(imageName, newImage);
+      view.displayMessage("Horizontally flipped.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processVerticalFlip(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.flipImageVertically(imageName, newImage);
-
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.flipImageVertically(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processSplit(String[] tokens) {
-    validateTokenCount(5, tokens.length);
-    String srcImage = tokens[1];
-    List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
-    imgRepo.splitImageIntoColorChannels(srcImage, colorChannelsImages);
+    try {
+      validateTokenCount(5, tokens.length);
+
+      String srcImage = tokens[1];
+      List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
+      imgRepo.splitImageIntoColorChannels(srcImage, colorChannelsImages);
+      view.displayMessage("Images split.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processCombine(String[] tokens) {
-    validateTokenCount(5, tokens.length);
-    String destImage = tokens[1];
-    List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
-    imgRepo.combineImages(colorChannelsImages, destImage);
+    try {
+      validateTokenCount(5, tokens.length);
+
+      String destImage = tokens[1];
+      List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
+      imgRepo.combineImages(colorChannelsImages, destImage);
+      view.displayMessage("Images combined.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processRedChannel(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String srcImage = tokens[1];
-    String destImage = tokens[2];
-    imgRepo.toRedChannelImage(srcImage, destImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String srcImage = tokens[1];
+      String destImage = tokens[2];
+      imgRepo.toRedChannelImage(srcImage, destImage);
+      view.displayMessage("Red channel obtained.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processGreenChannel(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String srcImage = tokens[1];
-    String destImage = tokens[2];
-    imgRepo.toGreenChannelImage(srcImage, destImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String srcImage = tokens[1];
+      String destImage = tokens[2];
+      imgRepo.toGreenChannelImage(srcImage, destImage);
+      view.displayMessage("Green channel obtained.");
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processBlueChannel(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String srcImage = tokens[1];
-    String destImage = tokens[2];
-    imgRepo.toBlueChannelImage(srcImage, destImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String srcImage = tokens[1];
+      String destImage = tokens[2];
+      imgRepo.toBlueChannelImage(srcImage, destImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processValueGreyScale(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.toValueGreyScale(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.toValueGreyScale(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processLumaGreyScale(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.toLumaGreyScale(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.toLumaGreyScale(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processIntensityGreyScale(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.toIntensityGreyScale(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.toIntensityGreyScale(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processBlur(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.blurImage(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.blurImage(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processSharpen(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.sharpenImage(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.sharpenImage(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private void processSepia(String[] tokens) {
-    validateTokenCount(3, tokens.length);
-    String imageName = tokens[1];
-    String newImage = tokens[2];
-    imgRepo.toSepiaImage(imageName, newImage);
+    try {
+      validateTokenCount(3, tokens.length);
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imgRepo.toSepiaImage(imageName, newImage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 
   private CommandEnum getCommandEnum(String commandStr) {
