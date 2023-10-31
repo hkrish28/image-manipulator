@@ -75,11 +75,11 @@ public class ImagePixelImplTest {
   }
 
   /**
-   * Test the {@link ImagePixelImpl#darken(float)} method.
+   * Test the {@link ImagePixelImpl#brighten(float)} method.
    */
   @Test
   public void testDarken() {
-    Image darkenedImage = image.darken(0.5f);
+    Image darkenedImage = image.brighten(-0.5f);
     float[] originalValues = image.getPixelValues(1, 1);
     float[] darkenedValues = darkenedImage.getPixelValues(1, 1);
 
