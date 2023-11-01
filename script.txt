@@ -1,62 +1,75 @@
-load images/manhattan-small.png manhattan
+load images/bird.jpg bird
 
-rgb-split manhattan manhattan-red manhattan-green manhattan-blue
-save res/manhattan-blue.png manhattan-blue
-save res/manhattan-red.png manhattan-red
-save res/manhattan-green.png manhattan-green
-rgb-combine manhattan-combined manhattan-red manhattan-green manhattan-blue
-save res/manhattan-combined.png manhattan-combined
+rgb-split bird bird-red bird-green bird-blue
+save res/bird-blue-split.png bird-blue
+save res/bird-red-split.jpg bird-red
+save res/bird-green-split.jpg bird-green
+rgb-combine bird-combined bird-red bird-green bird-blue
+save res/bird-combined.png bird-combined
 
-blur manhattan manhattan-blur
-save res/manhattan-blur.jpg manhattan-blur
+blur bird bird-blur
+save res/bird-blur.jpg bird-blur
 
-sharpen manhattan manhattan-sharpen
-save res/manhattan-sharpen.ppm manhattan-sharpen
+sharpen bird bird-sharpen
+save res/bird-sharpen.jpg bird-sharpen
 
-sepia manhattan manhattan-sepia
-save res/manhattan-sepia.ppm manhattan-sepia
+sepia bird bird-sepia
+save res/bird-sepia.jpg bird-sepia
 
-#load koala.ppm and call it 'koala'
-load images/koala.ppm koala
+#load bird.png and call it 'bird2'
+load images/bird.png bird2
 
-#brighten koala by adding 10
-brighten 10 koala koala-brighter
+#brighten bird by adding 10
+brighten bird2 bird bird-brighter
 
-#flip koala vertically
-vertical-flip koala koala-vertical
+#flip bird vertically
+vertical-flip bird2 bird-vertical
 
-#flip the vertically flipped koala horizontally
-horizontal-flip koala-vertical koala-vertical-horizontal
+#flip the vertically flipped bird horizontally
+horizontal-flip bird-vertical bird-vertical-horizontal
 
-save res/koala-vertical-horizontal.png koala-vertical-horizontal
-save res/koala-vertical.jpg koala-vertical
+save res/bird-vertical-horizontal.png bird-vertical-horizontal
+save res/bird-vertical.jpg bird-vertical
 
-#create a greyscale using only the value component, as an image koala-greyscale
-value-component koala koala-greyscale
+#create a greyscale using only the value component, as an image bird-greyscale
+value-component bird2 bird-greyscale
 
-luma-component koala koala-luma
+luma-component bird2 bird-luma
 
-intensity-component koala koala-intensity
+intensity-component bird2 bird-intensity
 
-#save koala-brighter
-save res/koala-brighter.ppm koala-brighter
+#save bird-brighter
+save res/bird-brighter.jpg bird-brighter
 
-#save koala-greyscale
-save res/koala-gs.ppm koala-greyscale
-save res/koala-luma.png koala-greyscale
-save res/koala-intensity.jpg koala-intensity
+#save bird-greyscale
+save res/bird-value-gs.jpg bird-greyscale
+save res/bird-luma.jpg bird-greyscale
+save res/bird-intensity.jpg bird-intensity
 
-#give the koala a red tint
-rgb-split koala koala-red koala-green koala-blue
+#give the bird a red tint
 
 #brighten just the red image
-brighten 50 koala-red koala-red
+brighten 50 bird-red bird-red
 
 #combine them back, but by using the brightened red we get a red tint
-rgb-combine koala-red-tint koala-red koala-green koala-blue
-save res/koala-red-tint.ppm koala-red-tint
+rgb-combine bird-red-tint bird-red bird-green bird-blue
+save res/bird-red-tint.ppm bird-red-tint
 
-#overwrite koala with another file
-load images/koala-gs.ppm koala
+#overwrite bird with another file
+load images/bird.png bird
 
-save res/koala-overwritten.ppm koala
+brighten -25 bird bird-dark
+
+save res/bird-darker.jpg bird-dark
+
+load images/bird.ppm newbird
+red-component newbird bird-redcomp
+save res/bird-red-component.jpg bird-redcomp
+
+green-component newbird bird-greencomp
+save res/bird-green-component.jpg bird-greencomp
+
+blue-component newbird bird-bluecomp
+save res/bird-blue-component.jpg bird-bluecomp
+
+exit

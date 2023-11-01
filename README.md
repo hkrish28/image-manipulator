@@ -184,3 +184,10 @@ variable is a 2-D array that stores the Pixel objects that make up the image.</p
 <ul><p>This class implements the Pixel interface and is specifically designed to represent a pixel in an RGB image.</p></ul>
 
 </ul>
+
+
+<h3>Citations</h3>
+<ul><h4>Images Used</h4>
+    <ul><li>bird : https://pixabay.com/photos/bird-avian-ornithology-nature-8311912/
+    <p>Content License Summary: https://pixabay.com/service/license-summary/</p></li></ul>
+</ul>
