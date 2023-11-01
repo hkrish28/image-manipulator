@@ -5,13 +5,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import ime.controller.ControllerImpl;
-
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This class contains the unit tests for {@link FileHandlerProviderImpl}
+ * This class contains the unit tests for {@link FileHandlerProviderImpl}.
  */
 public class FileHandlerProviderImplTest {
 
@@ -81,8 +79,8 @@ public class FileHandlerProviderImplTest {
    */
   @Test
   public void testFileWithNoExtension() throws IllegalArgumentException {
-    assertThrows(IllegalArgumentException.class,
-            () -> fileHandlerProvider.getFileHandler("image"));
+    assertThrows(IllegalArgumentException.class, () ->
+            fileHandlerProvider.getFileHandler("image"));
   }
 
 }

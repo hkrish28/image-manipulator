@@ -72,14 +72,14 @@ public interface Pixel {
   Pixel brighten(float brightnessConstant);
 
   /**
-   * This method returns the number of color channels in the pixel.
+   * Retrieves the number of color channels in the pixel.
    *
    * @return the number of color channels in the pixel
    */
   int getColorChannelCount();
 
   /**
-   * This method returns the values of each of the color channels stored in the pixel.
+   * Retrieves the values of each of the color channels stored in the pixel.
    *
    * @return the values of each color channels in the pixel
    */

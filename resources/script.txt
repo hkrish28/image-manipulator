@@ -1,63 +1,75 @@
-load images/bird.jpg bird
+load resources/images/bird.jpg bird
 
 rgb-split bird bird-red bird-green bird-blue
-save res/bird-blue.png bird-blue
-save res/bird-red.png bird-red
-save res/bird-green.png bird-green
+save resources/res/bird-blue-split.png bird-blue
+save resources/res/bird-red-split.ppm bird-red
+save resources/res/bird-green-split.jpg bird-green
 rgb-combine bird-combined bird-red bird-green bird-blue
-save res/bird-combined.png bird-combined
+save resources/res/bird-combined.jpg bird-combined
 
 blur bird bird-blur
-save res/bird-blur.jpg bird-blur
+save resources/res/bird-blur.jpg bird-blur
 
 sharpen bird bird-sharpen
-save res/bird-sharpen.jpg bird-sharpen
+save resources/res/bird-sharpen.jpg bird-sharpen
 
 sepia bird bird-sepia
-save res/bird-sepia.jpg bird-sepia
+save resources/res/bird-sepia.jpg bird-sepia
 
-#load vineyard.ppm and call it 'vineyard'
-load images/vineyard.ppm vineyard
+#load bird.png and call it 'bird2'
+load resources/images/bird.png bird2
 
-#brighten vineyard by adding 10
-brighten 10 vineyard vineyard-brighter
+#brighten bird by adding 10
+brighten 10 bird2 bird-brighter
 
-#flip vineyard vertically
-vertical-flip vineyard vineyard-vertical
+#flip bird vertically
+vertical-flip bird2 bird-vertical
 
-#flip the vertically flipped vineyard horizontally
-horizontal-flip vineyard-vertical vineyard-vertical-horizontal
+#flip the vertically flipped bird horizontally
+horizontal-flip bird-vertical bird-vertical-horizontal
 
-save res/vineyard-vertical-horizontal.png vineyard-vertical-horizontal
-save res/vineyard-vertical.png vineyard-vertical
+save resources/res/bird-vertical-horizontal.jpg bird-vertical-horizontal
+save resources/res/bird-vertical.jpg bird-vertical
 
-#create a greyscale using only the value component, as an image vineyard-greyscale
-value-component vineyard vineyard-greyscale
+#create a greyscale using only the value component, as an image bird-greyscale
+value-component bird2 bird-greyscale
 
-luma-component vineyard vineyard-luma
+luma-component bird2 bird-luma
 
-intensity-component vineyard vineyard-intensity
+intensity-component bird2 bird-intensity
 
-#save vineyard-brighter
-save res/vineyard-brighter.jpg vineyard-brighter
+#save bird-brighter
+save resources/res/bird-brighter.jpg bird-brighter
 
-#save vineyard-greyscale
-save res/vineyard-value-gs.jpg vineyard-greyscale
-save res/vineyard-luma.png vineyard-greyscale
-save res/vineyard-intensity.jpg vineyard-intensity
+#save bird-greyscale
+save resources/res/bird-value-gs.jpg bird-greyscale
+save resources/res/bird-luma.jpg bird-greyscale
+save resources/res/bird-intensity.jpg bird-intensity
 
-#give the vineyard a red tint
-rgb-split vineyard vineyard-red vineyard-green vineyard-blue
+#give the bird a red tint
 
 #brighten just the red image
-brighten 50 vineyard-red vineyard-red
+brighten 50 bird-red bird-red
 
 #combine them back, but by using the brightened red we get a red tint
-rgb-combine vineyard-red-tint vineyard-red vineyard-green vineyard-blue
-save res/vineyard-red-tint.ppm vineyard-red-tint
+rgb-combine bird-red-tint bird-red bird-green bird-blue
+save resources/res/bird-red-tint.jpg bird-red-tint
 
-#overwrite vineyard with another file
-load images/bird.png vineyard
+#overwrite bird with another file
+load resources/images/bird.png bird
 
-save res/vineyard-overwritten.jpg vineyard
+brighten -25 bird bird-dark
+
+save resources/res/bird-darker.jpg bird-dark
+
+load resources/images/bird.ppm newbird
+red-component newbird bird-redcomp
+save resources/res/bird-red-component.jpg bird-redcomp
+
+green-component newbird bird-greencomp
+save resources/res/bird-green-component.jpg bird-greencomp
+
+blue-component newbird bird-bluecomp
+save resources/res/bird-blue-component.jpg bird-bluecomp
+
 exit

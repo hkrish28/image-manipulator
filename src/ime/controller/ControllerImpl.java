@@ -94,6 +94,8 @@ public class ControllerImpl implements ImageProcessingController {
           case exit:
             end = true;
             break;
+          default:
+            throw new IllegalArgumentException("Invalid command provided");
         }
       } catch (IllegalArgumentException e) {
         view.displayMessage(e.getMessage());
@@ -141,10 +143,9 @@ public class ControllerImpl implements ImageProcessingController {
       String newImage = tokens[3];
       imgRepo.brightenImage(imageName, newImage, brightnessConstant);
       view.displayMessage("Brightened successfully.");
-    }catch(NumberFormatException e){
+    } catch (NumberFormatException e) {
       view.displayMessage("brightness command expects a number following the command");
-    }
-    catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
   }
@@ -165,7 +166,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.flipImageHorizontally(imageName, newImage);
-      view.displayMessage("Horizontally flipped.");
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -177,6 +178,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.flipImageVertically(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -189,7 +191,7 @@ public class ControllerImpl implements ImageProcessingController {
       String srcImage = tokens[1];
       List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
       imgRepo.splitImageIntoColorChannels(srcImage, colorChannelsImages);
-      view.displayMessage("Images split.");
+      messageSenderHelper(tokens[0], srcImage,colorChannelsImages.toString());
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -202,7 +204,7 @@ public class ControllerImpl implements ImageProcessingController {
       String destImage = tokens[1];
       List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
       imgRepo.combineImages(colorChannelsImages, destImage);
-      view.displayMessage("Images combined.");
+      messageSenderHelper(tokens[0], colorChannelsImages.toString(),destImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -214,7 +216,7 @@ public class ControllerImpl implements ImageProcessingController {
       String srcImage = tokens[1];
       String destImage = tokens[2];
       imgRepo.toRedChannelImage(srcImage, destImage);
-      view.displayMessage("Red channel obtained.");
+      messageSenderHelper(tokens[0], srcImage,destImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -226,7 +228,7 @@ public class ControllerImpl implements ImageProcessingController {
       String srcImage = tokens[1];
       String destImage = tokens[2];
       imgRepo.toGreenChannelImage(srcImage, destImage);
-      view.displayMessage("Green channel obtained.");
+      messageSenderHelper(tokens[0], srcImage,destImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -238,6 +240,7 @@ public class ControllerImpl implements ImageProcessingController {
       String srcImage = tokens[1];
       String destImage = tokens[2];
       imgRepo.toBlueChannelImage(srcImage, destImage);
+      messageSenderHelper(tokens[0], srcImage,destImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -249,6 +252,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.toValueGreyScale(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -260,6 +264,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.toLumaGreyScale(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -271,6 +276,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.toIntensityGreyScale(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -282,6 +288,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.blurImage(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -293,6 +300,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.sharpenImage(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -304,6 +312,7 @@ public class ControllerImpl implements ImageProcessingController {
       String imageName = tokens[1];
       String newImage = tokens[2];
       imgRepo.toSepiaImage(imageName, newImage);
+      messageSenderHelper(tokens[0], imageName,newImage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
@@ -328,7 +337,7 @@ public class ControllerImpl implements ImageProcessingController {
     }
   }
 
-  public void processScriptFile(String scriptFileName) {
+  private void processScriptFile(String scriptFileName) {
     try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -341,8 +350,13 @@ public class ControllerImpl implements ImageProcessingController {
         }
       }
     } catch (IOException e) {
-      view.displayMessage("Invalid script location/file." + e.getMessage());
+      throw new IllegalArgumentException("Invalid script location/file.");
     }
+  }
+
+  private void messageSenderHelper(String operation, String src, String dest) {
+    view.displayMessage(operation + " operation completed successfully for " + src
+            + " & put in " + dest);
   }
 }
 

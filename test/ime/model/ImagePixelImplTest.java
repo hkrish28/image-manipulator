@@ -448,10 +448,10 @@ public class ImagePixelImplTest {
     };
 
     //Image testImage = new ImagePixelImpl(testPixelValues,ImageType.RGB);
-    assertThrows(IllegalArgumentException.class,
-            () -> new ImagePixelImpl(testPixelValues, ImageType.RGB));
-    assertThrows(IllegalArgumentException.class,
-            () -> new ImagePixelImpl(testPixelValues2, ImageType.RGB));
+    assertThrows(IllegalArgumentException.class, () ->
+            new ImagePixelImpl(testPixelValues, ImageType.RGB));
+    assertThrows(IllegalArgumentException.class, () ->
+            new ImagePixelImpl(testPixelValues2, ImageType.RGB));
   }
 
 

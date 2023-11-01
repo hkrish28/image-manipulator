@@ -21,6 +21,11 @@ public class ImagePixelImpl implements Image {
 
   Pixel[][] pixels;
 
+  /**
+   * This constructor initializes the {@link ImagePixelImpl} using a 2D pixel array.
+   * @param pixelValues the 2D pixel array that makes up the image
+   * @param imageType the type of this image
+   */
   public ImagePixelImpl(Pixel[][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
       throw new IllegalArgumentException("Image should contain at least one pixel");
@@ -36,6 +41,12 @@ public class ImagePixelImpl implements Image {
     }
   }
 
+  /**
+   * This constructor initializes the {@link ImagePixelImpl} using a 2D array of float[] that will
+   * be used to generate the 2D array of pixels that make up this image.
+   * @param pixelValues the 2D float[] array that makes up the image
+   * @param imageType the type of this image
+   */
   public ImagePixelImpl(float[][][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
       throw new IllegalArgumentException("Image should contain at least one pixel");

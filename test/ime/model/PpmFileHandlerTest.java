@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -62,11 +63,14 @@ public class PpmFileHandlerTest {
    */
   @Test
   public void testSaveImage() throws IOException {
-    Image image = new ImagePixelImpl(new float[][][]{
+    float[][][] pixels = new float[][][]{
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
-    }, ImageType.RGB);
+    };
+    Image image = new ImagePixelImpl(pixels, ImageType.RGB);
     fileHandler.saveImage(image, "test/resources/testImage.ppm");
+    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.ppm");
+    assertArrayEquals(pixels, loaded);
   }
 
   /**
@@ -81,6 +85,6 @@ public class PpmFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     }, ImageType.RGB);
-    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/testImage.ppm"));
+    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.ppm"));
   }
 }

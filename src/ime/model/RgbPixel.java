@@ -8,6 +8,11 @@ public class RgbPixel implements Pixel {
   private static final int COLOR_CHANNEL_COUNT = 3;
   private float[] values;
 
+  /**
+   * Constructor that creates the RGB pixels using a float array.
+   *
+   * @param pixelValues the float array that contains the red, green, and blue values of the pixel.
+   */
   public RgbPixel(float[] pixelValues) {
     if (pixelValues.length != COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Number of values provided to the pixel is incorrect");
@@ -22,8 +27,8 @@ public class RgbPixel implements Pixel {
 
   private static void validateChannelValue(float pixelValue) {
     if (pixelValue < 0 || pixelValue > 255) {
-      throw new IllegalArgumentException("All channels in the pixel should have a value " +
-              "between 0 and 255");
+      throw new IllegalArgumentException("All channels in the pixel should have a value "
+              + "between 0 and 255");
     }
   }
 

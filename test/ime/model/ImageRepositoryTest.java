@@ -13,6 +13,9 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+/**
+ * Class that tests for {@link ImageRepositoryImpl}.
+ */
 public class ImageRepositoryTest {
 
   private MockFileHandler mockFileHandler;
@@ -56,8 +59,8 @@ public class ImageRepositoryTest {
   public void testLoadThrowsExceptionWhenInvalidFileFormat() {
     mockFileHandlerProvider.setFailureFlag(true);
     ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
-    assertThrows(IOException.class,
-            () -> imageRepository.loadImage("fileName", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.loadImage("fileName", "ImageName"));
   }
 
   /**
@@ -67,8 +70,8 @@ public class ImageRepositoryTest {
   public void testLoadThrowsExceptionWhenInvalidFile() {
     mockFileHandler.setFailureFlag(true);
     ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
-    assertThrows(IOException.class,
-            () -> imageRepository.loadImage("fileName", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.loadImage("fileName", "ImageName"));
 
   }
 
@@ -80,8 +83,8 @@ public class ImageRepositoryTest {
     mockFileHandler.setFailureFlag(true);
     mockFileHandlerProvider.setFailureFlag(true);
     ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
-    assertThrows(IOException.class,
-            () -> imageRepository.loadImage("fileName", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.loadImage("fileName", "ImageName"));
   }
 
   /**
@@ -95,10 +98,9 @@ public class ImageRepositoryTest {
     } catch (IOException e) {
       fail("Not supposed to fail");
     }
-    ;
     mockFileHandler.setFailureFlag(true);
-    assertThrows(IOException.class,
-            () -> imageRepository.saveImage("filePath", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.saveImage("filePath", "ImageName"));
   }
 
   /**
@@ -112,11 +114,10 @@ public class ImageRepositoryTest {
     } catch (IOException e) {
       fail("Not supposed to fail");
     }
-    ;
 
     mockFileHandlerProvider.setFailureFlag(true);
-    assertThrows(IOException.class,
-            () -> imageRepository.saveImage("filePath", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.saveImage("filePath", "ImageName"));
   }
 
   /**
@@ -130,11 +131,11 @@ public class ImageRepositoryTest {
     } catch (IOException e) {
       fail("Not supposed to fail");
     }
-    ;
+
     mockFileHandler.setFailureFlag(true);
     mockFileHandlerProvider.setFailureFlag(true);
-    assertThrows(IOException.class,
-            () -> imageRepository.saveImage("filePath", "ImageName"));
+    assertThrows(IOException.class, () ->
+            imageRepository.saveImage("filePath", "ImageName"));
   }
 
   /**
@@ -166,7 +167,6 @@ public class ImageRepositoryTest {
     } catch (IOException e) {
       fail("Not supposed to fail");
     }
-    ;
     assertTrue("Value needs to be present",
             imageRepository.isImagePresent("ImageName"));
   }
@@ -178,36 +178,36 @@ public class ImageRepositoryTest {
   public void testOperationsForImageNotPresent() {
     ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
 
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.saveImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.brightenImage("fileName", "ImageName", 5));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.combineImages(Arrays.asList("red", "green", "blue"), "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.blurImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.sharpenImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.flipImageHorizontally("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.flipImageVertically("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toIntensityGreyScale("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toLumaGreyScale("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toValueGreyScale("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toSepiaImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toRedChannelImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toGreenChannelImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.toBlueChannelImage("fileName", "ImageName"));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.splitImageIntoColorChannels("fileName",
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.saveImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.brightenImage("fileName", "ImageName", 5));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.combineImages(Arrays.asList("red", "green", "blue"), "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.blurImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.sharpenImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.flipImageHorizontally("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.flipImageVertically("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toIntensityGreyScale("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toLumaGreyScale("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toValueGreyScale("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toSepiaImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toRedChannelImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toGreenChannelImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.toBlueChannelImage("fileName", "ImageName"));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.splitImageIntoColorChannels("fileName",
                     Arrays.asList("red", "green", "blue")));
   }
 

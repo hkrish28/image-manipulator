@@ -158,7 +158,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void flipImageHorizontally(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "horizontal flip called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -175,7 +175,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void flipImageVertically(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "vertical flip called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -193,7 +193,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "intensity gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -211,7 +211,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "luma gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -229,7 +229,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "value gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -247,7 +247,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "sepia called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -265,7 +265,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "red channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -284,7 +284,7 @@ public class MockImgRepo implements ImageRepository {
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "green channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -303,7 +303,7 @@ public class MockImgRepo implements ImageRepository {
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
     methodCallLogger.append(
-            "loadImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            "blue channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }

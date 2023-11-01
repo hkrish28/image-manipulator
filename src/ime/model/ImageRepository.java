@@ -25,7 +25,7 @@ public interface ImageRepository {
    *
    * @param filePath  the path at which the image is to be saved.
    * @param imageName the name of the image to be saved.
-   * @throws IOException              if any error occurs during the loading of the image or if the file does not
+   * @throws IOException if any error occurs during the loading of the image or if the file does not
    *                                  exist at the file path.
    * @throws IllegalArgumentException if imageName has not been created/tagged yet.
    */
