@@ -1,8 +1,9 @@
 package ime;
 
-import ime.Model.FileHandler;
-import ime.Model.FileHandlerProvider;
 import java.io.IOException;
+
+import ime.model.FileHandler;
+import ime.model.FileHandlerProvider;
 
 /**
  * A mock implementation of the {@link FileHandlerProvider} interface used for testing purposes.

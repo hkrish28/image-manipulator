@@ -1,8 +1,9 @@
 package ime;
 
-import ime.Model.FileHandler;
-import ime.Model.Image;
 import java.io.IOException;
+
+import ime.model.FileHandler;
+import ime.model.Image;
 
 /**
  * A mock implementation of the {@link FileHandler} interface used for testing purposes. This class
@@ -32,8 +33,8 @@ public class MockFileHandler implements FileHandler {
   @Override
   public float[][][] loadImage(String filename) throws IOException {
     float[][][] testPixelValues = {
-        {{100, 50, 75}, {200, 150, 175}},
-        {{50, 25, 37.5f}, {100, 75, 87.5f}}
+            {{100, 50, 75}, {200, 150, 175}},
+            {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     methodCallLogger.append("loadImage called " + filename + " passed\n");
     if (fail) {

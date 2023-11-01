@@ -1,10 +1,10 @@
-import ime.Model.FileHandlerProviderImpl;
 import java.util.Scanner;
 
-import ime.Controller.ControllerImpl;
-import ime.Controller.ImageProcessingController;
-import ime.Model.ImageRepositoryImpl;
-import ime.View.ViewImpl;
+import ime.controller.ControllerImpl;
+import ime.controller.ImageProcessingController;
+import ime.model.FileHandlerProviderImpl;
+import ime.model.ImageRepositoryImpl;
+import ime.view.ViewImpl;
 
 public class ProgramRunner {
 
