@@ -5,7 +5,8 @@
 
 <h3>How to run</h3>
 <ul>
-<p>The program is run using the ProgramRunner class. Once run, input any of the valid command for the operations on your images.</p></ul>
+<p>The program is run using the ProgramRunner class. Once run, input any of the valid command for the operations on your images.
+To run the example script provided, once the program runner is running, input "run script.txt" in the command line.</p></ul>
 
 <h3>Supported commands</h3>
 <ul><b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name.
