@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This implementation of the PhysicsBallProvider uses a static map to keep track of the specific
+ * This implementation of the FileHandlerProvider uses a static map to keep track of the specific
  * {@link FileHandler} implementations to be used for specific input string.
  */
 public class FileHandlerProviderImpl implements FileHandlerProvider {
@@ -24,8 +24,8 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
    * Checks with the enum map of the class to map the input string to an implementation of
    * {@link FileHandlerProvider} class.
    *
-   * @param fileName Input determining the type of PhysicsBall to be returned
-   * @return object of physics ball
+   * @param fileName Input determining the type of FileHandler to be returned
+   * @return object of {@FileHandler}
    */
   public FileHandler getFileHandler(String fileName) {
     try {
