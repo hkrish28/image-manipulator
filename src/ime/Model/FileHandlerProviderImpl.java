@@ -10,7 +10,7 @@ import java.util.Map;
 public class FileHandlerProviderImpl implements FileHandlerProvider {
 
   private static final Map<FileFormatEnum, FileHandler> FILE_FORMAT_ENUM_MAP =
-          generateFileHandlerClassMap();
+      generateFileHandlerClassMap();
 
   private static Map<FileFormatEnum, FileHandler> generateFileHandlerClassMap() {
     Map<FileFormatEnum, FileHandler> fileHandlers = new HashMap<>();
@@ -30,9 +30,8 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
   public FileHandler getFileHandler(String fileName) {
     try {
       String[] filePathComponents = fileName.split("\\.");
-      fileName = filePathComponents[filePathComponents.length-1];
-    }
-    catch(Exception e){
+      fileName = filePathComponents[filePathComponents.length - 1];
+    } catch (Exception e) {
       System.out.println("Extension directly provided.");
     }
     FileFormatEnum type = validateFileType(fileName);

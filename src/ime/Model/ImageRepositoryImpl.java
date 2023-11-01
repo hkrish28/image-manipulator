@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This implementation of {@link ImageRepository} stores multiple images as a map between the
- * tagged name of the image to its actual {@link Image} object. It makes use of
- * {@link FileHandlerProvider} to perform functions like load and save of images.
+ * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
+ * name of the image to its actual {@link Image} object. It makes use of {@link FileHandlerProvider}
+ * to perform functions like load and save of images.
  */
 public class ImageRepositoryImpl implements ImageRepository {
 
@@ -19,11 +19,11 @@ public class ImageRepositoryImpl implements ImageRepository {
    */
   private Map<String, Image> imageMap;
 
-  public ImageRepositoryImpl() {
+  public ImageRepositoryImpl(FileHandlerProvider fileHandlerProvider) {
     imageMap = new HashMap<>();
-    fileHandlerProvider = new FileHandlerProviderImpl();
-
+    this.fileHandlerProvider = fileHandlerProvider;
   }
+
 
   @Override
   public void loadImage(String filePath, String imageName) throws IOException {

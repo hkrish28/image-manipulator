@@ -1,14 +1,13 @@
 package ime.Model;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link ImagePixelImpl} class.
@@ -95,8 +94,8 @@ public class ImagePixelImplTest {
   @Test
   public void testCombine() {
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -105,15 +104,15 @@ public class ImagePixelImplTest {
     int width = testImage.getWidth();
     List<Image> imagesToCombine = new ArrayList<>();
     float[][][] image1Values = {
-            {{0, 0, 0}, {50, 50, 50}},
-            {{0, 0, 0}, {25, 25, 25}}
+        {{0, 0, 0}, {50, 50, 50}},
+        {{0, 0, 0}, {25, 25, 25}}
     };
     Image image1 = new ImagePixelImpl(image1Values, ImageType.RGB);
     imagesToCombine.add(image1);
 
     float[][][] image2Values = {
-            {{255, 255, 255}, {100, 100, 100}},
-            {{255, 255, 255}, {200, 200, 200}}
+        {{255, 255, 255}, {100, 100, 100}},
+        {{255, 255, 255}, {200, 200, 200}}
     };
     Image image2 = new ImagePixelImpl(image2Values, ImageType.RGB);
     imagesToCombine.add(image2);
@@ -146,17 +145,17 @@ public class ImagePixelImplTest {
   public void testBlur() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
+        {{100, 50, 75}, {200, 150, 175}},
 
-            {{100, 25, 50}, {75, 35, 22}}
+        {{100, 25, 50}, {75, 35, 22}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
 
     float[][] blurFilter = {
-            {1 / 16f, 1 / 8f, 1 / 16f},
-            {1 / 8f, 1 / 4f, 1 / 8f},
-            {1 / 16f, 1 / 8f, 1 / 16f}
+        {1 / 16f, 1 / 8f, 1 / 16f},
+        {1 / 8f, 1 / 4f, 1 / 8f},
+        {1 / 16f, 1 / 8f, 1 / 16f}
     };
 
     int height = testImage.getHeight();
@@ -165,8 +164,8 @@ public class ImagePixelImplTest {
     // Create the expected blurred image by applying the filter to the test image
     float[][][] expectedPixelValues = {
 
-            {{67.187f, 36.562f, 48.25f}, {78.125f, 49.682f, 59}},
-            {{59.375f, 26.25f, 35.55f}, {62.5f, 33.75f, 38.3125f}}
+        {{67.187f, 36.562f, 48.25f}, {78.125f, 49.682f, 59}},
+        {{59.375f, 26.25f, 35.55f}, {62.5f, 33.75f, 38.3125f}}
     };
 
     Image blurredImage = testImage.blur();
@@ -196,18 +195,18 @@ public class ImagePixelImplTest {
   public void testSharpen() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
 
     float[][] sharpenFilter = {
-            {-1 / 8, -1 / 8, -1 / 8, -1 / 8, -1 / 8},
-            {-1 / 8, 1 / 4, 1 / 4, 1 / 4, -1 / 8},
-            {-1 / 8, 1 / 4, 1, 1 / 4, -1 / 8},
-            {-1 / 8, 1 / 4, 1 / 4, 1 / 4, -1 / 8},
-            {-1 / 8, -1 / 8, -1 / 8, -1 / 8, -1 / 8}
+        {-1 / 8, -1 / 8, -1 / 8, -1 / 8, -1 / 8},
+        {-1 / 8, 1 / 4, 1 / 4, 1 / 4, -1 / 8},
+        {-1 / 8, 1 / 4, 1, 1 / 4, -1 / 8},
+        {-1 / 8, 1 / 4, 1 / 4, 1 / 4, -1 / 8},
+        {-1 / 8, -1 / 8, -1 / 8, -1 / 8, -1 / 8}
     };
 
     int height = testImage.getHeight();
@@ -215,8 +214,8 @@ public class ImagePixelImplTest {
 
     // Create the expected sharpened image by applying the filter to the test image
     float[][][] expectedPixelValues = {
-            {{187.5f, 112.5f, 150f}, {255.0f, 187.5f, 225f}},
-            {{150f, 93.75f, 121.875f}, {187.5f, 131.25f, 159.375f}}
+        {{187.5f, 112.5f, 150f}, {255.0f, 187.5f, 225f}},
+        {{150f, 93.75f, 121.875f}, {187.5f, 131.25f, 159.375f}}
     };
 
     // Get the sharpened image
@@ -294,16 +293,16 @@ public class ImagePixelImplTest {
   public void testGetIntensityImage() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
 
     // Calculate the expected intensity values for the test image
     float[][] expectedIntensities = {
-            {75, 175},
-            {37.5f, 87.5f}
+        {75, 175},
+        {37.5f, 87.5f}
     };
 
     // Get the intensity image
@@ -333,8 +332,8 @@ public class ImagePixelImplTest {
   public void testGetLumaImage() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -347,7 +346,7 @@ public class ImagePixelImplTest {
         float[] pixelValues = testImage.getPixelValues(row, col);
         // Calculate luma based on the luminance formula
         expectedLumaValues[row][col] =
-                0.2126f * pixelValues[0] + 0.7152f * pixelValues[1] + 0.0722f * pixelValues[2];
+            0.2126f * pixelValues[0] + 0.7152f * pixelValues[1] + 0.0722f * pixelValues[2];
       }
     }
 
@@ -380,8 +379,8 @@ public class ImagePixelImplTest {
   public void testGetChannelCount() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -397,16 +396,16 @@ public class ImagePixelImplTest {
   public void testGetValueImage() {
     // initialise test image.
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
 
     // Calculate the expected grayscale intensity values for the test image.
     float[][] expectedGrayscaleIntensities = {
-            {75.0f, 175.0f},
-            {37.5f, 87.5f}
+        {75.0f, 175.0f},
+        {37.5f, 87.5f}
     };
 
     // Get the grayscale intensity image
@@ -438,17 +437,17 @@ public class ImagePixelImplTest {
   public void testInvalidPixelValues() {
     // initialise test image.
     float[][][] testPixelValues = {
-            {{100, -75, 87.5f}}
+        {{100, -75, 87.5f}}
     };
     float[][][] testPixelValues2 = {
-            {{300, 50, 75}},
+        {{300, 50, 75}},
     };
 
     //Image testImage = new ImagePixelImpl(testPixelValues,ImageType.RGB);
     assertThrows(IllegalArgumentException.class,
-            () -> new ImagePixelImpl(testPixelValues, ImageType.RGB));
+        () -> new ImagePixelImpl(testPixelValues, ImageType.RGB));
     assertThrows(IllegalArgumentException.class,
-            () -> new ImagePixelImpl(testPixelValues2, ImageType.RGB));
+        () -> new ImagePixelImpl(testPixelValues2, ImageType.RGB));
   }
 
 
@@ -460,14 +459,14 @@ public class ImagePixelImplTest {
   public void testGetSepia() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}}
+        {{100, 50, 75}, {200, 150, 175}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
     float[][] sepiaMatrix = {
-            {0.393f, 0.769f, 0.189f},
-            {0.349f, 0.686f, 0.168f},
-            {0.272f, 0.534f, 0.131f}
+        {0.393f, 0.769f, 0.189f},
+        {0.349f, 0.686f, 0.168f},
+        {0.272f, 0.534f, 0.131f}
     };
     float[][][] expected = {{{91.925f, 81.8f, 63.725f}, {227.025f, 202.1f, 157.425f}}};
 
@@ -516,8 +515,8 @@ public class ImagePixelImplTest {
   public void testToRedChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -552,8 +551,8 @@ public class ImagePixelImplTest {
   public void testToGreenChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -591,8 +590,8 @@ public class ImagePixelImplTest {
   public void testToBlueChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, ImageType.RGB);
@@ -630,18 +629,18 @@ public class ImagePixelImplTest {
   public void testCombineExc() {
     // Create test images for the color channels
     Image redChannel = new ImagePixelImpl(new float[][][]{
-            {{100, 0, 0}, {200, 0, 0}},
-            {{50, 0, 0}, {100, 0, 0}}
+        {{100, 0, 0}, {200, 0, 0}},
+        {{50, 0, 0}, {100, 0, 0}}
     }, ImageType.RGB);
 
     Image greenChannel = new ImagePixelImpl(new float[][][]{
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     }, ImageType.RGB);
 
     Image blueChannel = new ImagePixelImpl(new float[][][]{
-            {{0, 0, 75}, {0, 0, 175}},
-            {{0, 0, 37.5f}, {0, 0, 87.5f}}
+        {{0, 0, 75}, {0, 0, 175}},
+        {{0, 0, 37.5f}, {0, 0, 87.5f}}
     }, ImageType.RGB);
 
     List<Image> colorChannels = new ArrayList<>();
@@ -651,8 +650,8 @@ public class ImagePixelImplTest {
 
     // Create the expected combined image
     Image expectedCombinedImage = new ImagePixelImpl(new float[][][]{
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     }, ImageType.RGB);
 
     // Combine the color channels

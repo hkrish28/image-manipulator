@@ -39,7 +39,8 @@ public class ControllerImplTest {
   @Test
   public void testInvalidToken() {
 
-    ImageProcessingController controller = new ControllerImpl(new Scanner("load\nsave\nsplit\nhorizontal-flip\nvertical-flip\nbrighten\nexit"), view,
+    ImageProcessingController controller = new ControllerImpl(
+        new Scanner("load\nsave\nsplit\nhorizontal-flip\nvertical-flip\nbrighten\nexit"), view,
         mockImgRepo);
     controller.execute();
     assertEquals("", mockImgRepo.getLogger());
@@ -56,40 +57,47 @@ public class ControllerImplTest {
         + "Invalid number of tokens passed for the given command\n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
-/*  @Test(timeout=1000)
-  public void testTimeoutWithoutExit() {
 
-    ImageProcessingController controller = new ControllerImpl(new Scanner("load\nsave\nsplit\nhorizontal-flip\nvertical-flip\nbrighten"), view,
-        mockImgRepo);
-    controller.execute();
-    assertEquals("", mockImgRepo.getLogger());
-    assertEquals("Please enter the command to run: \n"
-        + "Invalid number of tokens passed\n for the given command\n"
-        + "Please enter the command to run: \n"
-        + "Invalid number of tokens passed\n for the given command\n"
-        + "Please enter the command to run: \n"
-        + "Please enter the command to run: \n"
-        + "Invalid number of tokens passed\n for the given command\n"
-        + "Please enter the command to run: \n"
-        + "Invalid number of tokens passed\n for the given command\n"
-        + "Please enter the command to run: \n"
-        + "Invalid number of tokens passed\n for the given command\n"
-        + "Please enter the command to run:", outputStream.toString().trim());
-  }*/
+  /*  @Test(timeout=1000)
+    public void testTimeoutWithoutExit() {
+
+      ImageProcessingController controller = new ControllerImpl(new Scanner("load\nsave\nsplit\nhorizontal-flip\nvertical-flip\nbrighten"), view,
+          mockImgRepo);
+      controller.execute();
+      assertEquals("", mockImgRepo.getLogger());
+      assertEquals("Please enter the command to run: \n"
+          + "Invalid number of tokens passed\n for the given command\n"
+          + "Please enter the command to run: \n"
+          + "Invalid number of tokens passed\n for the given command\n"
+          + "Please enter the command to run: \n"
+          + "Please enter the command to run: \n"
+          + "Invalid number of tokens passed\n for the given command\n"
+          + "Please enter the command to run: \n"
+          + "Invalid number of tokens passed\n for the given command\n"
+          + "Please enter the command to run: \n"
+          + "Invalid number of tokens passed\n for the given command\n"
+          + "Please enter the command to run:", outputStream.toString().trim());
+    }*/
 // exit
   @Test
   public void testInvalidImageForLoad() {
     ImageProcessingController controller = new ControllerImpl(
         new Scanner("load invalidImageName.ppm destImage"
-            + "\nblur invalidImageName.ppm destImage"+"\nsharpen invalidImageName.ppm destImage"
-            +"\nhorizontal-flip invalidImageName.ppm destImage"+"\nvertical-flip invalidImageName.ppm destImage"
-            +"\nintensity-component invalidImageName.ppm destImage"+"\nvalue-component invalidImageName.ppm destImage"
-            +"\nluma-component invalidImageName.ppm destImage"+"\nred-component invalidImageName.ppm destImage"
-            +"\ngreen-component invalidImageName.ppm destImage"+"\nblue-component invalidImageName.ppm destImage"
-            +"\nsepia invalidImageName.ppm destImage"+"\nexit"), view,
+            + "\nblur invalidImageName.ppm destImage" + "\nsharpen invalidImageName.ppm destImage"
+            + "\nhorizontal-flip invalidImageName.ppm destImage"
+            + "\nvertical-flip invalidImageName.ppm destImage"
+            + "\nintensity-component invalidImageName.ppm destImage"
+            + "\nvalue-component invalidImageName.ppm destImage"
+            + "\nluma-component invalidImageName.ppm destImage"
+            + "\nred-component invalidImageName.ppm destImage"
+            + "\ngreen-component invalidImageName.ppm destImage"
+            + "\nblue-component invalidImageName.ppm destImage"
+            + "\nsepia invalidImageName.ppm destImage" + "\nexit"), view,
         mockImgRepo);
     controller.execute();
-    assertEquals("loadImage called invalidImageName.ppm and destImage passed\nblurImage called invalidImageName.ppm and destImage passed\nsharpenImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\n", mockImgRepo.getLogger());
+    assertEquals(
+        "loadImage called invalidImageName.ppm and destImage passed\nblurImage called invalidImageName.ppm and destImage passed\nsharpenImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Image Repository failed\n"
         + "Please enter the command to run: \n"
@@ -119,7 +127,6 @@ public class ControllerImplTest {
   //brighten accepting float
 
 
-
   @Test
   public void testInvalidImageForSave() {
     ImageProcessingController controller = new ControllerImpl(
@@ -127,11 +134,13 @@ public class ControllerImplTest {
             + "\nexit"), view,
         mockImgRepo);
     controller.execute();
-    assertEquals("saveImage called invalidImageName.ppm and destImage passed\n", mockImgRepo.getLogger());
+    assertEquals("saveImage called invalidImageName.ppm and destImage passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Image Repository failed\n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
+
   @Test
   public void testInvalidImageForSplit() {
     ImageProcessingController controller = new ControllerImpl(
@@ -140,11 +149,13 @@ public class ControllerImplTest {
         mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("splitImage called invalidImageName.ppm and [red, green, blue] passed\n", mockImgRepo.getLogger());
+    assertEquals("splitImage called invalidImageName.ppm and [red, green, blue] passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Image Repository failed\n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
+
   @Test
   public void testInvalidImageForCombine() {
     ImageProcessingController controller = new ControllerImpl(
@@ -153,11 +164,13 @@ public class ControllerImplTest {
         mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("combineImage called [red, green, blue] and invalidImageName.ppm passed\n", mockImgRepo.getLogger());
+    assertEquals("combineImage called [red, green, blue] and invalidImageName.ppm passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Image Repository failed\n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
+
   @Test
   public void testInvalidImageForBrighten() {
     ImageProcessingController controller = new ControllerImpl(
@@ -166,11 +179,13 @@ public class ControllerImplTest {
         mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("brightenImage called invalidImageName.ppm and destImage passed\n", mockImgRepo.getLogger());
+    assertEquals("brightenImage called invalidImageName.ppm and destImage passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Source Name invalid\n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
+
   //test when string is given in place of float.
   @Test
   public void testInvalidFloatForBrighten() {
@@ -188,23 +203,29 @@ public class ControllerImplTest {
 
 
   @Test
-  public void testValidImageLoad(){
+  public void testValidImageLoad() {
     mockImgRepo.setFailureFlag(false);
     ImageProcessingController controller = new ControllerImpl(
         new Scanner("load invalidImageName.ppm destImage"
-            +"\nsave invalidImageName.ppm destImage"
-            +"\nrgb-split invalidImageName.ppm red green blue"
-            +"\nrgb-combine invalidImageName.ppm red green blue"
-            +"\nbrighten 122 invalidImageName.ppm destImage"
-            + "\nblur invalidImageName.ppm destImage"+"\nsharpen invalidImageName.ppm destImage"
-            +"\nhorizontal-flip invalidImageName.ppm destImage"+"\nvertical-flip invalidImageName.ppm destImage"
-            +"\nintensity-component invalidImageName.ppm destImage"+"\nvalue-component invalidImageName.ppm destImage"
-            +"\nluma-component invalidImageName.ppm destImage"+"\nred-component invalidImageName.ppm destImage"
-            +"\ngreen-component invalidImageName.ppm destImage"+"\nblue-component invalidImageName.ppm destImage"
-            +"\nsepia invalidImageName.ppm destImage"+"\nexit"), view,
+            + "\nsave invalidImageName.ppm destImage"
+            + "\nrgb-split invalidImageName.ppm red green blue"
+            + "\nrgb-combine invalidImageName.ppm red green blue"
+            + "\nbrighten 122 invalidImageName.ppm destImage"
+            + "\nblur invalidImageName.ppm destImage" + "\nsharpen invalidImageName.ppm destImage"
+            + "\nhorizontal-flip invalidImageName.ppm destImage"
+            + "\nvertical-flip invalidImageName.ppm destImage"
+            + "\nintensity-component invalidImageName.ppm destImage"
+            + "\nvalue-component invalidImageName.ppm destImage"
+            + "\nluma-component invalidImageName.ppm destImage"
+            + "\nred-component invalidImageName.ppm destImage"
+            + "\ngreen-component invalidImageName.ppm destImage"
+            + "\nblue-component invalidImageName.ppm destImage"
+            + "\nsepia invalidImageName.ppm destImage" + "\nexit"), view,
         mockImgRepo);
     controller.execute();
-    assertEquals("loadImage called invalidImageName.ppm and destImage passed\nsaveImage called invalidImageName.ppm and destImage passed\nsplitImage called invalidImageName.ppm and [red, green, blue] passed\ncombineImage called [red, green, blue] and invalidImageName.ppm passed\nbrightenImage called invalidImageName.ppm and destImage passed\nblurImage called invalidImageName.ppm and destImage passed\nsharpenImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\n", mockImgRepo.getLogger());
+    assertEquals(
+        "loadImage called invalidImageName.ppm and destImage passed\nsaveImage called invalidImageName.ppm and destImage passed\nsplitImage called invalidImageName.ppm and [red, green, blue] passed\ncombineImage called [red, green, blue] and invalidImageName.ppm passed\nbrightenImage called invalidImageName.ppm and destImage passed\nblurImage called invalidImageName.ppm and destImage passed\nsharpenImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\nloadImage called invalidImageName.ppm and destImage passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
         + "Loaded successfully.\n"
         + "Please enter the command to run: \n"
@@ -231,8 +252,6 @@ public class ControllerImplTest {
         + "Please enter the command to run: \n"
         + "Please enter the command to run:", outputStream.toString().trim());
   }
-
-
 
 
 }
