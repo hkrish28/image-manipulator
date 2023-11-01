@@ -12,18 +12,18 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * JUnit test class for testing the {@link PpmFileHandler} class.
+ * JUnit test class for testing the {@link CommonFileHandler} class.
  */
-public class PpmFileHandlerTest {
+public class CommonFileHandlerTest {
 
   private FileHandler fileHandler;
 
   /**
-   * Set up the test environment by initializing the {@link PpmFileHandler}.
+   * Set up the test environment by initializing the {@link CommonFileHandler}.
    */
   @Before
   public void setUp() {
-    fileHandler = new PpmFileHandler();
+    fileHandler = new CommonFileHandler();
   }
 
   /**
@@ -35,12 +35,12 @@ public class PpmFileHandlerTest {
   @Test
   public void testLoadImage() throws IOException {
 
-    assertThrows(IOException.class, () -> fileHandler.loadImage("invalidImage.ppm"));
+    assertThrows(IOException.class, () -> fileHandler.loadImage("invalidImage.jpg"));
 
   }
 
   /**
-   * Test case to verify loading an image in PPM format and comparing the pixel values with the
+   * Test case to verify loading an image in PNG format and comparing the pixel values with the
    * expected values.
    *
    * @throws IOException If an IO exception occurs during the test.
@@ -51,12 +51,12 @@ public class PpmFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     };
-    float[][][] pixels = fileHandler.loadImage("test/resources/testImage.ppm");
+    float[][][] pixels = fileHandler.loadImage("test/resources/testImage.png");
     assertTrue(Arrays.deepEquals(expected, pixels));
   }
 
   /**
-   * Test case to verify saving an image in PPM format and checking if the file is created
+   * Test case to verify saving an image in PNG format and checking if the file is created
    * successfully.
    *
    * @throws IOException If an IO exception occurs during the test.
@@ -68,8 +68,8 @@ public class PpmFileHandlerTest {
             {{0, 25, 0}, {0, 75, 0}}
     };
     Image image = new ImagePixelImpl(pixels, ImageType.RGB);
-    fileHandler.saveImage(image, "test/resources/testImage.ppm");
-    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.ppm");
+    fileHandler.saveImage(image, "test/resources/testImage.png");
+    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.png");
     assertArrayEquals(pixels, loaded);
   }
 
@@ -85,6 +85,7 @@ public class PpmFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     }, ImageType.RGB);
-    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.ppm"));
+    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.png"));
+    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.jpg"));
   }
 }
