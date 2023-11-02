@@ -304,7 +304,7 @@ public class ImagePixelImpl implements Image {
 
   /**
    * For a given channel index of pixels, return a new image that contains this image's values for
-   * that channel and 0 as values for every other channel
+   * that channel and 0 as values for every other channel.
    */
   private Image toChannel(int channel) {
 

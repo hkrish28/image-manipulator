@@ -26,10 +26,8 @@ public class ImagePixelImplTest {
    */
   public ImagePixelImplTest() {
     // Create a test Pixel matrix
-
     testPixels = new float[][][]{{{0, 0, 0}, {0, 10, 10}, {0, 20, 20}},
-            {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}},
-            {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
+      {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
     imageType = ImageType.RGB;
     image = new ImagePixelImpl(testPixels, imageType);
 
@@ -42,8 +40,7 @@ public class ImagePixelImplTest {
   @Test
   public void testFloatConstructor() {
     float[][][] testPixels = {{{0, 0, 0}, {0, 10, 10}, {0, 20}},
-            {{10, 0, 10}, {10, 20}, {10, 20, 30}},
-            {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
+      {{10, 0, 10}, {10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
     assertThrows(IllegalArgumentException.class, () ->
             new ImagePixelImpl(testPixels, imageType));
   }

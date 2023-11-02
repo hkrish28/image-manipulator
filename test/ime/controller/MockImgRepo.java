@@ -1,4 +1,4 @@
-package ime;
+package ime.controller;
 
 import java.io.IOException;
 import java.util.List;

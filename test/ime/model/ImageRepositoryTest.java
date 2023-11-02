@@ -6,9 +6,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Arrays;
 
-import ime.MockFileHandler;
-import ime.MockFileHandlerProvider;
-
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
