@@ -399,7 +399,7 @@ public class ImagePixelImplTest {
     // Get the luma image
     Image lumaImage = testImage.getLumaImage();
     assertExpectedImage(expectedLumaValues, lumaImage);
-    assertExpectedImage(testPixelValues, lumaImage);
+    assertExpectedImage(testPixelValues, testImage);
   }
 
   /**

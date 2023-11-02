@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 /**
  * class to test the RgbPixel class.
@@ -20,6 +21,30 @@ public class RgbPixelTest {
   public void setUp() {
     float[] initialValues = {100.0f, 150.0f, 200.0f};
     pixel = new RgbPixel(initialValues);
+  }
+
+  @Test
+  public void testConstructorThrowsException() {
+    float[] initialValues = {100.0f, 150.0f};
+    assertThrows(IllegalArgumentException.class, () -> new RgbPixel(initialValues));
+    float[] initialValues2 = {100.0f, 150.0f, 300f};
+    assertThrows(IllegalArgumentException.class, () -> new RgbPixel(initialValues2));
+    float[] initialValues3 = {-100.0f, 150.0f, 200f};
+    assertThrows(IllegalArgumentException.class, () -> new RgbPixel(initialValues3));
+  }
+
+  /**
+   * test to check getters. getChannelValues method check.
+   */
+  @Test
+  public void testConstructorSettingAndGetValues() {
+    float[] initialValues = {20f, 10.0f, 20.0f};
+    pixel = new RgbPixel(initialValues);
+    assertArrayEquals(initialValues, pixel.getChannelValues(), 0.001f);
+    assertEquals(3, pixel.getColorChannelCount());
+    assertEquals(20, pixel.getChannelValue(0), 0.01);
+    assertEquals(10, pixel.getChannelValue(1), 0.01);
+    assertEquals(20, pixel.getChannelValue(2), 0.01);
   }
 
   /**
@@ -69,6 +94,20 @@ public class RgbPixelTest {
   }
 
   /**
+   * test to transform pixel (failure case).
+   */
+  @Test
+  public void testTransformPixelFailWhenTransformerIncompatible() {
+    float[][] transformCoefficients = {
+            {0.5f, 0.0f},
+            {0.0f, 0.5f},
+            {0.0f, 0.0f}
+    };
+
+    assertThrows(IllegalArgumentException.class, () -> pixel.transformPixel(transformCoefficients));
+  }
+
+  /**
    * test to get channel values.
    */
   @Test
@@ -90,6 +129,19 @@ public class RgbPixelTest {
   }
 
   /**
+   * test to set color(failure case).
+   */
+  @Test
+  public void testSetColorThrowsExceptionOnInvalidInput() {
+    float[] newValues = {100.0f, 150.0f};
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColor(newValues));
+    float[] newValues2 = {100.0f, 150.0f, -100f};
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColor(newValues2));
+    float[] newValues3 = {100.0f, 150.0f, 300f};
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColor(newValues3));
+  }
+
+  /**
    * test to set color channels.
    */
   @Test
@@ -102,6 +154,17 @@ public class RgbPixelTest {
   }
 
   /**
+   * test to set color channel's failure cases.
+   */
+  @Test
+  public void testSetColorChannelFailure() {
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColorChannel(1, -75));
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColorChannel(1, 300));
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColorChannel(4, 75));
+    assertThrows(IllegalArgumentException.class, () -> pixel.setColorChannel(-1, 75));
+  }
+
+  /**
    * test to check brighten method.
    */
   @Test
@@ -109,10 +172,29 @@ public class RgbPixelTest {
     float brightnessConstant = 30.0f;
     Pixel brightenedPixel = pixel.brighten(brightnessConstant);
 
-    float[] brightenedValues = brightenedPixel.getChannelValues();
+    assertArrayEquals(new float[]{130,180,230}, brightenedPixel.getChannelValues(), 0.01f);
+    brightenedPixel = brightenedPixel.brighten(50);
+    assertArrayEquals(new float[]{180,230,255}, brightenedPixel.getChannelValues(), 0.01f);
+    brightenedPixel = brightenedPixel.brighten(200);
+    assertArrayEquals(new float[]{255,255,255}, brightenedPixel.getChannelValues(), 0.01f);
+    brightenedPixel = brightenedPixel.brighten(10);
+    assertArrayEquals(new float[]{255,255,255}, brightenedPixel.getChannelValues(), 0.01f);
+  }
 
-    assertEquals(130.0f, brightenedValues[0], 0.001f);
-    assertEquals(180.0f, brightenedValues[1], 0.001f);
-    assertEquals(230.0f, brightenedValues[2], 0.001f);
+  /**
+   * test to check brighten method with negative input.
+   */
+  @Test
+  public void testDarken() {
+    float brightnessConstant = -30.0f;
+    Pixel darkenedPixel = pixel.brighten(brightnessConstant);
+
+    assertArrayEquals(new float[]{70,120,170}, darkenedPixel.getChannelValues(), 0.01f);
+    darkenedPixel = darkenedPixel.brighten(-100);
+    assertArrayEquals(new float[]{0,20,70}, darkenedPixel.getChannelValues(), 0.01f);
+    darkenedPixel = darkenedPixel.brighten(-100);
+    assertArrayEquals(new float[]{0,0,0}, darkenedPixel.getChannelValues(), 0.01f);
+    darkenedPixel = darkenedPixel.brighten(-10);
+    assertArrayEquals(new float[]{0,0,0}, darkenedPixel.getChannelValues(), 0.01f);
   }
 }
