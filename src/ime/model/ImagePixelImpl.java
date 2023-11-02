@@ -23,8 +23,9 @@ public class ImagePixelImpl implements Image {
 
   /**
    * This constructor initializes the {@link ImagePixelImpl} using a 2D pixel array.
+   *
    * @param pixelValues the 2D pixel array that makes up the image
-   * @param imageType the type of this image
+   * @param imageType   the type of this image
    */
   public ImagePixelImpl(Pixel[][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
@@ -44,8 +45,9 @@ public class ImagePixelImpl implements Image {
   /**
    * This constructor initializes the {@link ImagePixelImpl} using a 2D array of float[] that will
    * be used to generate the 2D array of pixels that make up this image.
+   *
    * @param pixelValues the 2D float[] array that makes up the image
-   * @param imageType the type of this image
+   * @param imageType   the type of this image
    */
   public ImagePixelImpl(float[][][] pixelValues, ImageType imageType) {
     if (!(pixelValues.length > 0 && pixelValues[0].length > 0)) {
@@ -275,6 +277,10 @@ public class ImagePixelImpl implements Image {
     return new ImagePixelImpl(resultPixel, imageType);
   }
 
+  /**
+   * For a given coordinate (i,j), find the result of convolution between this image and the given
+   * filter centred at (i,j).
+   */
   private float getConvolutionProduct(int i, int j, float[][] filter, int channel) {
     int filterHeight = filter.length;
     int filterWidth = filter[0].length;
@@ -296,6 +302,10 @@ public class ImagePixelImpl implements Image {
     return sum;
   }
 
+  /**
+   * For a given channel index of pixels, return a new image that contains this image's values for
+   * that channel and 0 as values for every other channel
+   */
   private Image toChannel(int channel) {
 
     int channelCount = this.pixels[0][0].getColorChannelCount();
@@ -314,6 +324,10 @@ public class ImagePixelImpl implements Image {
     return new ImagePixelImpl(resultPixels, imageType);
   }
 
+  /*
+  This method is used to generate a pixel for the given image type and assign the values given to
+   the coordinates of the resulting Image.
+   */
   private void setPixelValue(Pixel[][] resultPixels, int i, int j, float[] channelValues) {
     resultPixels[i][j] = imageType.generatePixel();
     resultPixels[i][j].setColor(channelValues);
