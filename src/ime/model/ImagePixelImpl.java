@@ -19,7 +19,7 @@ public class ImagePixelImpl implements Image {
 
   private final ImageType imageType;
 
-  Pixel[][] pixels;
+  private Pixel[][] pixels;
 
   /**
    * This constructor initializes the {@link ImagePixelImpl} using a 2D pixel array.
