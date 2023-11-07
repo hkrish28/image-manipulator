@@ -91,7 +91,7 @@ public interface Image {
    *
    * @return the greyscale image of its luma
    */
-  public Image getLumaImage();
+  Image getLumaImage();
 
   /**
    * Convert this image into its value greyscale and return the copy of it.
@@ -134,5 +134,6 @@ public interface Image {
    * @return blue component of the image
    */
   Image getBlueComponent();
+  Image compress(int compressPercent);
 
 }

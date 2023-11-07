@@ -17,7 +17,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   /**
    * map for storing the image with its name as the key.
    */
-  private Map<String, Image> imageMap;
+  private final Map<String, Image> imageMap;
 
   public ImageRepositoryImpl(FileHandlerProvider fileHandlerProvider) {
     imageMap = new HashMap<>();
@@ -163,6 +163,14 @@ public class ImageRepositoryImpl implements ImageRepository {
   @Override
   public boolean isImagePresent(String imageName) {
     return imageMap.containsKey(imageName);
+  }
+
+  @Override
+  public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
+      throws IllegalArgumentException {
+    validateImagePresent(imageNameSrc);
+    Image newImage = imageMap.get(imageNameSrc).compress(compressPercent);
+    imageMap.put(imageNameDest, newImage);
   }
 
   private void validateImagePresent(String imageName) throws IllegalArgumentException {
