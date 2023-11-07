@@ -9,6 +9,7 @@ import ime.controller.commands.Blur;
 import ime.controller.commands.Brighten;
 import ime.controller.commands.Combine;
 import ime.controller.commands.Command;
+import ime.controller.commands.Compress;
 import ime.controller.commands.GreenComponent;
 import ime.controller.commands.HorizontalFlip;
 import ime.controller.commands.IntensityGreyscale;
@@ -65,6 +66,7 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.green_component, new GreenComponent());
     knownCommands.put(CommandEnum.blue_component, new BlueComponent());
     knownCommands.put(CommandEnum.run, new Run(view));
+    knownCommands.put(CommandEnum.compress, new Compress());
 //    knownCommands.put(CommandEnum.run, (String[] tokens, ImageRepository imageRepository) -> {
 //      validateTokenCount(2, tokens.length);
 //      try {
