@@ -21,6 +21,7 @@ public enum CommandEnum {
   blue_component("blue-component"),
   rgb_combine("rgb-combine"),
   run("run"),
+  compress("compress"),
   exit("exit");
 
   private final String command;

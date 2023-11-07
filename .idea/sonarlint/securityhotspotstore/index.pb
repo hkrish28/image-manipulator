@@ -3,8 +3,6 @@ M
 test/resources/testscript.txt,9/d/9d45549a24819433b80305b6a97d3259bdf84e5c
 V
 &src/ime/controller/ControllerImpl.java,b/e/bed015f5211bff376ec2614982ec6b90f22b6bdc
-I
-test/ime/MockImgRepo.java,6/f/6f78ad1ee9ee908d082e32c8668d4d8c6b948ed2
 [
 +test/ime/controller/ControllerImplTest.java,5/e/5e603afdf4667af7982237ac6bb6654d5556d8bd
 V

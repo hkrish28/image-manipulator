@@ -1,12 +1,12 @@
 package ime.model;
 
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -232,15 +232,10 @@ public class ImagePixelImpl implements Image {
   @Override
   public Image compress(int compressPercent) {
 
-    //float[][][] / Pixel[][] padWithZeros()
-    Pixel[][] padded = checkPower();
-    // haar()
+    Pixel[][] padded = getPaddedPixels();
     Pixel[][] x = haar(padded);
-    // compressByPercent(percent)
     Pixel[][] y = compressByPercent(compressPercent, x);
-    // inverseHaar()
 
-    //return image
     return new ImagePixelImpl(invHaar(y), imageType);
   }
 
@@ -277,7 +272,6 @@ public class ImagePixelImpl implements Image {
         }
       }
     }
-
     return arr;
   }
 
@@ -285,7 +279,6 @@ public class ImagePixelImpl implements Image {
   private Pixel[][] haar(Pixel[][] pixelsToBeTransformed) {
 
     int c = pixelsToBeTransformed.length; // Find the maximum dimension
-    //Pixel[][] resultPixels = new Pixel[height][width];
     for (int a = 0; a < pixelsToBeTransformed[0][0].getColorChannelCount(); a++) {
       while (c > 1) {
         for (int i = 0; i < c; i++) {
@@ -351,35 +344,30 @@ public class ImagePixelImpl implements Image {
   }
 
 
-  private Pixel[][] checkPower() {
+  private Pixel[][] getPaddedPixels() {
     int n = Math.max(height, width);
-
     int powerOf2 = 1;
 
     while (powerOf2 < n) {
       powerOf2 *= 2;
     }
-    Pixel[][] paddedArr = new Pixel[powerOf2][powerOf2];
-    if (powerOf2 != n) {
 
+    Pixel[][] paddedPixels = new Pixel[powerOf2][powerOf2];
+    if (powerOf2 != n) {
       for (int i = 0; i < powerOf2; i++) {
         for (int j = 0; j < powerOf2; j++) {
           if ((i > height) || (j > width)) {
-            paddedArr[i][j] = imageType.generatePixel();
+            paddedPixels[i][j] = imageType.generatePixel();
           } else {
-            setPixelValue(paddedArr, i, j, pixels[i][j].getChannelValues());
-
+            setPixelValue(paddedPixels, i, j, pixels[i][j].getChannelValues());
           }
-
         }
       }
-
     }
-    return paddedArr;
+    return paddedPixels;
   }
 
   private double[] transform(double[] arr) {
-    // arr = checkPower(arr, n);
     int n = arr.length;
     double[] result = new double[n];
 
@@ -477,7 +465,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-            .getChannelValues()[channel];
+                .getChannelValues()[channel];
       }
     }
 

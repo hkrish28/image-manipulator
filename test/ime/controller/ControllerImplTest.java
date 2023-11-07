@@ -59,6 +59,7 @@ public class ControllerImplTest {
             + "Please enter the command to run: \n"
             + "Invalid number of tokens passed for the given command\n"
             + "Please enter the command to run: \n"
+            + "Command not found\n"
             + "Please enter the command to run: \n"
             + "Invalid number of tokens passed for the given command\n"
             + "Please enter the command to run: \n"
@@ -91,6 +92,7 @@ public class ControllerImplTest {
     assertEquals("loadImage called images/test.ppm and test passed\n",
             mockImgRepo.getLogger());
     String expectedView = "Please enter the command to run: \n" +
+            "Please enter the command to run: \n" +
             "Image Repository failed\n" +
             "Script file execution complete.\n" +
             "Please enter the command to run:";
