@@ -1,8 +1,5 @@
 package ime.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -86,35 +83,35 @@ public class ControllerImpl implements ImageProcessingController {
     }
 
     String[] tokens = commandTokens.split(" ");
-    CommandEnum commandKeyword = getCommandEnum(tokens[0]);
-    if (commandKeyword == CommandEnum.exit) {
-      return true;
-    }
-
     try {
+      CommandEnum commandKeyword = getCommandEnum(tokens[0]);
+      if (commandKeyword == CommandEnum.exit) {
+        return true;
+      }
+
       Command commandObject = knownCommands.get(commandKeyword);
       String returnedMessage = commandObject.go(tokens, imgRepo);
       view.displayMessage(returnedMessage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
-    return true;
+    return false;
   }
 
 
-  private CommandEnum getCommandEnum(String commandStr) {
+  private CommandEnum getCommandEnum(String commandStr) throws IllegalArgumentException {
     for (CommandEnum cmd : CommandEnum.values()) {
       if (cmd.getRepresentation().equals(commandStr)) {
         return cmd;
       }
     }
-    return null; // Command not found
+    throw new IllegalArgumentException("Command not found"); // Command not found
   }
 
   @Override
   public void execute() {
     boolean endFlag = false;
-    while (!endFlag) {
+    while (!endFlag && in.hasNextLine()) {
       view.displayMessage("Please enter the command to run: ");
       String command = in.nextLine();
       endFlag = executeCommand(command);

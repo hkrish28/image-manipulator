@@ -9,11 +9,11 @@ public class Sharpen extends AbstractCommand {
   public String go(String[] tokens, ImageRepository imageRepository) {
     try {
       validateTokenCount(3, tokens.length);
-      String imageName = tokens[2];
-      String fileName = tokens[1];
-      imageRepository.saveImage(fileName, imageName);
-      return "Saved successfully.";
-    } catch (IOException e) {
+      String imageName = tokens[1];
+      String newImage = tokens[2];
+      imageRepository.sharpenImage(imageName, newImage);
+      return messageSenderHelper(tokens[0], imageName, newImage);
+    } catch (IllegalArgumentException e) {
       return e.getMessage();
     }
   }

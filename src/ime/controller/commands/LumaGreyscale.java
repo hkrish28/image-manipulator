@@ -9,7 +9,7 @@ public class LumaGreyscale extends AbstractCommand {
       validateTokenCount(3, tokens.length);
       String imageName = tokens[1];
       String newImage = tokens[2];
-      imageRepository.toValueGreyScale(imageName, newImage);
+      imageRepository.toLumaGreyScale(imageName, newImage);
       return messageSenderHelper(tokens[0], imageName, newImage);
     } catch (IllegalArgumentException e) {
       return e.getMessage();
