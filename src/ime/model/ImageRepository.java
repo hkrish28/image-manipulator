@@ -178,4 +178,6 @@ public interface ImageRepository {
    * @return whether the image is present in the repository.
    */
   boolean isImagePresent(String imageNameSrc);
+  void compress(String imageNameSrc, String imageNameDest,int compressPercent)
+      throws IllegalArgumentException;
 }
