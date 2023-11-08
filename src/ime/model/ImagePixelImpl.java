@@ -356,7 +356,7 @@ public class ImagePixelImpl implements Image {
     if (powerOf2 != n) {
       for (int i = 0; i < powerOf2; i++) {
         for (int j = 0; j < powerOf2; j++) {
-          if ((i > height) || (j > width)) {
+          if ((i >= height) || (j >= width)) {
             paddedPixels[i][j] = imageType.generatePixel();
           } else {
             setPixelValue(paddedPixels, i, j, pixels[i][j].getChannelValues());
@@ -371,29 +371,41 @@ public class ImagePixelImpl implements Image {
     int n = arr.length;
     double[] result = new double[n];
 
-    for (int i = 0; i < n / 2; i++) {
+    for (int i = 0; i < n / 2; i=i+2) {
       int sumIndex = i * 2;
-      int diffIndex = i * 2 + 1;
+      //int diffIndex = i * 2 + 1;
 
       // Compute the sum and difference coefficients
-      result[sumIndex] = (arr[i] + arr[i + n / 2]) / Math.sqrt(2);
-      result[diffIndex] = (arr[i] - arr[i + n / 2]) / Math.sqrt(2);
+      result[i] = (arr[sumIndex] + arr[sumIndex + 1]) / Math.sqrt(2);
+      result[n/2 + i] = (arr[sumIndex] - arr[1 + sumIndex]) / Math.sqrt(2);
     }
 
     return result;
   }
+ 
 
   private double[] invTransform(double[] arr) {
-    // arr = checkPower(arr, n);
-    int n = arr.length;
-    double[] result = new double[n];
+    int n = arr.length / 2;
+    double[] avg = new double[n];
+    double[] diff = new double[n];
 
-    for (int i = 0; i < n / 2; i++) {
-      int sumIndex = i * 2;
-      int diffIndex = i * 2 + 1;
+    int j = n;
+    for (int i = 0; i < n; i++) {
+      double a = arr[i];
+      double b = arr[j];
+      double av = (a + b) / Math.sqrt(2);
+      double de = (a - b) / Math.sqrt(2);
 
-      result[i] = (arr[sumIndex] + arr[diffIndex]) / Math.sqrt(2);
-      result[i + n / 2] = (arr[sumIndex] - arr[diffIndex]) / Math.sqrt(2);
+      avg[i] = av;
+      diff[i] = de;
+
+      j++;
+    }
+
+    double[] result = new double[arr.length];
+    for (int i = 0; i < n; i++) {
+      result[i * 2] = avg[i];
+      result[i * 2 + 1] = diff[i];
     }
 
     return result;
