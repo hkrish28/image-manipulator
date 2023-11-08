@@ -1,5 +1,6 @@
 package ime.model;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -113,6 +114,7 @@ public interface Image {
    * @return the number of color channels
    */
   int getChannelCount();
+
 
   /**
    * Return the red component of the image as a new copy. Original image should not be changed.

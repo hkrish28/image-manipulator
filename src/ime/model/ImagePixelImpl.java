@@ -1,5 +1,8 @@
 package ime.model;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -238,6 +241,8 @@ public class ImagePixelImpl implements Image {
 
     return new ImagePixelImpl(invHaar(y), imageType);
   }
+
+
 
   private Pixel[][] compressByPercent(int compressPercent, Pixel[][] ar) {
     // think abt cases
@@ -514,4 +519,6 @@ public class ImagePixelImpl implements Image {
     resultPixels[i][j] = imageType.generatePixel();
     resultPixels[i][j].setColor(channelValues);
   }
+
+
 }
