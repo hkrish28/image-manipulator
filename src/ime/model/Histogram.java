@@ -5,14 +5,22 @@ import java.awt.image.BufferedImage;
 public interface Histogram {
 
 
-  BufferedImage createHistogram(Image image);
+  BufferedImage createHistogram();
 
   /**
-   * number of channels in histogram.
+   * number of color channels in histogram.
+   *
    * @return
    */
   int getChannelCount();
-  int getMax(int channelIndex);
+
+  /**
+   * @param channelIndex
+   * @return
+   */
+  int getPeakValue(int channelIndex);
+
+  int getFirstPeakPixelValue(int channelIndex);
 
 
 }

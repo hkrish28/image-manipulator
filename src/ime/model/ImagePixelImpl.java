@@ -216,19 +216,19 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getRedComponent() {
-    int index = getColorChannelIndex(ColorChannel.RED);
+    int index = getColorChannelIndex(Color.RED);
     return toChannel(index);
   }
 
   @Override
   public Image getGreenComponent() {
-    int index = getColorChannelIndex(ColorChannel.GREEN);
+    int index = getColorChannelIndex(Color.GREEN);
     return toChannel(index);
   }
 
   @Override
   public Image getBlueComponent() {
-    int index = getColorChannelIndex(ColorChannel.BLUE);
+    int index = getColorChannelIndex(Color.BLUE);
     return toChannel(index);
   }
 
@@ -416,7 +416,7 @@ public class ImagePixelImpl implements Image {
     return result;
   }
 
-  private int getColorChannelIndex(ColorChannel colorChannel) {
+  private int getColorChannelIndex(Color colorChannel) {
     int index = imageType.colorChannels.indexOf(colorChannel);
     if (index < 0) {
       throw new IllegalArgumentException("red component can not be obtained for the given image");
