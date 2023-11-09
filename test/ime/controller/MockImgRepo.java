@@ -2,6 +2,7 @@ package ime.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
@@ -33,10 +34,10 @@ public class MockImgRepo implements ImageRepository {
    *                     to fail.
    */
   @Override
-  public void loadImage(String filePath, String imageName) throws IOException {
+  public void loadImage(String filePath, String imageName) {
     methodCallLogger.append("loadImage called " + filePath + " and " + imageName + " passed\n");
     if (fail) {
-      throw new IOException("Image Repository failed");
+      throw new IllegalArgumentException("Image Repository failed");
     }
   }
 
@@ -51,10 +52,10 @@ public class MockImgRepo implements ImageRepository {
 
   @Override
   public void saveImage(String filePath, String imageName)
-          throws IOException, IllegalArgumentException {
+          throws IllegalArgumentException {
     methodCallLogger.append("saveImage called " + filePath + " and " + imageName + " passed\n");
     if (fail) {
-      throw new IOException("Image Repository failed");
+      throw new IllegalArgumentException("Image Repository failed");
     }
   }
 
@@ -319,6 +320,25 @@ public class MockImgRepo implements ImageRepository {
   public boolean isImagePresent(String imageName) {
     methodCallLogger.append("isImagePresent called " + imageName + " passed\n");
     return fail;
+  }
+
+  @Override
+  public void compress(String imageNameSrc, String imageNameDest, int compressPercent) throws IllegalArgumentException {
+    methodCallLogger.append(
+            "compress called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+    if (fail) {
+      throw new IllegalArgumentException("compress failed");
+    }
+  }
+
+  @Override
+  public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
+
+  }
+
+  @Override
+  public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
+
   }
 
   /**

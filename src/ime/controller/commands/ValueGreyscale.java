@@ -1,18 +1,17 @@
 package ime.controller.commands;
 
+import java.util.function.BiConsumer;
+
 import ime.model.ImageRepository;
 
 public class ValueGreyscale extends AbstractCommand {
+
+  public ValueGreyscale() {
+    super(3,1,2, true);
+  }
+
   @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
-    try {
-      validateTokenCount(3, tokens.length);
-      String imageName = tokens[1];
-      String newImage = tokens[2];
-      imageRepository.toValueGreyScale(imageName, newImage);
-      return messageSenderHelper(tokens[0], imageName, newImage);
-    } catch (IllegalArgumentException e) {
-      return e.getMessage();
-    }
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository){
+    return imageRepository::toValueGreyScale;
   }
 }

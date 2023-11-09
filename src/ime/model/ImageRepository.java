@@ -2,6 +2,7 @@ package ime.model;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * An Image Repository is a class that manages multiple images and performs operations on them. It
@@ -18,18 +19,18 @@ public interface ImageRepository {
    * @throws IOException if any error occurs during the loading of the image or if the file does not
    *                     exist at the file path.
    */
-  void loadImage(String filePath, String imageName) throws IOException;
+  void loadImage(String filePath, String imageName);
 
   /**
    * This method is used to save a tagged image to a given file path.
    *
    * @param filePath  the path at which the image is to be saved.
    * @param imageName the name of the image to be saved.
-   * @throws IOException              if any error occurs during the loading of the image or if the
-   *                                  file does not exist at the file path.
+   * @throws IOException              if any error occurs during the loading of the image or if the file does not
+   *                                  exist at the file path.
    * @throws IllegalArgumentException if imageName has not been created/tagged yet.
    */
-  void saveImage(String filePath, String imageName) throws IOException, IllegalArgumentException;
+  void saveImage(String filePath, String imageName);
 
   /**
    * Split this image into its respective color channels and store the resulting images into the
@@ -180,6 +181,9 @@ public interface ImageRepository {
   boolean isImagePresent(String imageNameSrc);
 
   void compress(String imageNameSrc, String imageNameDest, int compressPercent)
-      throws IllegalArgumentException;
+          throws IllegalArgumentException;
 
+  void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit);
+
+  void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w);
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
@@ -26,18 +27,27 @@ public class ImageRepositoryImpl implements ImageRepository {
 
 
   @Override
-  public void loadImage(String filePath, String imageName) throws IOException {
-    float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
-    Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
-    imageMap.put(imageName, newImage);
+  public void loadImage(String filePath, String imageName) {
+    try {
+      float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
+      Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
+      imageMap.put(imageName, newImage);
+    } catch (IOException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
   }
 
   @Override
   public void saveImage(String fileName, String imageName)
-          throws IOException, IllegalArgumentException {
+          throws IllegalArgumentException {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
+    try {
+      fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
+    } catch (IOException e) {
+      throw new IllegalArgumentException(e.getMessage());
+    }
 
   }
 
@@ -167,10 +177,28 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).compress(compressPercent);
     imageMap.put(imageNameDest, newImage);
+  }
+
+  @Override
+  public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
+    if (verticalSplit < 0 || verticalSplit > 100) {
+      throw new IllegalArgumentException("Invalid split position");
+    }
+    validateImagePresent(imageNameSrc);
+    List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
+    imageMap.put("temp", images.get(1));
+    operation.accept("temp", "temp");
+    imageMap.put(imageNameDest, images.get(0).append(imageMap.get("temp")));
+    imageMap.remove("temp");
+  }
+
+  @Override
+  public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
+
   }
 
   private void validateImagePresent(String imageName) throws IllegalArgumentException {
