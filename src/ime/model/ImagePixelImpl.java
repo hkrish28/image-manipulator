@@ -1,5 +1,6 @@
 package ime.model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -213,19 +214,19 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getRedComponent() {
-    int index = getColorChannelIndex(ColorChannel.RED);
+    int index = getColorChannelIndex(Color.RED);
     return toChannel(index);
   }
 
   @Override
   public Image getGreenComponent() {
-    int index = getColorChannelIndex(ColorChannel.GREEN);
+    int index = getColorChannelIndex(Color.GREEN);
     return toChannel(index);
   }
 
   @Override
   public Image getBlueComponent() {
-    int index = getColorChannelIndex(ColorChannel.BLUE);
+    int index = getColorChannelIndex(Color.BLUE);
     return toChannel(index);
   }
 
@@ -411,35 +412,47 @@ public class ImagePixelImpl implements Image {
     int n = arr.length;
     double[] result = new double[n];
 
-    for (int i = 0; i < n / 2; i++) {
+    for (int i = 0; i < n / 2; i=i+2) {
       int sumIndex = i * 2;
-      int diffIndex = i * 2 + 1;
+      //int diffIndex = i * 2 + 1;
 
       // Compute the sum and difference coefficients
-      result[sumIndex] = (arr[i] + arr[i + n / 2]) / Math.sqrt(2);
-      result[diffIndex] = (arr[i] - arr[i + n / 2]) / Math.sqrt(2);
+      result[i] = (arr[sumIndex] + arr[sumIndex + 1]) / Math.sqrt(2);
+      result[n/2 + i] = (arr[sumIndex] - arr[1 + sumIndex]) / Math.sqrt(2);
     }
 
     return result;
   }
+ 
 
   private double[] invTransform(double[] arr) {
-    // arr = checkPower(arr, n);
-    int n = arr.length;
-    double[] result = new double[n];
+    int n = arr.length / 2;
+    double[] avg = new double[n];
+    double[] diff = new double[n];
 
-    for (int i = 0; i < n / 2; i++) {
-      int sumIndex = i * 2;
-      int diffIndex = i * 2 + 1;
+    int j = n;
+    for (int i = 0; i < n; i++) {
+      double a = arr[i];
+      double b = arr[j];
+      double av = (a + b) / Math.sqrt(2);
+      double de = (a - b) / Math.sqrt(2);
 
-      result[i] = (arr[sumIndex] + arr[diffIndex]) / Math.sqrt(2);
-      result[i + n / 2] = (arr[sumIndex] - arr[diffIndex]) / Math.sqrt(2);
+      avg[i] = av;
+      diff[i] = de;
+
+      j++;
+    }
+
+    double[] result = new double[arr.length];
+    for (int i = 0; i < n; i++) {
+      result[i * 2] = avg[i];
+      result[i * 2 + 1] = diff[i];
     }
 
     return result;
   }
 
-  private int getColorChannelIndex(ColorChannel colorChannel) {
+  private int getColorChannelIndex(Color colorChannel) {
     int index = imageType.colorChannels.indexOf(colorChannel);
     if (index < 0) {
       throw new IllegalArgumentException("red component can not be obtained for the given image");
@@ -542,4 +555,6 @@ public class ImagePixelImpl implements Image {
     resultPixels[i][j] = imageType.generatePixel();
     resultPixels[i][j].setColor(channelValues);
   }
+
+
 }
