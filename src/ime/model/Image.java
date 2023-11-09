@@ -1,6 +1,5 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
@@ -136,6 +135,8 @@ public interface Image {
    * @return blue component of the image
    */
   Image getBlueComponent();
+
   Image compress(int compressPercent);
 
+  ImageType getImageType();
 }

@@ -238,11 +238,25 @@ public class ImagePixelImpl implements Image {
     Pixel[][] padded = getPaddedPixels();
     Pixel[][] x = haar(padded);
     Pixel[][] y = compressByPercent(compressPercent, x);
+    Pixel[][] z = invHaar(y);
 
-    return new ImagePixelImpl(invHaar(y), imageType);
+
+    return new ImagePixelImpl(removePad(y), imageType);
   }
 
-
+  @Override
+  public ImageType getImageType() {
+    return imageType;
+  }
+private  Pixel[][] removePad(Pixel[][] ar){
+    Pixel[][] newar = new Pixel[height][width];
+    for (int i=0;i<height;i++){
+      for(int j=0;j<width;j++){
+        newar = ar;
+      }
+    }
+    return newar;
+}
 
   private Pixel[][] compressByPercent(int compressPercent, Pixel[][] ar) {
     // think abt cases

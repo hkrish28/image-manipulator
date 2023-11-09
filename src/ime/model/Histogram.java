@@ -21,6 +21,7 @@ public interface Histogram {
   int getPeakValue(int channelIndex);
 
   int getFirstPeakPixelValue(int channelIndex);
+  Image colorCorrect(Image image);
 
 
 }
