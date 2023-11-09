@@ -239,6 +239,47 @@ public class ImagePixelImpl implements Image {
     return new ImagePixelImpl(invHaar(y), imageType);
   }
 
+  @Override
+  public List<Image> splitVertically(int splitPercent) {
+    int splitPosition = splitPercent * width / 100;
+    if (splitPosition <= 0 || splitPosition >= width) {
+      return Arrays.asList(new ImagePixelImpl(pixels, imageType));
+    }
+    Pixel[][] leftImagePixels = new Pixel[height][splitPosition];
+    Pixel[][] rightImagePixels = new Pixel[height][width - splitPosition];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        if (j >= splitPosition) {
+          setPixelValue(rightImagePixels, i, j - splitPosition, pixels[i][j].getChannelValues());
+        } else {
+          setPixelValue(leftImagePixels, i, j, pixels[i][j].getChannelValues());
+        }
+      }
+    }
+    Image leftImage = new ImagePixelImpl(leftImagePixels, imageType);
+    Image rightImage = new ImagePixelImpl(rightImagePixels, imageType);
+
+    return Arrays.asList(leftImage, rightImage);
+  }
+
+  @Override
+  public Image append(Image image) {
+    if (image.getHeight() != height) {
+      throw new IllegalArgumentException("The given image cannot be appended to this image");
+    }
+    Pixel[][] newImagePixels = new Pixel[height][width + image.getWidth()];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width + image.getWidth(); j++) {
+        if (j < width) {
+          setPixelValue(newImagePixels, i, j, pixels[i][j].getChannelValues());
+        } else {
+          setPixelValue(newImagePixels, i, j, image.getPixelValues(i, j - width));
+        }
+      }
+    }
+    return new ImagePixelImpl(newImagePixels, imageType);
+  }
+
   private Pixel[][] compressByPercent(float compressPercent, Pixel[][] ar) {
     // think abt cases
     if (compressPercent == 0) {
@@ -284,14 +325,14 @@ public class ImagePixelImpl implements Image {
           double[] rowValues = extractRow(pixelsToBeTransformed[i], c, a);
           double[] transformed = transform(rowValues);
           for (int j = 0; j < c; j++) {
-            pixelsToBeTransformed[i][j].setColorChannel(a, Math.max(0,Math.min(255,(float) transformed[j])));
+            pixelsToBeTransformed[i][j].setColorChannel(a, Math.max(0, Math.min(255, (float) transformed[j])));
           }
         }
         for (int j = 0; j < c; j++) {
           double[] colValues = extractCol(pixelsToBeTransformed, j, c, a);
           double[] transformed = transform(colValues);
           for (int i = 0; i < c; i++) {
-            pixelsToBeTransformed[i][j].setColorChannel(a, Math.max(0,Math.min(255,(float) transformed[i])));
+            pixelsToBeTransformed[i][j].setColorChannel(a, Math.max(0, Math.min(255, (float) transformed[i])));
           }
         }
         c = c / 2;

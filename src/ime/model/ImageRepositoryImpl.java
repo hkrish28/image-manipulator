@@ -185,7 +185,15 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
-
+    if (verticalSplit < 0 || verticalSplit > 100) {
+      throw new IllegalArgumentException("Invalid split position");
+    }
+    validateImagePresent(imageNameSrc);
+    List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
+    imageMap.put("temp", images.get(1));
+    operation.accept("temp", "temp");
+    imageMap.put(imageNameDest, images.get(0).append(imageMap.get("temp")));
+    imageMap.remove("temp");
   }
 
   @Override
