@@ -1,20 +1,17 @@
 package ime.controller.commands;
 
-import java.io.IOException;
+import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
 public class VerticaFlip extends AbstractCommand {
+
+  public VerticaFlip() {
+    super(3, 1, 2);
+  }
+
   @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
-    try {
-      validateTokenCount(3, tokens.length);
-      String imageName = tokens[1];
-      String newImage = tokens[2];
-      imageRepository.flipImageVertically(imageName, newImage);
-      return messageSenderHelper(tokens[0], imageName,newImage);
-    } catch (IllegalArgumentException e) {
-      return e.getMessage();
-    }
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository){
+    return imageRepository::flipImageVertically;
   }
 }

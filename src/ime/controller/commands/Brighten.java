@@ -1,21 +1,23 @@
 package ime.controller.commands;
 
+import java.util.function.BiConsumer;
+
 import ime.model.ImageRepository;
 
 public class Brighten extends AbstractCommand {
+
+  public Brighten() {
+    super(4, 2, 3);
+  }
+
   @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
     try {
-      validateTokenCount(4, tokens.length);
       float brightnessConstant = Float.parseFloat(tokens[1]);
-      String imageName = tokens[2];
-      String newImage = tokens[3];
-      imageRepository.brightenImage(imageName, newImage, brightnessConstant);
-      return "Brightened successfully.";
+      return (src, dest) -> imageRepository.brightenImage(src, dest, brightnessConstant);
     } catch (NumberFormatException e) {
-      return "brightness command expects a number following the command";
-    } catch (IllegalArgumentException e) {
-      return e.getMessage();
+      throw new IllegalArgumentException("brightness command expects a number following the command");
     }
   }
+
 }

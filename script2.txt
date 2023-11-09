@@ -1,0 +1,20 @@
+load resources/images/bird.jpg bird
+blur bird bird-blursplit split 50
+save resources/res/bird-blursplit.png bird-blursplit
+
+sepia bird bird-sepiasplit split 30
+save resources/res/bird-sepiasplit.png bird-sepiasplit
+
+value-component bird bird-valuesplit split 80
+save resources/res/bird-valuesplit.png bird-valuesplit
+
+luma-component bird bird-lumasplit split 90
+save resources/res/bird-lumasplit.png bird-lumasplit
+
+intensity-component bird bird-intensitysplit split 99
+save resources/res/bird-intensitysplit.png bird-intensitysplit
+
+compress 0 bird bird-compress
+save bird-compress.png bird-compress
+
+exit

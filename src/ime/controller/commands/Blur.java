@@ -1,20 +1,19 @@
 package ime.controller.commands;
 
-import java.io.IOException;
+import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
 public class Blur extends AbstractCommand {
-  @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
-    try {
-      validateTokenCount(3, tokens.length);
-      String imageName = tokens[1];
-      String newImage = tokens[2];
-      imageRepository.blurImage(imageName, newImage);
-      return messageSenderHelper(tokens[0], imageName, newImage);
-    } catch (IllegalArgumentException e) {
-      return e.getMessage();
-    }
+
+  public Blur(){
+    super(3, 1, 2, true);
   }
+
+  @Override
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository){
+    return imageRepository::blurImage;
+  }
+
+
 }
