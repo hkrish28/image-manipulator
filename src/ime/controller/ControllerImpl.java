@@ -2,6 +2,7 @@ package ime.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import ime.controller.commands.BlueComponent;
@@ -20,7 +21,7 @@ import ime.controller.commands.Run;
 import ime.controller.commands.Save;
 import ime.controller.commands.Sepia;
 import ime.controller.commands.Sharpen;
-import ime.controller.commands.Split;
+import ime.controller.commands.RgbSplit;
 import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
@@ -33,21 +34,36 @@ import ime.view.View;
 
 public class ControllerImpl implements ImageProcessingController {
 
+  private final boolean userPrompt;
   protected ImageRepository imgRepo;
-
   protected View view;
-
   private Scanner in;
-
   private Map<CommandEnum, Command> knownCommands;
 
   /**
-   * Constructs a new controller instance with an empty image files map.
+   * Constructs a new controller instance with the given image files map.
    */
   public ControllerImpl(Scanner in, View view, ImageRepository imgRepo) {
     this.imgRepo = imgRepo;
     this.in = in;
     this.view = view;
+    this.userPrompt = true;
+    initializeKnownCommands();
+  }
+
+  /**
+   * Constructs a new controller instance that does not require user
+   * prompt with the given image files map .
+   */
+  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo, Boolean userPrompt) {
+    this.imgRepo = imgRepo;
+    this.in = in;
+    this.view = view;
+    this.userPrompt = userPrompt;
+    initializeKnownCommands();
+  }
+
+  void initializeKnownCommands() {
     knownCommands = new HashMap<>();
     knownCommands.put(CommandEnum.blur, new Blur());
     knownCommands.put(CommandEnum.sharpen, new Sharpen());
@@ -57,7 +73,7 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.horizontalFlip, new HorizontalFlip());
     knownCommands.put(CommandEnum.verticalFlip, new VerticaFlip());
     knownCommands.put(CommandEnum.rgb_combine, new Combine());
-    knownCommands.put(CommandEnum.rgb_split, new Split());
+    knownCommands.put(CommandEnum.rgb_split, new RgbSplit());
     knownCommands.put(CommandEnum.value_component, new ValueGreyscale());
     knownCommands.put(CommandEnum.luma_component, new LumaGreyscale());
     knownCommands.put(CommandEnum.intensity_component, new IntensityGreyscale());
@@ -113,11 +129,18 @@ public class ControllerImpl implements ImageProcessingController {
   @Override
   public void execute() {
     boolean endFlag = false;
-    while (!endFlag && in.hasNextLine()) {
-      view.displayMessage("Please enter the command to run: ");
-      String command = in.nextLine();
-      endFlag = executeCommand(command);
+    try{
+      while (!endFlag) {
+        if (userPrompt) {
+          view.displayMessage("Please enter the command to run: ");
+        }
+        String command = in.nextLine();
+        endFlag = executeCommand(command);
+      }
+    }catch(NoSuchElementException e){
+      view.displayMessage("Exiting with no more commands");
     }
+
   }
 
   //  private void processScriptFile(String scriptFileName) {

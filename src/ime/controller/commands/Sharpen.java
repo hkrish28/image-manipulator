@@ -1,20 +1,18 @@
 package ime.controller.commands;
 
 import java.io.IOException;
+import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
 public class Sharpen extends AbstractCommand {
+
+  public Sharpen(){
+    super(3);
+  }
+
   @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
-    try {
-      validateTokenCount(3, tokens.length);
-      String imageName = tokens[1];
-      String newImage = tokens[2];
-      imageRepository.sharpenImage(imageName, newImage);
-      return messageSenderHelper(tokens[0], imageName, newImage);
-    } catch (IllegalArgumentException e) {
-      return e.getMessage();
-    }
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository){
+    return imageRepository::sharpenImage;
   }
 }

@@ -1,0 +1,6 @@
+load resources/images/bird.jpg bird
+
+compress 20 bird bird-compress
+save resources/res/bird-compress.png bird-compress
+
+exit

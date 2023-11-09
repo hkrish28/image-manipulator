@@ -92,8 +92,8 @@ public class ControllerImplTest {
     assertEquals("loadImage called images/test.ppm and test passed\n",
             mockImgRepo.getLogger());
     String expectedView = "Please enter the command to run: \n" +
-            "Please enter the command to run: \n" +
             "Image Repository failed\n" +
+            "Exiting with no more commands\n" +
             "Script file execution complete.\n" +
             "Please enter the command to run:";
     assertEquals(expectedView, outputStream.toString().trim());
@@ -261,7 +261,7 @@ public class ControllerImplTest {
             "blurImage called invalidName.ppm and destImage passed\n" +
             "sharpenImage called invalidName.ppm and destImage passed\n", mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n" +
-            "Brightened successfully.\n" +
+            "brighten operation completed successfully for invalidName.ppm & put in destImage\n" +
             "Please enter the command to run: \n" +
             "blur operation completed successfully for invalidName.ppm & put in destImage\n" +
             "Please enter the command to run: \n" +
