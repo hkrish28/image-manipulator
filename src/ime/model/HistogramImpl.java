@@ -9,6 +9,7 @@ public class HistogramImpl implements Histogram {
   public HistogramImpl(Image image, int height) {
     this.height = height;
     channelCount = image.getChannelCount();
+    imageType = image.getImageType();
     width = 256;
     hist = new int[image.getChannelCount()][256];
     for (int x = 0; x < image.getHeight(); x++) {
@@ -24,24 +25,17 @@ public class HistogramImpl implements Histogram {
     }
   }
 
-  private int[][] hist;
-  private int channelCount;
-  private int height;
-  private int width;
+  private final int[][] hist;
+  private final int channelCount;
+  private final int height;
+  private final int width;
   private ImageType imageType;
 
   @Override
   public BufferedImage createHistogram() {
-    int width = 256;
-    int height = 256;
+
     BufferedImage histogramImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Graphics g = histogramImage.getGraphics();
-
-    // finding max of frequency count of each color channel
-    /*int maxCount = Math.max(
-        Math.max(Arrays.stream(redHistogram).max().orElse(0), Arrays.stream(greenHistogram).max().orElse(0)),
-        Arrays.stream(blueHistogram).max().orElse(0)
-    );*/
 
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, width, height);
@@ -52,8 +46,6 @@ public class HistogramImpl implements Histogram {
         // int normalizedValue = height * redHistogram[i] / maxCount;
         g.drawLine(j, hist[i][j], j + 1, hist[i][j + 1]);
       }
-      // Draw the Green histogram
-
     }
     return histogramImage;
   }
@@ -65,14 +57,66 @@ public class HistogramImpl implements Histogram {
 
   // y coordinate of peak
   @Override
-  public int getPeakValue(int channelIndex) {
-    return 0;
+  public int getPeakValue(int channelIndex) throws IllegalArgumentException {
+    if (channelIndex < 0 || channelIndex >= channelCount) {
+      throw new IllegalArgumentException("Invalid channel index");
+    }
+
+    int maxFrequency = 0;
+
+    for (int pixelValue = 10; pixelValue < 245; pixelValue++) {
+      if (hist[channelIndex][pixelValue] > maxFrequency) {
+        maxFrequency = hist[channelIndex][pixelValue];
+
+      }
+    }
+
+    return maxFrequency;
   }
 
   // for the given channel the x coordinate of the peak
   @Override
-  public int getFirstPeakPixelValue(int channelIndex) {
-    return 0;
+  public int getFirstPeakPixelValue(int channelIndex) throws IllegalArgumentException {
+    if (channelIndex < 0 || channelIndex >= channelCount) {
+      throw new IllegalArgumentException("Invalid channel index");
+    }
+
+    int peakPixelValue = 0;
+    int maxFrequency = 0;
+
+    for (int pixelValue = 10; pixelValue < 245; pixelValue++) {
+      if (hist[channelIndex][pixelValue] > maxFrequency) {
+        maxFrequency = hist[channelIndex][pixelValue];
+        peakPixelValue = pixelValue;
+      }
+    }
+
+    return peakPixelValue;
+  }
+
+  @Override
+  public Image colorCorrect(Image image) {
+    int averagePeakValue = calculateAveragePeakValue();
+
+    // Calculate brightness adjustment for each channel
+    float[] brightnessAdjustment = new float[image.getChannelCount()];
+    for (int channelIndex = 0; channelIndex < image.getChannelCount(); channelIndex++) {
+      int currentPeakValue = getPeakValue(channelIndex);
+      int peakDifference = averagePeakValue - currentPeakValue;
+      brightnessAdjustment[channelIndex] = peakDifference / 255.0f;
+      image = image.brighten(brightnessAdjustment[channelIndex]);
+    }
+
+    // Apply brightness adjustment to the image
+    return image;
+  }
+
+  private int calculateAveragePeakValue() {
+    int sumPeakValue = 0;
+    for (int channelIndex = 0; channelIndex < channelCount; channelIndex++) {
+      sumPeakValue += getPeakValue(channelIndex);
+    }
+    return sumPeakValue / imageType.colorChannels.size();
   }
 
 

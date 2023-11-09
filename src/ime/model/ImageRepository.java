@@ -39,7 +39,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if srcImage has not been created/tagged yet.
    */
   void splitImageIntoColorChannels(String srcImage, List<String> destImageNames)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Combine the color channels images into o single image and save it into the destination image
@@ -49,7 +49,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param images} has not been created/tagged yet.
    */
   void combineImages(List<String> images, String imageDestName)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Brighten this image by the given brightness constant and tag the new image as
@@ -59,7 +59,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
 
   /**
@@ -69,7 +69,7 @@ public interface ImageRepository {
    * @param imageNameDest destination image name
    */
   void blurImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Sharpen the source image using appropriate filter and save the sharpened image into the
@@ -80,7 +80,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void sharpenImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Horizontally flip the source image and save it into destination image.
@@ -90,7 +90,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void flipImageHorizontally(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Vertically flip the source image and save it into destination image.
@@ -100,7 +100,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void flipImageVertically(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Transform the source image into its intensity greyscale and save it into destination image.
@@ -110,7 +110,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toIntensityGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Transform the source image into its luma greyscale and save it into the destination image.
@@ -120,7 +120,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toLumaGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Transform the source image into its value greyscale and save it into the destination image.
@@ -130,7 +130,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toValueGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Transform the source image into sepia and save it into the destination image.
@@ -140,7 +140,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toSepiaImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Get the red component image of the source image and save it into destination.
@@ -150,7 +150,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toRedChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Get the green component image of the source image and save it into destination.
@@ -160,7 +160,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toGreenChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Get the blue component image of the source image and save it into destination.
@@ -170,7 +170,7 @@ public interface ImageRepository {
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
   void toBlueChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
   /**
    * Returns whether the given image name has been created/tagged in the repository yet.

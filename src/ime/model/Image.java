@@ -158,4 +158,5 @@ public interface Image {
    */
   Image append(Image image);
 
+  ImageType getImageType();
 }
