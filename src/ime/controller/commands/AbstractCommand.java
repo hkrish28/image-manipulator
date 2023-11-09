@@ -45,7 +45,8 @@ public abstract class AbstractCommand implements Command {
     if (validateTokenCount(tokensRequired, tokens.length)) {
       return extractTokensAndInvokeMethod(tokens, imageRepository);
     } else if (splitSupport
-            && validateTokenCount(tokensRequired + 2, tokens.length)) {
+            && validateTokenCount(tokensRequired + 2, tokens.length)
+    && tokens[tokensRequired -2].equals("split")) {
       return extractTokensAndInvokePreview(tokens, imageRepository);
     } else {
       return "Invalid number of tokens passed for the given command";
