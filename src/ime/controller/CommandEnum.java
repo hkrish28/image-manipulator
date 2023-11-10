@@ -22,6 +22,8 @@ public enum CommandEnum {
   rgb_combine("rgb-combine"),
   run("run"),
   compress("compress"),
+
+  histogram("histogram"),
   exit("exit");
 
   private final String command;
