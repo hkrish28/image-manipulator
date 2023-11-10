@@ -216,7 +216,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
 
   @Override
-  public Image colorCorrect(String imageNameSrc, String imageNameDest) {
+  public void colorCorrect(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
     Image image = imageMap.get(imageNameSrc);
     HistogramImpl hist = new HistogramImpl(image, image.getHeight());
@@ -234,13 +234,13 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     Image newimage = limages.get(0);
     limages.remove(0);
-    return newimage.combine(limages);
+    imageMap.put(imageNameDest,newimage.combine(limages) );
   }
 
   @Override
   public void toHistogram(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
-    Image newImage = imageAdapter.getImage(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram());
+    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(),ImageType.RGB);
     imageMap.put(imageNameDest, newImage);
   }
 

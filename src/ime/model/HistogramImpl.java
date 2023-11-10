@@ -36,7 +36,7 @@ public class HistogramImpl implements Histogram {
 
 
   @Override
-  public BufferedImage createHistogram() {
+  public float[][][] createHistogram() {
 
     BufferedImage histogramImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Graphics g = histogramImage.getGraphics();
@@ -50,7 +50,19 @@ public class HistogramImpl implements Histogram {
         g.drawLine(j, height - normalizedValueStart, j + 1, height - normalizedValueEnd);
       }
     }
-    return histogramImage;
+    float[][][] imagePixels = new float[height][width][];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        int pixel = histogramImage.getRGB(j, i);
+
+        float red = (float) ((pixel >> 16) & 0xFF);
+        float green = (float) ((pixel >> 8) & 0xFF);
+        float blue = (float) (pixel & 0xFF);
+
+        imagePixels[i][j] = new float[]{red, green, blue};
+      }
+    }
+    return imagePixels;
   }
 
   private void setUpHistogram(Graphics g) {
