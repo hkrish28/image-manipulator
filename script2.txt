@@ -14,7 +14,7 @@ save resources/res/bird-lumasplit.png bird-lumasplit
 intensity-component bird bird-intensitysplit split 99
 save resources/res/bird-intensitysplit.png bird-intensitysplit
 
-compress 0 bird bird-compress
+compress 99 bird bird-compress
 save bird-compress.png bird-compress
 
 exit

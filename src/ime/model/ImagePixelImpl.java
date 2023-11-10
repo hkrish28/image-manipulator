@@ -312,8 +312,8 @@ public class ImagePixelImpl implements Image {
         float threshold = nonZeroChannel.get(num - 1);
         for (int m = 0; m < transformed.length; m++) {
           for (int n = 0; n < transformed[0].length; n++) {
-            if (Math.abs(transformed[i][m][n]) < threshold) {
-              transformed[i][m][n] = 0;
+            if (Math.abs(transformed[m][n][i]) <= threshold) {
+              transformed[m][n][i] = 0;
             }
           }
         }
