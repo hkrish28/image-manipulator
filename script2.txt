@@ -17,4 +17,7 @@ save resources/res/bird-intensitysplit.png bird-intensitysplit
 compress 99 bird bird-compress
 save bird-compress.png bird-compress
 
+histogram bird bird-hist
+save bird-hist.png bird-hist
+
 exit
