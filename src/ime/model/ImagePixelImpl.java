@@ -1,13 +1,13 @@
 package ime.model;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static ime.model.ImageConstants.BLUR_FILTER;
 import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
 import static ime.model.ImageConstants.SHARPEN_FILTER;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -287,6 +287,38 @@ public class ImagePixelImpl implements Image {
     return imageType;
   }
 
+  @Override
+  public Image levelAdjust(int b, int m, int w) throws IllegalArgumentException {
+    if (!(b < m) || !(m < w)) {
+      throw new IllegalArgumentException("invalid b/m/w values");
+    }
+    float[] coefficients = compute(b, m, w);
+    float[][][] resultPixels = new float[height][width][getChannelCount()];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float[] x = getPixelValues(i, j);
+        for (int k =0; k <getChannelCount();k++){
+
+        resultPixels[i][j][k] = coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+        }
+      }
+    }
+    return new ImagePixelImpl(resultPixels,imageType);
+  }
+
+  private float[] compute(int b, int m, int w) {
+    float[] abc = new float[3];
+    float A = b * b * (m - w) - b * (m * m - w * w) + w * m * m - m * w * w;
+    float A_a = -b * (128 - 255) + 128 * w - 255 * m;
+    float A_b = b * b * (128 - 255) + 255 * m * m - 128 * w;
+    float A_c = b * b * (255 * m - 128 * w) - b * (255 * m * m - 128 * w * w);
+    abc[0] = A_a / A;
+    abc[1] = A_b / A;
+    abc[2] = A_c / A;
+
+    return abc;
+  }
+
   private float[][][] removePad(float[][][] ar) {
     float[][][] newar = new float[height][width][getChannelCount()];
     for (int c = 0; c < getChannelCount(); c++) {
@@ -529,7 +561,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-                .getChannelValues()[channel];
+            .getChannelValues()[channel];
       }
     }
 

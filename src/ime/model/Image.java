@@ -1,4 +1,5 @@
 package ime.model;
+
 import java.util.List;
 
 /**
@@ -138,6 +139,7 @@ public interface Image {
   /**
    * Return a compressed version of the image. Compression size depends on the compression
    * percentage provided.
+   *
    * @param compressPercent The percentage of compression
    * @return compressed image
    */
@@ -146,17 +148,22 @@ public interface Image {
   /**
    * Split the image vertically according to the split position given. If splitPercent is greater
    * than 100 or lesser than 0, a copy of the same image will be returned.
+   *
    * @param splitPercent the percentage of the split. 50 will split the image into 2 halves.
    * @return images that have been split vertically at the position given
    */
   List<Image> splitVertically(int splitPercent);
 
   /**
-   * Return an image that is the given image of the same height appended to the right of this image.
+   * Return an image that is the given image of the same height appended to the right of this
+   * image.
+   *
    * @param image image to be appended to the right of this image
    * @return appended version of the image
    */
   Image append(Image image);
 
   ImageType getImageType();
+
+  Image levelAdjust(int b, int m, int w) throws IllegalArgumentException;
 }
