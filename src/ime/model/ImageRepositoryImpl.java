@@ -40,7 +40,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void saveImage(String fileName, String imageName)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
     try {
@@ -53,7 +53,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(srcImage);
     List<Image> destImages = imageMap.get(srcImage).splitIntoColorChannels();
     for (int i = 0; i < destImages.size(); i++) {
@@ -63,7 +63,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void combineImages(List<String> srcImageNames, String imageDestName)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagesPresent(srcImageNames);
     List<Image> srcImageList = new ArrayList<>();
     Image firstSrcImage = imageMap.get(srcImageNames.get(0));
@@ -76,7 +76,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).brighten(brightnessConstant);
     imageMap.put(imageNameDest, newImage);
@@ -84,7 +84,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void blurImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).blur();
     imageMap.put(imageNameDest, newImage);
@@ -92,7 +92,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void sharpenImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).sharpen();
     imageMap.put(imageNameDest, newImage);
@@ -100,7 +100,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void flipImageHorizontally(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).flipHorizontally();
     imageMap.put(imageNameDest, newImage);
@@ -108,7 +108,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void flipImageVertically(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).flipVertically();
     imageMap.put(imageNameDest, newImage);
@@ -116,7 +116,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getIntensityImage();
     imageMap.put(imageNameDest, newImage);
@@ -124,7 +124,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getLumaImage();
     imageMap.put(imageNameDest, newImage);
@@ -132,7 +132,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getValueImage();
     imageMap.put(imageNameDest, newImage);
@@ -140,7 +140,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getSepia();
     imageMap.put(imageNameDest, newImage);
@@ -148,7 +148,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getRedComponent();
     imageMap.put(imageNameDest, newImage);
@@ -156,7 +156,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getGreenComponent();
     imageMap.put(imageNameDest, newImage);
@@ -164,7 +164,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getBlueComponent();
     imageMap.put(imageNameDest, newImage);
@@ -177,14 +177,15 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).compress(compressPercent);
     imageMap.put(imageNameDest, newImage);
   }
 
   @Override
-  public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
+  public void preview(String imageNameSrc, String imageNameDest,
+      BiConsumer<String, String> operation, int verticalSplit) {
     if (verticalSplit < 0 || verticalSplit > 100) {
       throw new IllegalArgumentException("Invalid split position");
     }
@@ -198,6 +199,43 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
+
+  }
+
+  private int calculateAveragePeakValue(Image image) {
+    int sumPeakValue = 0;
+    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+    for (int channelIndex = 0; channelIndex < hist.getChannelCount(); channelIndex++) {
+      sumPeakValue += hist.getMostFrequentValue(channelIndex);
+    }
+    return sumPeakValue / hist.getChannelCount();
+  }
+
+
+  @Override
+  public Image colorCorrect(String imageNameSrc, String imageNameDest) {
+    validateImagePresent(imageNameSrc);
+    Image image = imageMap.get(imageNameSrc);
+    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+
+    int averagePeakValue = calculateAveragePeakValue(image);
+    List<Image> limages = new ArrayList<>();
+
+    // Calculate brightness adjustment for each channel
+    float[] brightnessAdjustment = new float[image.getChannelCount()];
+    for (int channelIndex = 0; channelIndex < image.getChannelCount(); channelIndex++) {
+      int currentPeakValue = hist.getMostFrequentValue(channelIndex);
+      int peakDifference = averagePeakValue - currentPeakValue;
+      brightnessAdjustment[channelIndex] = peakDifference;
+      limages.add(image.brighten(brightnessAdjustment[channelIndex]));
+    }
+    Image newimage = limages.get(0);
+    limages.remove(0);
+    return newimage.combine(limages);
+  }
+
+  @Override
+  public void toHistogram(String imageNameSrc, String imageNameDest) {
 
   }
 

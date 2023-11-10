@@ -26,8 +26,8 @@ public interface ImageRepository {
    *
    * @param filePath  the path at which the image is to be saved.
    * @param imageName the name of the image to be saved.
-   * @throws IOException              if any error occurs during the loading of the image or if the file does not
-   *                                  exist at the file path.
+   * @throws IOException              if any error occurs during the loading of the image or if the
+   *                                  file does not exist at the file path.
    * @throws IllegalArgumentException if imageName has not been created/tagged yet.
    */
   void saveImage(String filePath, String imageName);
@@ -181,9 +181,14 @@ public interface ImageRepository {
   boolean isImagePresent(String imageNameSrc);
 
   void compress(String imageNameSrc, String imageNameDest, int compressPercent)
-          throws IllegalArgumentException;
+      throws IllegalArgumentException;
 
-  void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit);
+  void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation,
+      int verticalSplit);
 
   void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w);
+
+  Image colorCorrect(String imageNameSrc, String imageNameDest);
+
+  void toHistogram(String imageNameSrc, String imageNameDest);
 }
