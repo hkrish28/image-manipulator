@@ -22,6 +22,7 @@ public enum CommandEnum {
   rgb_combine("rgb-combine"),
   run("run"),
   compress("compress"),
+  levels_adjust("levels-adjust"),
 
   histogram("histogram"),
   color_correct("color-correct"),

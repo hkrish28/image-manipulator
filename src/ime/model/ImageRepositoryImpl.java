@@ -202,7 +202,9 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
-
+    validateImagePresent(imageNameSrc);
+    Image image = imageMap.get(imageNameSrc).levelAdjust(b,m,w);
+    imageMap.put(destImage, image);
   }
 
   private int calculateAveragePeakValue(Image image) {
