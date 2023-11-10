@@ -24,6 +24,7 @@ public enum CommandEnum {
   compress("compress"),
 
   histogram("histogram"),
+  color_correct("color-correct"),
   exit("exit");
 
   private final String command;

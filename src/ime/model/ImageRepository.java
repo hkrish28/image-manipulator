@@ -188,7 +188,7 @@ public interface ImageRepository {
 
   void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w);
 
-  Image colorCorrect(String imageNameSrc, String imageNameDest);
+  void colorCorrect(String imageNameSrc, String imageNameDest);
 
   void toHistogram(String imageNameSrc, String imageNameDest);
 }
