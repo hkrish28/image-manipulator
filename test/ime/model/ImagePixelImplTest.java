@@ -577,6 +577,16 @@ public class ImagePixelImplTest {
     assertExpectedImage(expectedCombinedImage, combinedImage);
   }
 
+  @Test
+  public void testCompress(){
+    float[][][] testPixels = new float[][][]{{{5,5,5},{3,3,3}},{{2,2,2},{4,4,4}}};
+    ImagePixelImpl image = new ImagePixelImpl(testPixels,ImageType.RGB);
+
+    Image compressed = image.compress(0);
+    assertExpectedImage(testPixels, compressed);
+//    image.invHaar(new float[][][]{{{7.071f},{2.828f},{1.0f},{0f},{1.414f},{-1.414f},{0.707f},{-2.121f}}});
+  }
+
   private void assertExpectedImage(float[][][] expectedPixelValues, Image blurredImage) {
     assertEquals(expectedPixelValues.length, blurredImage.getHeight());
     assertEquals(expectedPixelValues[0].length, blurredImage.getWidth());
