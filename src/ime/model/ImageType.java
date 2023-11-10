@@ -1,9 +1,10 @@
 package ime.model;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This enum list the different types of images and provides some functions pertaining to each of
@@ -32,5 +33,19 @@ public enum ImageType {
    */
   public Pixel generatePixel() {
     return pixelSupplier.get();
+  }
+
+  public static ImageType getImageTypeFromChannels(List<Color> colors) {
+    List<ImageType> colorChannelImageType = Arrays.stream(ImageType.values()).filter(imageType -> {
+      if (imageType.colorChannels.size() != colors.size()) {
+        return false;
+      }
+      return Arrays.deepEquals(colors.toArray(), imageType.colorChannels.toArray());
+    }).collect(Collectors.toList());
+    if (colorChannelImageType.isEmpty()) {
+      return null;
+    } else {
+      return colorChannelImageType.get(0);
+    }
   }
 }

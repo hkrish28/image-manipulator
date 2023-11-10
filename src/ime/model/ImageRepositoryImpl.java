@@ -240,7 +240,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   @Override
   public void toHistogram(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
-    Image newImage = imageAdapter.getImage(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram());
+    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(),ImageType.RGB);
     imageMap.put(imageNameDest, newImage);
   }
 
