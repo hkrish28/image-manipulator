@@ -1,11 +1,9 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
-
 public interface Histogram {
 
 
-  BufferedImage createHistogram();
+  float[][][] createHistogram();
 
   /**
    * number of color channels in histogram.

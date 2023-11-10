@@ -20,4 +20,20 @@ save bird-compress.png bird-compress
 histogram bird bird-hist
 save bird-hist.png bird-hist
 
+color-correct bird bird-correct
+save bird-correct.png bird-correct
+
+histogram bird-correct bird-hist-color-correct
+save bird-hist-color-correct.png bird-hist-color-correct
+
+load galaxy.png galaxy
+histogram galaxy galaxy-hist
+save galaxy-hist.png galaxy-hist
+
+color-correct galaxy galaxy-correct
+save galaxy-correct.png galaxy-correct
+
+histogram galaxy-correct galaxy-hist-color-correct
+save galaxy-hist-color-correct.png galaxy-hist-color-correct
+
 exit
