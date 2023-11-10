@@ -36,4 +36,9 @@ save galaxy-correct.png galaxy-correct
 histogram galaxy-correct galaxy-hist-color-correct
 save galaxy-hist-color-correct.png galaxy-hist-color-correct
 
+levels-adjust 20 140 220 bird bird-leveladjust
+save bird-leveladjust.png bird-leveladjust
+
+histogram bird-leveladjust bird-leveladjust-hist
+save bird-leveladjust-hist.png bird-leveladjust-hist
 exit

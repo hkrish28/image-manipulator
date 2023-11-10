@@ -60,7 +60,14 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        setPixelValue(this.pixels, i, j, pixelValues[i][j]);
+        try {
+          setPixelValue(this.pixels, i, j, pixelValues[i][j]);
+        } catch (IllegalArgumentException e) {
+          System.out.println(
+              e.getMessage() + " " + i + " " + j + " " + pixelValues[i][j][0] + pixelValues[i][j][1]
+                  + pixelValues[i][j][2]);
+          throw new IllegalArgumentException();
+        }
       }
     }
   }
@@ -297,20 +304,32 @@ public class ImagePixelImpl implements Image {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         float[] x = getPixelValues(i, j);
-        for (int k =0; k <getChannelCount();k++){
-
-        resultPixels[i][j][k] = coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+        for (int k = 0; k < getChannelCount(); k++) {
+          if (x[k] <= b) {
+            resultPixels[i][j][k] = 0;
+          } else if (x[k] >= w) {
+            resultPixels[i][j][k] = 255;
+          } else {
+            resultPixels[i][j][k] =
+                coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+            if ((resultPixels[i][j][k] < 0) || (resultPixels[i][j][k] > 255)) {
+              System.out.println(
+                  "wrong math" + " " + i + " " + j + " " + k + " " + x[k] + " " + coefficients[0]
+                      + " " + coefficients[1] + " " + coefficients[2] + " = "
+                      + resultPixels[i][j][k]);
+            }
+          }
         }
       }
     }
-    return new ImagePixelImpl(resultPixels,imageType);
+    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   private float[] compute(int b, int m, int w) {
     float[] abc = new float[3];
     float A = b * b * (m - w) - b * (m * m - w * w) + w * m * m - m * w * w;
     float A_a = -b * (128 - 255) + 128 * w - 255 * m;
-    float A_b = b * b * (128 - 255) + 255 * m * m - 128 * w;
+    float A_b = b * b * (128 - 255) + 255 * m * m - 128 * w * w;
     float A_c = b * b * (255 * m - 128 * w) - b * (255 * m * m - 128 * w * w);
     abc[0] = A_a / A;
     abc[1] = A_b / A;

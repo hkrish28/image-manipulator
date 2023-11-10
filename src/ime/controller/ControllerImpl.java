@@ -1,5 +1,6 @@
 package ime.controller;
 
+import ime.controller.commands.LevelsAdjust;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -87,6 +88,7 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.compress, new Compress());
     knownCommands.put(CommandEnum.histogram, new Histogram());
     knownCommands.put(CommandEnum.color_correct, new ColorCorrect());
+    knownCommands.put(CommandEnum.levels_adjust,new LevelsAdjust());
 //    knownCommands.put(CommandEnum.run, (String[] tokens, ImageRepository imageRepository) -> {
 //      validateTokenCount(2, tokens.length);
 //      try {
