@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ImageHandlerImpl implements ImageHandler<Image> {
   @Override
-  public float[][][] loadImage(Image image) throws IOException {
+  public float[][][] loadImage(Image image){
     int height = image.getHeight();
     int width = image.getWidth();
     int channelCount = image.getChannelCount();

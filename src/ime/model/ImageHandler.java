@@ -11,7 +11,7 @@ import java.util.List;
 public interface ImageHandler <T> {
 
 
-  float[][][] loadImage(T image) throws IOException;
+  float[][][] loadImage(T image);
 
 
   T saveImage(float[][][] pixelValues, List<Color> colorChannels);

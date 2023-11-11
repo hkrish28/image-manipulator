@@ -1,5 +1,6 @@
 package ime.model;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.function.BiConsumer;
  */
 public class ImageRepositoryImpl implements ImageRepository {
 
-  private final FileHandlerProvider fileHandlerProvider;
+//  private final FileHandlerProvider fileHandlerProvider;
   /**
    * map for storing the image with its name as the key.
    */
@@ -22,36 +23,50 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   private final ImageAdapter imageAdapter;
 
-  public ImageRepositoryImpl(FileHandlerProvider fileHandlerProvider) {
+  public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
-    this.fileHandlerProvider = fileHandlerProvider;
+//    this.fileHandlerProvider = fileHandlerProvider;
     this.imageAdapter = new ImageAdapter();
   }
 
 
-  @Override
-  public void loadImage(String filePath, String imageName) {
-    try {
-      float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
-      Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
-      imageMap.put(imageName, newImage);
-    } catch (IOException e) {
-      throw new IllegalArgumentException(e.getMessage());
-    }
+//  @Override
+//  public void loadImage(String filePath, String imageName) {
+//    try {
+//      float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
+//      Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
+//      imageMap.put(imageName, newImage);
+//    } catch (IOException e) {
+//      throw new IllegalArgumentException(e.getMessage());
+//    }
+//
+//  }
 
+  @Override
+  public void loadImage(BufferedImage image, String imageName) {
+    Image newImage = new ImagePixelImpl(new BufferedImageHandler().loadImage(image), ImageType.RGB);
+    imageMap.put(imageName, newImage);
   }
 
+//  @Override
+//  public void saveImage(String fileName, String imageName)
+//          throws IllegalArgumentException {
+//    validateImagePresent(imageName);
+//    Image image = imageMap.get(imageName);
+//    try {
+//      fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
+//    } catch (IOException e) {
+//      throw new IllegalArgumentException(e.getMessage());
+//    }
+//
+//  }
+
   @Override
-  public void saveImage(String fileName, String imageName)
-          throws IllegalArgumentException {
+  public BufferedImage getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    try {
-      fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
-    } catch (IOException e) {
-      throw new IllegalArgumentException(e.getMessage());
-    }
-
+    float[][][] pixels = new ImageHandlerImpl().loadImage(image);
+    return new BufferedImageHandler().saveImage(pixels, image.getImageType().colorChannels);
   }
 
   @Override
@@ -203,7 +218,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   @Override
   public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
     validateImagePresent(imageNameSrc);
-    Image image = imageMap.get(imageNameSrc).levelAdjust(b,m,w);
+    Image image = imageMap.get(imageNameSrc).levelAdjust(b, m, w);
     imageMap.put(destImage, image);
   }
 
@@ -236,13 +251,13 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     Image newimage = limages.get(0);
     limages.remove(0);
-    imageMap.put(imageNameDest,newimage.combine(limages) );
+    imageMap.put(imageNameDest, newimage.combine(limages));
   }
 
   @Override
   public void toHistogram(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
-    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(),ImageType.RGB);
+    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(), ImageType.RGB);
     imageMap.put(imageNameDest, newImage);
   }
 

@@ -1,13 +1,13 @@
 package ime.model;
 
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
-
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -64,8 +64,8 @@ public class ImagePixelImpl implements Image {
           setPixelValue(this.pixels, i, j, pixelValues[i][j]);
         } catch (IllegalArgumentException e) {
           System.out.println(
-              e.getMessage() + " " + i + " " + j + " " + pixelValues[i][j][0] + pixelValues[i][j][1]
-                  + pixelValues[i][j][2]);
+                  e.getMessage() + " " + i + " " + j + " " + pixelValues[i][j][0] + pixelValues[i][j][1]
+                          + pixelValues[i][j][2]);
           throw new IllegalArgumentException();
         }
       }
@@ -311,12 +311,12 @@ public class ImagePixelImpl implements Image {
             resultPixels[i][j][k] = 255;
           } else {
             resultPixels[i][j][k] =
-                coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+                    coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
             if ((resultPixels[i][j][k] < 0) || (resultPixels[i][j][k] > 255)) {
               System.out.println(
-                  "wrong math" + " " + i + " " + j + " " + k + " " + x[k] + " " + coefficients[0]
-                      + " " + coefficients[1] + " " + coefficients[2] + " = "
-                      + resultPixels[i][j][k]);
+                      "wrong math" + " " + i + " " + j + " " + k + " " + x[k] + " " + coefficients[0]
+                              + " " + coefficients[1] + " " + coefficients[2] + " = "
+                              + resultPixels[i][j][k]);
             }
           }
         }
@@ -580,7 +580,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-            .getChannelValues()[channel];
+                .getChannelValues()[channel];
       }
     }
 

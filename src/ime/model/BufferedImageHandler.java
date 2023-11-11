@@ -3,6 +3,7 @@ package ime.model;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,15 +17,13 @@ public class BufferedImageHandler implements ImageHandler<BufferedImage> {
     for (int x = 0; x < width; x++) {
       for (int y = 0; y < height; y++) {
         float[] pixel = pixelValues[y][x];
-        float red = pixel[0];
-        float green = pixel[1];
-        float blue = pixel[2];
-
-        // Convert the floating-point values back to RGB integers
-        int rgb = (int) red << 16 | (int) green << 8 | (int) blue;
+        int red = (int) pixel[0];
+        int green = (int) pixel[1];
+        int blue = (int) pixel[2];
+        Color color = new Color(red, green, blue);
 
         // Set the pixel in the BufferedImage
-        bufferedImageResult.setRGB(x, y, rgb);
+        bufferedImageResult.setRGB(x, y, color.getRGB());
       }
     }
     return bufferedImageResult;
@@ -35,14 +34,18 @@ public class BufferedImageHandler implements ImageHandler<BufferedImage> {
     ColorModel colorModel = image.getColorModel();
     int height = image.getHeight();
     int width = image.getWidth();
-    int channelCount = colorModel.getNumComponents();
+    int channelCount = colorModel.getNumColorComponents();
     float[][][] resultPixels = new float[height][width][channelCount];
+    Raster raster = image.getData();
+    //Using numComponents as the pixel could contain alpha value, which we ignore
+    int[] pixelValues = new int[colorModel.getNumComponents()];
+
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        int[] colorChannelValues = new int[channelCount];
-        colorModel.getComponents(image.getRGB(i, j), colorChannelValues, 0);
+        raster.getPixel(j, i, pixelValues);
+
         for (int k = 0; k < channelCount; k++) {
-          resultPixels[i][j][k] = colorChannelValues[k];
+          resultPixels[i][j][k] = pixelValues[k];
         }
       }
     }
