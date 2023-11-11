@@ -21,12 +21,10 @@ public class ImageRepositoryImpl implements ImageRepository {
    */
   private final Map<String, Image> imageMap;
 
-  private final ImageAdapter imageAdapter;
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
 //    this.fileHandlerProvider = fileHandlerProvider;
-    this.imageAdapter = new ImageAdapter();
   }
 
 
