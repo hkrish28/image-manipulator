@@ -30,7 +30,7 @@ public class BufferedImageHandler implements ImageHandler<BufferedImage> {
   }
 
   @Override
-  public float[][][] loadImage(BufferedImage image) {
+  public float[][][] getImagePixels(BufferedImage image) {
     ColorModel colorModel = image.getColorModel();
     int height = image.getHeight();
     int width = image.getWidth();
@@ -53,7 +53,7 @@ public class BufferedImageHandler implements ImageHandler<BufferedImage> {
   }
 
   @Override
-  public BufferedImage saveImage(float[][][] pixelValues, List<Color> colorChannels) {
+  public BufferedImage convertIntoImage(float[][][] pixelValues, List<Color> colorChannels) {
     BufferedImageType imageType = BufferedImageType.getImageTypeFromChannels(colorChannels);
     if (imageType == null) {
       throw new IllegalArgumentException("Invalid type for supported buffered images");

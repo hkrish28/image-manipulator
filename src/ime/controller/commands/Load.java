@@ -16,7 +16,6 @@ public class Load extends AbstractCommand {
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
     String path = tokens[1];
     String imageName = tokens[2];
-//    imageRepository.loadImage(path, imageName);
     try{
       BufferedImage image = new FileHandlerProviderImpl().getFileHandler(path).loadImage(path);
       imageRepository.loadImage(image, imageName);
@@ -24,7 +23,6 @@ public class Load extends AbstractCommand {
     catch(IOException e){
       return "Invalid file";
     }
-//    imageRepository.loadImage(path, imageName);
     return "Loaded successfully.";
   }
 
