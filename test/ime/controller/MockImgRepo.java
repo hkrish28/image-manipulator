@@ -1,5 +1,6 @@
 package ime.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -26,37 +27,37 @@ public class MockImgRepo implements ImageRepository {
   }
 
   /**
-   * Loads an image from the specified file and logs the method call.
+   * Loads a given image into the repository with the given name.
    *
-   * @param filePath  The path to the image file to load.
+   * @param image     The image to be loaded into the repository.
    * @param imageName The name to associate with the loaded image.
    * @throws IOException If an error occurs during the loading process or if the MockImgRepo is set
    *                     to fail.
    */
   @Override
-  public void loadImage(String filePath, String imageName) {
-    methodCallLogger.append("loadImage called " + filePath + " and " + imageName + " passed\n");
+  public void loadImage(BufferedImage image, String imageName) {
+    methodCallLogger.append("loadImage called " + " and " + imageName + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
   }
 
   /**
-   * Saves an image to the specified file and logs the method call.
+   * Retrieves the image tagged by the given name.
    *
-   * @param filePath  The path to the file where the image should be saved.
-   * @param imageName The name of the image to be saved.
+   * @param imageName The name of the image to be retrieved.
    * @throws IOException If an error occurs during the saving process or if the MockImgRepo is set
    *                     to fail.
    */
 
   @Override
-  public void saveImage(String filePath, String imageName)
+  public BufferedImage getImage(String imageName)
           throws IllegalArgumentException {
-    methodCallLogger.append("saveImage called " + filePath + " and " + imageName + " passed\n");
+    methodCallLogger.append("getImage called " + " and " + imageName + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
+    return new BufferedImage(10,10,1);
   }
 
   /**
@@ -338,6 +339,16 @@ public class MockImgRepo implements ImageRepository {
 
   @Override
   public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
+
+  }
+
+  @Override
+  public void colorCorrect(String imageNameSrc, String imageNameDest) {
+
+  }
+
+  @Override
+  public void toHistogram(String imageNameSrc, String imageNameDest) {
 
   }
 
