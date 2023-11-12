@@ -15,7 +15,7 @@ public class BlueComponent extends AbstractCommand {
     String imageName = tokens[1];
     String newImage = tokens[2];
     imageRepository.toBlueChannelImage(imageName, newImage);
-    return messageSenderHelper(tokens[0], imageName, newImage);
+    return messageSenderHelper(tokens);
   }
 
   @Override

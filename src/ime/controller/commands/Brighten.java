@@ -20,4 +20,10 @@ public class Brighten extends AbstractCommand {
     }
   }
 
+  @Override
+  protected String messageSenderHelper(String[] tokens) {
+    return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
+            + " & put in " + tokens[destIndex] + " with constant value: " + tokens[1];
+  }
+
 }

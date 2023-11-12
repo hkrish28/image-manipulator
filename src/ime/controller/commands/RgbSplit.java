@@ -17,4 +17,11 @@ public class RgbSplit extends AbstractCommand {
     List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
     return (src, dest) -> imageRepository.splitImageIntoColorChannels(src, colorChannelsImages);
   }
+
+  @Override
+  protected String messageSenderHelper(String[] tokens) {
+    List<String> destImages = Arrays.asList(tokens[2], tokens[3], tokens[4]);
+    return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
+            + " & put in " + destImages;
+  }
 }

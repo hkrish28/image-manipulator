@@ -65,14 +65,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        try {
           setPixelValue(this.pixels, i, j, pixelValues[i][j]);
-        } catch (IllegalArgumentException e) {
-          System.out.println(
-                  e.getMessage() + " " + i + " " + j + " " + pixelValues[i][j][0] + pixelValues[i][j][1]
-                          + pixelValues[i][j][2]);
-          throw new IllegalArgumentException();
-        }
       }
     }
   }

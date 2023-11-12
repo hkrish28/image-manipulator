@@ -23,7 +23,7 @@ public class Save extends AbstractCommand {
       return "Invalid file";
     }
 
-    return messageSenderHelper(tokens[0], file, imageName);
+    return messageSenderHelper(tokens);
   }
 
   @Override
@@ -32,7 +32,7 @@ public class Save extends AbstractCommand {
   }
 
   @Override
-  protected String messageSenderHelper(String operation, String src, String dest) {
+  protected String messageSenderHelper(String[] tokens) {
     return "Saved successfully.";
   }
 }
