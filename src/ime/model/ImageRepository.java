@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import ime.controller.ImageDrawer;
+
 /**
  * An Image Repository is a class that manages multiple images and performs operations on them. It
  * is able to tag an image to a particular name and also save images that it has already tagged.
@@ -22,7 +24,8 @@ public interface ImageRepository {
    */
 //  void loadImage(String filePath, String imageName);
 
-  void loadImage(BufferedImage image, String imageName );
+
+  void loadImage(float[][][] image, String imageName );
 
   /**
    * This method is used to save a tagged image to a given file path.
@@ -35,7 +38,8 @@ public interface ImageRepository {
    */
 //  void saveImage(String filePath, String imageName);
 
-  BufferedImage getImage(String imageName);
+  float[][][] getImage(String imageName);
+
 
   /**
    * Split this image into its respective color channels and store the resulting images into the
@@ -195,5 +199,5 @@ public interface ImageRepository {
 
   void colorCorrect(String imageNameSrc, String imageNameDest);
 
-  void toHistogram(String imageNameSrc, String imageNameDest);
+  void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer);
 }
