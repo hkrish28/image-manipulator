@@ -1,8 +1,9 @@
-package ime.model;
+package ime.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import ime.model.FileHandler;
+
 import ime.model.Image;
 
 /**
@@ -31,7 +32,7 @@ public class MockFileHandler implements FileHandler {
    *                     set to fail.
    */
   @Override
-  public float[][][] loadImage(String filename) throws IOException {
+  public BufferedImage loadImage(String filename) throws IOException {
     float[][][] testPixelValues = {
             {{100, 50, 75}, {200, 150, 175}},
             {{50, 25, 37.5f}, {100, 75, 87.5f}}
@@ -40,7 +41,7 @@ public class MockFileHandler implements FileHandler {
     if (fail) {
       throw new IOException("file handler failed");
     }
-    return testPixelValues;
+    return new BufferedImage(10,10,1);
   }
 
   /**
@@ -52,7 +53,7 @@ public class MockFileHandler implements FileHandler {
    *                     set to fail.
    */
   @Override
-  public void saveImage(Image image, String filename) throws IOException {
+  public void saveImage(BufferedImage image, String filename) throws IOException {
     methodCallLogger.append("saveImage called " + filename + " passed\n");
     if (fail) {
       throw new IOException("file handler failed");

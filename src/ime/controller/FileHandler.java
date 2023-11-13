@@ -1,6 +1,9 @@
-package ime.model;
+package ime.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import ime.model.Image;
 
 /**
  * A File Handler is used for loading and saving images of certain file formats and image types
@@ -16,7 +19,7 @@ public interface FileHandler {
    * @return the pixel values of the images
    * @throws IOException if any error occurs during file loading or if the file does not exist
    */
-  float[][][] loadImage(String filename) throws IOException;
+  BufferedImage loadImage(String filename) throws IOException;
 
   /**
    * This method saves the given image into the file path passed as parameter.
@@ -25,6 +28,6 @@ public interface FileHandler {
    * @param filename the filename (or path) that the image will be saved in
    * @throws IOException if any error occurs during file saving
    */
-  void saveImage(Image image, String filename) throws IOException;
+  void saveImage(BufferedImage image, String filename) throws IOException;
 
 }

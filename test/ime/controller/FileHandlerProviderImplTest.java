@@ -1,4 +1,4 @@
-package ime.model;
+package ime.controller;
 
 import org.junit.Before;
 import org.junit.Test;

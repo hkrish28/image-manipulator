@@ -1,5 +1,7 @@
-package ime.model;
+package ime.controller;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,7 +14,7 @@ import java.util.Scanner;
 public class PpmFileHandler implements FileHandler {
 
   @Override
-  public float[][][] loadImage(String filename) throws FileNotFoundException {
+  public BufferedImage loadImage(String filename) throws FileNotFoundException {
 
     Scanner sc = this.getScanner(filename);
     String token;
@@ -27,52 +29,57 @@ public class PpmFileHandler implements FileHandler {
     System.out.println("Height of image: " + height);
     int maxValue = sc.nextInt();
     System.out.println("Maximum value of a color in this file (usually 255): " + maxValue);
-    float[][][] pixelValues = new float[height][width][3];
 
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        pixelValues[i][j][0] = sc.nextInt();
-        pixelValues[i][j][1] = sc.nextInt();
-        pixelValues[i][j][2] = sc.nextInt();
+        int red = sc.nextInt();
+        int green = sc.nextInt();
+        int blue = sc.nextInt();
+        Color color = new Color(red, green, blue);
+        bufferedImage.setRGB(i, j, color.getRGB());
       }
     }
-    return pixelValues;
+    return bufferedImage;
   }
 
 
   @Override
-  public void saveImage(Image image, String filename) throws IOException {
+  public void saveImage(BufferedImage image, String filename) throws IOException {
     StringBuilder builder = new StringBuilder();
-    builder.append("P3" + System.lineSeparator());
-    builder.append(image.getWidth() + " " + image.getHeight() + System.lineSeparator());
-    builder.append(findMaxValue(image) + System.lineSeparator());
-    for (int i = 0; i < image.getHeight(); i++) {
-      for (int j = 0; j < image.getWidth(); j++) {
-        float[] channelValues = image.getPixelValues(i, j);
-        for (int k = 0; k < image.getChannelCount(); k++) {
-          builder.append((int) channelValues[k] + " ");
-        }
-        builder.append(" ");
+    builder.append("P3").append(System.lineSeparator())
+            .append(image.getWidth()).append(" ")
+            .append(image.getHeight()).append(System.lineSeparator())
+            .append(findMaxValue(image)).append(System.lineSeparator());
+    for (int y = 0; y < image.getHeight(); y++) {
+      for (int x = 0; x < image.getWidth(); x++) {
+        Color color = new Color(image.getRGB(x, y), true);
+        builder.append(color.getRed()).append(" ")
+                .append(color.getGreen()).append(" ")
+                .append(color.getBlue()).append(" ");
       }
       builder.append(System.lineSeparator());
     }
+
     FileOutputStream fos = new FileOutputStream(filename);
     fos.write(builder.toString().getBytes());
     fos.close();
 
   }
 
-  private int findMaxValue(Image image) {
+  private int[] getPixelValues(int pixel) {
+    return new int[]{(pixel >> 16) & 0xFF, (pixel >> 8) & 0xFF, pixel & 0xFF};
+  }
+
+  private int findMaxValue(BufferedImage image) {
     int max = 0;
-    for (int i = 0; i < image.getHeight(); i++) {
-      for (int j = 0; j < image.getWidth(); j++) {
-        int pixelValue = 0;
-        float[] channelValues = image.getPixelValues(i, j);
-        for (int k = 0; k < image.getChannelCount(); k++) {
-          if (channelValues[k] > pixelValue) {
-            pixelValue = (int) channelValues[k];
-          }
-        }
+    for (int i = 0; i < image.getWidth(); i++) {
+      for (int j = 0; j < image.getHeight(); j++) {
+        Color color = new Color(image.getRGB(i, j), true);
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+        int pixelValue = Math.max(Math.max(red, green), blue);
         if (pixelValue == 255) {
           return pixelValue;
         } else if (pixelValue > max) {

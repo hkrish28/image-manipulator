@@ -89,7 +89,7 @@ public class ControllerImplTest {
             new ControllerImpl(new Scanner("run test/resources/testscript.txt\nexit"),
                     view, mockImgRepo);
     controller.execute();
-    assertEquals("loadImage called images/test.ppm and test passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.LOAD, "test"),
             mockImgRepo.getLogger());
     String expectedView = "Please enter the command to run: \n" +
             "Image Repository failed\n" +
@@ -101,10 +101,9 @@ public class ControllerImplTest {
 
 
   @Test
-  public void testInvalidImageForLoad() {
+  public void testInvalidImage() {
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("load invalidImageName destImage"
-                    + "\nblur invalidImageName destImage" + "\nsharpen invalidImageName destImage"
+            new Scanner("blur invalidImageName destImage" + "\nsharpen invalidImageName destImage"
                     + "\nhorizontal-flip invalidImageName destImage"
                     + "\nvertical-flip invalidImageName destImage"
                     + "\nintensity-component invalidImageName destImage"
@@ -116,23 +115,30 @@ public class ControllerImplTest {
                     + "\nsepia invalidImageName destImage" + "\nexit"), view,
             mockImgRepo);
     controller.execute();
-    assertEquals(
-            "loadImage called invalidImageName and destImage passed\n" +
-                    "blurImage called invalidImageName and destImage passed\n" +
-                    "sharpenImage called invalidImageName and destImage passed\n" +
-                    "horizontal flip called invalidImageName and destImage passed\n" +
-                    "vertical flip called invalidImageName and destImage passed\n" +
-                    "intensity gs called invalidImageName and destImage passed\n" +
-                    "value gs called invalidImageName and destImage passed\n" +
-                    "luma gs called invalidImageName and destImage passed\n" +
-                    "red channel called invalidImageName and destImage passed\n" +
-                    "green channel called invalidImageName and destImage passed\n" +
-                    "blue channel called invalidImageName and destImage passed\n" +
-                    "sepia called invalidImageName and destImage passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(
+                    MockImgRepo.BLUR, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.SHARPEN, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.H_FLIP, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.V_FLIP, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.INTENSITY, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.VALUE, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.LUMA, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.RED_COMP, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.GREEN_COMP, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.BLUE_COMP, "invalidImageName", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.SEPIA, "invalidImageName", "destImage"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
-            + "Image Repository failed\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
             + "Please enter the command to run: \n"
             + "Source Name invalid\n"
@@ -160,11 +166,11 @@ public class ControllerImplTest {
   @Test
   public void testInvalidImageForSave() {
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("save invalidName.ppm destImage"
+            new Scanner("save test/resources/testImage.ppm destImage"
                     + "\nexit"), view,
             mockImgRepo);
     controller.execute();
-    assertEquals("saveImage called invalidName.ppm and destImage passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.GET_IMAGE, "destImage"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
             + "Image Repository failed\n"
@@ -174,12 +180,13 @@ public class ControllerImplTest {
   @Test
   public void testInvalidImageForSplit() {
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("rgb-split invalidName.ppm red green blue"
+            new Scanner("rgb-split invalid red green blue"
                     + "\nexit"), view,
             mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("splitImage called invalidName.ppm and [red, green, blue] passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(
+                    MockImgRepo.SPLIT_IMAGE, "invalid", "[red, green, blue]"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
             + "Image Repository failed\n"
@@ -189,12 +196,13 @@ public class ControllerImplTest {
   @Test
   public void testInvalidImageForCombine() {
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("rgb-combine invalidName.ppm red green blue"
+            new Scanner("rgb-combine invalid red green blue"
                     + "\nexit"), view,
             mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("combineImage called [red, green, blue] and invalidName.ppm passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(
+                    MockImgRepo.COMBINE_IMAGE, "[red, green, blue]", "invalid"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
             + "Image Repository failed\n"
@@ -204,12 +212,12 @@ public class ControllerImplTest {
   @Test
   public void testInvalidImageForBrighten() {
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("brighten 122 invalidName.ppm destImage "
+            new Scanner("brighten 122 invalid destImage"
                     + "\nexit"), view,
             mockImgRepo);
     controller.execute();
     mockImgRepo.getLogger();
-    assertEquals("brightenImage called invalidName.ppm and destImage passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "invalid", "destImage", 122),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
             + "Source Name invalid\n"
@@ -236,36 +244,37 @@ public class ControllerImplTest {
   public void testValidImageSplitCombine() {
     mockImgRepo.setFailureFlag(false);
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("rgb-split invalidName red green blue"
-                    + "\nrgb-combine invalidName red green blue\nexit"), view, mockImgRepo);
+            new Scanner("rgb-split valid red green blue"
+                    + "\nrgb-combine valid red green blue\nexit"), view, mockImgRepo);
     controller.execute();
-    assertEquals("splitImage called invalidName and [red, green, blue] passed\n" +
-                    "combineImage called [red, green, blue] and invalidName passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.SPLIT_IMAGE, "valid", "[red, green, blue]") +
+                    mockImgRepo.getLoggerMessageForOperation(
+                            MockImgRepo.COMBINE_IMAGE, "[red, green, blue]", "valid"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n" +
-            "rgb-split operation completed successfully for invalidName & put in " +
+            "rgb-split operation completed successfully for valid & put in " +
             "[red, green, blue]\nPlease enter the command to run: \n" +
             "rgb-combine operation completed successfully for [red, green, blue] & put in " +
-            "invalidName\nPlease enter the command to run:", outputStream.toString().trim());
+            "valid\nPlease enter the command to run:", outputStream.toString().trim());
   }
 
   @Test
   public void testValidImageOperations() {
     mockImgRepo.setFailureFlag(false);
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("brighten 122 invalidName.ppm destImage"
-                    + "\nblur invalidName.ppm destImage" +
-                    "\nsharpen invalidName.ppm destImage\nexit"), view, mockImgRepo);
+            new Scanner("brighten 122 valid destImage"
+                    + "\nblur valid destImage" +
+                    "\nsharpen valid destImage\nexit"), view, mockImgRepo);
     controller.execute();
-    assertEquals("brightenImage called invalidName.ppm and destImage passed\n" +
-            "blurImage called invalidName.ppm and destImage passed\n" +
-            "sharpenImage called invalidName.ppm and destImage passed\n", mockImgRepo.getLogger());
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "valid", "destImage", 122) +
+            mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BLUR, "valid", "destImage") +
+            mockImgRepo.getLoggerMessageForOperation(MockImgRepo.SHARPEN, "valid", "destImage"), mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n" +
-            "brighten operation completed successfully for invalidName.ppm & put in destImage\n" +
+            "brighten operation completed successfully for valid & put in destImage with constant value: 122\n" +
             "Please enter the command to run: \n" +
-            "blur operation completed successfully for invalidName.ppm & put in destImage\n" +
+            "blur operation completed successfully for valid & put in destImage\n" +
             "Please enter the command to run: \n" +
-            "sharpen operation completed successfully for invalidName.ppm & put in destImage\n" +
+            "sharpen operation completed successfully for valid & put in destImage\n" +
             "Please enter the command to run:", outputStream.toString().trim());
   }
 
@@ -338,11 +347,11 @@ public class ControllerImplTest {
   public void testValidImageLoadSave() {
     mockImgRepo.setFailureFlag(false);
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("load invalidName.ppm destImage"
-                    + "\nsave invalidName.ppm destImage\nexit"), view, mockImgRepo);
+            new Scanner("load test/resources/testImage.ppm destImage"
+                    + "\nsave test/resources/testImage.ppm destImage\nexit"), view, mockImgRepo);
     controller.execute();
-    assertEquals("loadImage called invalidName.ppm and destImage passed\n" +
-                    "saveImage called invalidName.ppm and destImage passed\n",
+    assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.LOAD, "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.GET_IMAGE, "destImage"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n" +
             "Loaded successfully.\n" +

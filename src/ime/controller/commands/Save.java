@@ -1,7 +1,10 @@
 package ime.controller.commands;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.function.BiConsumer;
 
+import ime.controller.FileHandlerProviderImpl;
 import ime.model.ImageRepository;
 
 public class Save extends AbstractCommand {
@@ -10,13 +13,26 @@ public class Save extends AbstractCommand {
     super(3, 1, 2);
   }
 
-  @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
-    return imageRepository::saveImage;
+  protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
+    String file = tokens[1];
+    String imageName = tokens[2];
+    BufferedImage bufferedImage = imageRepository.getImage(imageName);
+    try {
+      new FileHandlerProviderImpl().getFileHandler(file).saveImage(bufferedImage, file);
+    } catch (IOException e) {
+      return "Invalid file";
+    }
+
+    return messageSenderHelper(tokens);
   }
 
   @Override
-  protected String messageSenderHelper(String operation, String src, String dest) {
+  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
+    return null;
+  }
+
+  @Override
+  protected String messageSenderHelper(String[] tokens) {
     return "Saved successfully.";
   }
 }

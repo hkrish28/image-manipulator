@@ -2,6 +2,8 @@ package ime.model;
 
 import org.junit.Test;
 
+import java.awt.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,9 +22,9 @@ public class ImageTypeTest {
   @Test
   public void testChannelIndexForRgb() {
     ImageType imageType = ImageType.RGB;
-    assertEquals(0, imageType.colorChannels.indexOf(ColorChannel.RED));
-    assertEquals(1, imageType.colorChannels.indexOf(ColorChannel.GREEN));
-    assertEquals(2, imageType.colorChannels.indexOf(ColorChannel.BLUE));
+    assertEquals(0, imageType.colorChannels.indexOf(Color.RED));
+    assertEquals(1, imageType.colorChannels.indexOf(Color.GREEN));
+    assertEquals(2, imageType.colorChannels.indexOf(Color.BLUE));
   }
 
 }
