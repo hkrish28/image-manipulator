@@ -2,9 +2,6 @@ package ime.controller;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-
-import ime.model.BufferedImageHandler;
 
 public class ImageDrawerImpl implements ImageDrawer {
 
@@ -22,6 +19,17 @@ public class ImageDrawerImpl implements ImageDrawer {
 
   @Override
   public float[][][] getImageDrawing() {
+//    float[][][] imagePixels = new float[height][width][];
+//    for (int i = 0; i < height; i++) {
+//      for (int j = 0; j < width; j++) {
+//        Color color = new Color(image.getRGB(j, i));
+//        float red = color.getRed();
+//        float green = color.getGreen();
+//        float blue = color.getBlue();
+//        imagePixels[i][j] = new float[]{red, green, blue};
+//      }
+//    }
+//    return imagePixels;
     return imageHandler.getImagePixels(image);
   }
 
@@ -38,14 +46,6 @@ public class ImageDrawerImpl implements ImageDrawer {
               "to Red, Green, and Blue values.");
     }
     graphics.setColor(new Color(colorPalette[0], colorPalette[1], colorPalette[2]));
-  }
-
-  @Override
-  public void setImage(float[][][] imagePixels) {
-    image = imageHandler.convertIntoImage(imagePixels, Arrays.asList(Color.RED, Color.GREEN, Color.BLUE));
-    graphics = image.getGraphics();
-    height = imagePixels.length;
-    width = imagePixels[0].length;
   }
 
   @Override

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import ime.controller.FileHandlerProviderImpl;
-import ime.model.BufferedImageHandler;
+import ime.controller.BufferedImageHandler;
 import ime.model.ImageRepository;
 
 public class Save extends AbstractCommand {

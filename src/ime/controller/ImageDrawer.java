@@ -8,8 +8,5 @@ public interface ImageDrawer{
 
   void setColor(int[] colorPalette);
 
-
-  void setImage(float[][][] imagePixels);
-
   void setUpCanvas(int width, int height);
 }

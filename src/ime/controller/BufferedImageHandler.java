@@ -1,4 +1,4 @@
-package ime.model;
+package ime.controller;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,6 +7,8 @@ import java.awt.image.Raster;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ime.model.ImageHandler;
 
 public class BufferedImageHandler implements ImageHandler<BufferedImage> {
 

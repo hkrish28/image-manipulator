@@ -1,6 +1,5 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,20 +19,13 @@ public class ImageRepositoryImpl implements ImageRepository {
    */
   private final Map<String, Image> imageMap;
   ImageHandler<Image> imageHandler;
-  ImageHandler<BufferedImage> bufferedImageHandler;
 
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
     imageHandler = new ImageHandlerImpl();
-    bufferedImageHandler = new BufferedImageHandler();
   }
 
-//  @Override
-//  public void loadImage(BufferedImage image, String imageName) {
-//    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
-//    imageMap.put(imageName, newImage);
-//  }
 
   @Override
   public void loadImage(float[][][] imagePixels, String imageName) {

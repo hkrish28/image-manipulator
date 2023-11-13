@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.function.BiConsumer;
 
 import ime.controller.FileHandlerProviderImpl;
-import ime.model.BufferedImageHandler;
+import ime.controller.BufferedImageHandler;
 import ime.model.ImageHandler;
 import ime.model.ImageRepository;
 
