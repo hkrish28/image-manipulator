@@ -3,7 +3,11 @@ package ime.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
+
+import ime.controller.MockFileHandler;
+import ime.controller.MockFileHandlerProvider;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -17,12 +21,15 @@ public class ImageRepositoryTest {
   private MockFileHandler mockFileHandler;
   private MockFileHandlerProvider mockFileHandlerProvider;
 
+  private BufferedImage bufferedImage;
+
   /**
    * constructor to declare the mock classes.
    */
   public ImageRepositoryTest() {
     mockFileHandler = new MockFileHandler();
     mockFileHandlerProvider = new MockFileHandlerProvider(mockFileHandler);
+    bufferedImage = new BufferedImage(10, 10, 1);
   }
 
   /**
@@ -40,9 +47,9 @@ public class ImageRepositoryTest {
   @Test
   public void testLoadWorksWhenFileHandlerWorks() {
 
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(new BufferedImage(10, 10, 1), "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -54,9 +61,9 @@ public class ImageRepositoryTest {
   @Test
   public void testLoadThrowsExceptionWhenInvalidFileFormat() {
     mockFileHandlerProvider.setFailureFlag(true);
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.loadImage("fileName", "ImageName"));
+            imageRepository.loadImage(bufferedImage, "ImageName"));
   }
 
   /**
@@ -65,9 +72,9 @@ public class ImageRepositoryTest {
   @Test
   public void testLoadThrowsExceptionWhenInvalidFile() {
     mockFileHandler.setFailureFlag(true);
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.loadImage("fileName", "ImageName"));
+            imageRepository.loadImage(bufferedImage, "ImageName"));
 
   }
 
@@ -78,9 +85,9 @@ public class ImageRepositoryTest {
   public void testLoadThrowsExceptionWhenInvalidFileFormatAndInvalidFile() {
     mockFileHandler.setFailureFlag(true);
     mockFileHandlerProvider.setFailureFlag(true);
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.loadImage("fileName", "ImageName"));
+            imageRepository.loadImage(bufferedImage, "ImageName"));
   }
 
   /**
@@ -88,15 +95,15 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testSaveThrowsExceptionWhenInvalidDirectory() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
     mockFileHandler.setFailureFlag(true);
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.saveImage("filePath", "ImageName"));
+            imageRepository.getImage("ImageName"));
   }
 
   /**
@@ -104,16 +111,16 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testSaveThrowsExceptionWhenInvalidFileFormat() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
 
     mockFileHandlerProvider.setFailureFlag(true);
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.saveImage("filePath", "ImageName"));
+            imageRepository.getImage("ImageName"));
   }
 
   /**
@@ -121,9 +128,9 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testSaveThrowsExceptionWhenInvalidFileFormatAndInvalidDirectory() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -131,7 +138,7 @@ public class ImageRepositoryTest {
     mockFileHandler.setFailureFlag(true);
     mockFileHandlerProvider.setFailureFlag(true);
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.saveImage("filePath", "ImageName"));
+            imageRepository.getImage("ImageName"));
   }
 
   /**
@@ -139,14 +146,14 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testSaveSuccessfullyWhenValidFileFormatAndFile() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
     try {
-      imageRepository.saveImage("filePath", "ImageName");
+      imageRepository.getImage("ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to throw exception");
     }
@@ -157,9 +164,9 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testLoadSuccessWhenFileHandlerCompletesLoad() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -172,10 +179,10 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testOperationsForImageNotPresent() {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
 
     assertThrows(IllegalArgumentException.class, () ->
-            imageRepository.saveImage("fileName", "ImageName"));
+            imageRepository.getImage("ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
             imageRepository.brightenImage("fileName", "ImageName", 5));
     assertThrows(IllegalArgumentException.class, () ->
@@ -216,9 +223,9 @@ public class ImageRepositoryTest {
    */
   @Test
   public void testbrighten() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -233,9 +240,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testBlur() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -250,9 +257,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testSharpen() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -267,9 +274,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testflipImageHorizontally() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -284,9 +291,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testflipImageVertically() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -301,9 +308,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testIntensityGreyScale() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -318,9 +325,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testLumaGreyScale() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -335,9 +342,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testValueGreyScale() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -352,9 +359,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testSepia() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -369,9 +376,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testRedChannelImage() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -386,9 +393,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testGreenChannelImage() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
@@ -403,9 +410,9 @@ public class ImageRepositoryTest {
 
   @Test
   public void testBlueChannelImage() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl(mockFileHandlerProvider);
+    ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
-      imageRepository.loadImage("fileName", "ImageName");
+      imageRepository.loadImage(bufferedImage, "ImageName");
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }

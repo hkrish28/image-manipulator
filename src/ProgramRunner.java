@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 import ime.controller.ControllerImpl;
 import ime.controller.ImageProcessingController;
-import ime.model.FileHandlerProviderImpl;
+
 import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
 import ime.view.View;
@@ -20,7 +20,7 @@ public class ProgramRunner {
   public static void main(String[] args) {
     Scanner controllerInput = new Scanner(System.in);
     View view = new ViewImpl(System.out);
-    ImageRepository imageRepository = new ImageRepositoryImpl(new FileHandlerProviderImpl());
+    ImageRepository imageRepository = new ImageRepositoryImpl();
 
     ImageProcessingController controller = new ControllerImpl(controllerInput, view,
             imageRepository);

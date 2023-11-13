@@ -1,4 +1,4 @@
-package ime.model;
+package ime.controller;
 
 /**
  * This enum enumerates the supported formats that this program supports for load and save

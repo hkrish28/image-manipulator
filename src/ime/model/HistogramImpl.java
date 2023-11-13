@@ -53,12 +53,10 @@ public class HistogramImpl implements Histogram {
     float[][][] imagePixels = new float[height][width][];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        int pixel = histogramImage.getRGB(j, i);
-
-        float red = (float) ((pixel >> 16) & 0xFF);
-        float green = (float) ((pixel >> 8) & 0xFF);
-        float blue = (float) (pixel & 0xFF);
-
+        Color color = new Color(histogramImage.getRGB(j, i));
+        float red = color.getRed();
+        float green = color.getGreen();
+        float blue = color.getBlue();
         imagePixels[i][j] = new float[]{red, green, blue};
       }
     }

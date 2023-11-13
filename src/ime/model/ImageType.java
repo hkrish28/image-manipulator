@@ -26,15 +26,6 @@ public enum ImageType {
     this.colorChannels = colorChannels;
   }
 
-  /**
-   * Generate a new pixel for an image of this image type.
-   *
-   * @return a new pixel for the image type
-   */
-  public Pixel generatePixel() {
-    return pixelSupplier.get();
-  }
-
   public static ImageType getImageTypeFromChannels(List<Color> colors) {
     List<ImageType> colorChannelImageType = Arrays.stream(ImageType.values()).filter(imageType -> {
       if (imageType.colorChannels.size() != colors.size()) {
@@ -47,5 +38,14 @@ public enum ImageType {
     } else {
       return colorChannelImageType.get(0);
     }
+  }
+
+  /**
+   * Generate a new pixel for an image of this image type.
+   *
+   * @return a new pixel for the image type
+   */
+  public Pixel generatePixel() {
+    return pixelSupplier.get();
   }
 }

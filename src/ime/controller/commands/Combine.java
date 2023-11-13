@@ -17,4 +17,11 @@ public class Combine extends AbstractCommand {
     List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
     return (src, dest) -> imageRepository.combineImages(colorChannelsImages, dest);
   }
+
+  @Override
+  protected String messageSenderHelper(String[] tokens) {
+    List<String> srcImages = Arrays.asList(tokens[2], tokens[3], tokens[4]);
+    return tokens[0] + " operation completed successfully for " + srcImages
+            + " & put in " + tokens[1];
+  }
 }
