@@ -191,9 +191,9 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     validateImagePresent(imageNameSrc);
     List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
-    imageMap.put("temp", images.get(1));
+    imageMap.put("temp", images.get(0));
     operation.accept("temp", "temp");
-    imageMap.put(imageNameDest, images.get(0).append(imageMap.get("temp")));
+    imageMap.put(imageNameDest, imageMap.get("temp").append(images.get(1)));
     imageMap.remove("temp");
   }
 

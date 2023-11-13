@@ -3,9 +3,9 @@ package ime.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -346,17 +346,16 @@ public class ImagePixelImpl implements Image {
     if (compressPercent == 0) {
       return;
     }
+
     compressPercent = compressPercent / 100;
+    SortedSet<Float> uniqueElementSet = getUniqueElements(transformed);
+    List<Float> sortedElementList = uniqueElementSet.stream().collect(Collectors.toList());
+    int num = (int) (compressPercent * sortedElementList.size());
+    float threshold = sortedElementList.get(num - 1);
     for (int i = 0; i < getChannelCount(); i++) {
-      Set<Float> uniqueElementSet = getUniqueElements(transformed, i);
-      List<Float> sortedElementList = uniqueElementSet.stream()
-              .sorted(Float::compare)
-              .collect(Collectors.toList());
-      int num = (int) (compressPercent * sortedElementList.size());
-      float threshold = sortedElementList.get(num - 1);
       for (int m = 0; m < transformed.length; m++) {
         for (int n = 0; n < transformed[0].length; n++) {
-          if (Math.abs(transformed[m][n][i]) <= threshold) {
+          if (Math.round(Math.abs(transformed[m][n][i])) <= threshold) {
             transformed[m][n][i] = 0;
           }
         }
@@ -364,12 +363,12 @@ public class ImagePixelImpl implements Image {
     }
   }
 
-  private Set<Float> getUniqueElements(float[][][] ar, int i) {
-    Set<Float> arr = new HashSet<>();
-    for (int m = 0; m < ar.length; m++) {
-      for (int n = 0; n < ar.length; n++) {
-        if (ar[m][n][i] != 0) {
-          arr.add(Math.abs(ar[m][n][i]));
+  private SortedSet<Float> getUniqueElements(float[][][] transformedImage) {
+    SortedSet<Float> arr = new TreeSet<>();
+    for (int i = 0; i < getChannelCount(); i++) {
+      for (int m = 0; m < transformedImage.length; m++) {
+        for (int n = 0; n < transformedImage.length; n++) {
+          arr.add(Math.abs(transformedImage[m][n][i]));
         }
       }
     }
