@@ -8,9 +8,9 @@ import java.io.IOException;
  */
 public class MockFileHandlerProvider implements FileHandlerProvider {
 
-  StringBuilder methodCallLogger;
-  Boolean fail;
-  MockFileHandler mockFileHandler;
+  private StringBuilder methodCallLogger;
+  private Boolean fail;
+  private MockFileHandler mockFileHandler;
 
   /**
    * Creates a new instance of the MockFileHandlerProvider.

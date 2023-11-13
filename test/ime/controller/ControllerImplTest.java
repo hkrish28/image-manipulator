@@ -18,10 +18,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class ControllerImplTest {
 
-  MockImgRepo mockImgRepo;
-  OutputStream outputStream;
-  PrintStream printStream;
-  View view;
+  private MockImgRepo mockImgRepo;
+  private OutputStream outputStream;
+  private PrintStream printStream;
+  private View view;
 
   /**
    * Constructor initializing the Mock objects that will be used for testing of controller class.

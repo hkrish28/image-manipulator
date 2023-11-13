@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import ime.controller.ImageDrawer;
+
 /**
  * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
  * name of the image to its actual {@link Image} object.
@@ -27,19 +29,25 @@ public class ImageRepositoryImpl implements ImageRepository {
     bufferedImageHandler = new BufferedImageHandler();
   }
 
+//  @Override
+//  public void loadImage(BufferedImage image, String imageName) {
+//    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
+//    imageMap.put(imageName, newImage);
+//  }
+
   @Override
-  public void loadImage(BufferedImage image, String imageName) {
-    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
-    imageMap.put(imageName, newImage);
+  public void loadImage(float[][][] imagePixels, String imageName) {
+    Image image = new ImagePixelImpl(imagePixels, ImageType.RGB);
+    imageMap.put(imageName, image);
   }
 
   @Override
-  public BufferedImage getImage(String imageName) {
+  public float[][][] getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    float[][][] pixels = imageHandler.getImagePixels(image);
-    return bufferedImageHandler.convertIntoImage(pixels, image.getImageType().colorChannels);
+    return imageHandler.getImagePixels(image);
   }
+
 
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames)
@@ -196,7 +204,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   private int calculateAveragePeakValue(Image image) {
     int sumPeakValue = 0;
-    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+    HistogramImpl hist = new HistogramImpl(image);
     for (int channelIndex = 0; channelIndex < hist.getChannelCount(); channelIndex++) {
       sumPeakValue += hist.getMostFrequentValue(channelIndex);
     }
@@ -208,7 +216,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   public void colorCorrect(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
     Image image = imageMap.get(imageNameSrc);
-    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+    HistogramImpl hist = new HistogramImpl(image);
 
     int averagePeakValue = calculateAveragePeakValue(image);
     List<Image> limages = new ArrayList<>();
@@ -227,9 +235,12 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void toHistogram(String imageNameSrc, String imageNameDest) {
+  public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
     validateImagePresent(imageNameSrc);
-    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(), ImageType.RGB);
+    Histogram histogram = new HistogramImpl(imageMap.get(imageNameSrc));
+    float[][][] histogramImage = new HistogramDrawerImpl(256, 256, imageDrawer).visualizeHistogram(histogram);
+    Image newImage = new ImagePixelImpl(histogramImage, ImageType.RGB);
+
     imageMap.put(imageNameDest, newImage);
   }
 

@@ -5,22 +5,27 @@ import java.io.IOException;
 import java.util.function.BiConsumer;
 
 import ime.controller.FileHandlerProviderImpl;
+import ime.model.BufferedImageHandler;
+import ime.model.ImageHandler;
 import ime.model.ImageRepository;
 
 public class Load extends AbstractCommand {
+
+  private final ImageHandler<BufferedImage> bufferedImageImageHandler;
+
   public Load() {
-    super(3, 1,2);
+    super(3, 1, 2);
+    bufferedImageImageHandler = new BufferedImageHandler();
   }
 
   @Override
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
     String path = tokens[1];
     String imageName = tokens[2];
-    try{
+    try {
       BufferedImage image = new FileHandlerProviderImpl().getFileHandler(path).loadImage(path);
-      imageRepository.loadImage(image, imageName);
-    }
-    catch(IOException e){
+      imageRepository.loadImage(bufferedImageImageHandler.getImagePixels(image), imageName);
+    } catch (IOException e) {
       return "Invalid file";
     }
     return "Loaded successfully.";
