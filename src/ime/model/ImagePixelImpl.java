@@ -3,7 +3,12 @@ package ime.model;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static ime.model.ImageConstants.BLUR_FILTER;
 import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
@@ -60,14 +65,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        try {
           setPixelValue(this.pixels, i, j, pixelValues[i][j]);
-        } catch (IllegalArgumentException e) {
-          System.out.println(
-                  e.getMessage() + " " + i + " " + j + " " + pixelValues[i][j][0] + pixelValues[i][j][1]
-                          + pixelValues[i][j][2]);
-          throw new IllegalArgumentException();
-        }
       }
     }
   }
@@ -240,11 +238,11 @@ public class ImagePixelImpl implements Image {
   @Override
   public Image compress(int compressPercent) {
 
-    float[][][] padded = getPaddedPixels();
-    float[][][] transformed = haar(padded);
-    float[][][] y = compressByPercent(compressPercent, transformed);
-    float[][][] z = invHaar(y);
-    return new ImagePixelImpl(removePad(z), imageType);
+    float[][][] resultPixels = getPaddedPixels();
+    haarTransform(resultPixels);
+    applyThreshold(compressPercent, resultPixels);
+    invHaar(resultPixels);
+    return new ImagePixelImpl(removePad(resultPixels), imageType);
   }
 
 
@@ -312,12 +310,6 @@ public class ImagePixelImpl implements Image {
           } else {
             resultPixels[i][j][k] =
                     coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
-            if ((resultPixels[i][j][k] < 0) || (resultPixels[i][j][k] > 255)) {
-              System.out.println(
-                      "wrong math" + " " + i + " " + j + " " + k + " " + x[k] + " " + coefficients[0]
-                              + " " + coefficients[1] + " " + coefficients[2] + " = "
-                              + resultPixels[i][j][k]);
-            }
           }
         }
       }
@@ -326,55 +318,55 @@ public class ImagePixelImpl implements Image {
   }
 
   private float[] compute(int b, int m, int w) {
-    float[] abc = new float[3];
+    float[] coefficients = new float[3];
     float A = b * b * (m - w) - b * (m * m - w * w) + w * m * m - m * w * w;
     float A_a = -b * (128 - 255) + 128 * w - 255 * m;
     float A_b = b * b * (128 - 255) + 255 * m * m - 128 * w * w;
     float A_c = b * b * (255 * m - 128 * w) - b * (255 * m * m - 128 * w * w);
-    abc[0] = A_a / A;
-    abc[1] = A_b / A;
-    abc[2] = A_c / A;
+    coefficients[0] = A_a / A;
+    coefficients[1] = A_b / A;
+    coefficients[2] = A_c / A;
 
-    return abc;
+    return coefficients;
   }
 
-  private float[][][] removePad(float[][][] ar) {
-    float[][][] newar = new float[height][width][getChannelCount()];
+  private float[][][] removePad(float[][][] pixels) {
+    float[][][] result = new float[height][width][getChannelCount()];
     for (int c = 0; c < getChannelCount(); c++) {
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-          newar[i][j][c] = Math.max(0, Math.min(255, ar[i][j][c]));
+          result[i][j][c] = Math.max(0, Math.min(255, pixels[i][j][c]));
         }
       }
     }
-    return newar;
+    return result;
   }
 
-  private float[][][] compressByPercent(float compressPercent, float[][][] transformed) {
+  private void applyThreshold(float compressPercent, float[][][] transformed) {
     // think abt cases
     if (compressPercent == 0) {
-      return transformed;
-    } else {
-      compressPercent = compressPercent / 100;
-      for (int i = 0; i < getChannelCount(); i++) {
-        List<Float> nonZeroChannel = getNonZeroArray(transformed, i);
-        nonZeroChannel.sort(Float::compare);
-        int num = (int) (compressPercent * nonZeroChannel.size());
-        float threshold = nonZeroChannel.get(num - 1);
-        for (int m = 0; m < transformed.length; m++) {
-          for (int n = 0; n < transformed[0].length; n++) {
-            if (Math.abs(transformed[m][n][i]) <= threshold) {
-              transformed[m][n][i] = 0;
-            }
+      return;
+    }
+    compressPercent = compressPercent / 100;
+    for (int i = 0; i < getChannelCount(); i++) {
+      Set<Float> uniqueElementSet = getUniqueElements(transformed, i);
+      List<Float> sortedElementList = uniqueElementSet.stream()
+              .sorted(Float::compare)
+              .collect(Collectors.toList());
+      int num = (int) (compressPercent * sortedElementList.size());
+      float threshold = sortedElementList.get(num - 1);
+      for (int m = 0; m < transformed.length; m++) {
+        for (int n = 0; n < transformed[0].length; n++) {
+          if (Math.abs(transformed[m][n][i]) <= threshold) {
+            transformed[m][n][i] = 0;
           }
         }
       }
     }
-    return transformed;
   }
 
-  private List<Float> getNonZeroArray(float[][][] ar, int i) {
-    ArrayList<Float> arr = new ArrayList<>();
+  private Set<Float> getUniqueElements(float[][][] ar, int i) {
+    Set<Float> arr = new HashSet<>();
     for (int m = 0; m < ar.length; m++) {
       for (int n = 0; n < ar.length; n++) {
         if (ar[m][n][i] != 0) {
@@ -386,82 +378,76 @@ public class ImagePixelImpl implements Image {
   }
 
 
-  public float[][][] haar(float[][][] pixelsToBeTransformed) {
+  public void haarTransform(float[][][] pixelsToBeTransformed) {
     for (int a = 0; a < getChannelCount(); a++) {
       int c = pixelsToBeTransformed.length; // Find the maximum dimension
       while (c > 1) {
-        for (int i = 0; i < c; i++) {
-          double[] rowValues = extractRow(pixelsToBeTransformed[i], c, a);
-          double[] transformed = transform(rowValues);
-          for (int j = 0; j < c; j++) {
-            pixelsToBeTransformed[i][j][a] = (float) transformed[j];
-          }
-        }
-        for (int j = 0; j < c; j++) {
-          double[] colValues = extractCol(pixelsToBeTransformed, j, c, a);
-          double[] transformed = transform(colValues);
-          for (int i = 0; i < c; i++) {
-            pixelsToBeTransformed[i][j][a] = (float) transformed[i];
-          }
-        }
+        applyRowTransformation(pixelsToBeTransformed, c, a, this::transform);
+        applyColumnTransformation(pixelsToBeTransformed, c, a, this::transform);
         c = c / 2;
       }
     }
-    return pixelsToBeTransformed;
   }
 
-  private double[] extractCol(float[][][] pixelsToBeTransformed, int j, int c, int a) {
-    double[] res = new double[c];
+  private List<Float> extractCol(float[][][] pixelsToBeTransformed, int j, int c, int a) {
+    List<Float> result = new ArrayList<>();
     for (int i = 0; i < c; i++) {
-      res[i] = pixelsToBeTransformed[i][j][a];
+      result.add(pixelsToBeTransformed[i][j][a]);
     }
-    return res;
+    return result;
   }
 
-  private double[] extractRow(float[][] pixels, int c, int a) {
-    double[] res = new double[c];
+  private List<Float> extractRow(float[][] pixels, int c, int a) {
+    List<Float> result = new ArrayList<>();
     for (int i = 0; i < c; i++) {
-      res[i] = pixels[i][a];
+      result.add(pixels[i][a]);
     }
-    return res;
+    return result;
   }
 
-  public float[][][] invHaar(float[][][] pixelsTransformed) {
+  public void invHaar(float[][][] pixelsTransformed) {
 
     for (int a = 0; a < getChannelCount(); a++) {
       int c = 2;
       while (c <= pixelsTransformed.length) {
-        for (int j = 0; j < c; j++) {
-          double[] colValues = extractCol(pixelsTransformed, j, c, a);
-          double[] transformed = invTransform(colValues);
-          for (int i = 0; i < c; i++) {
-            pixelsTransformed[i][j][a] = (float) transformed[i];
-          }
-        }
-        for (int i = 0; i < c; i++) {
-          double[] rowValues = extractRow(pixelsTransformed[i], c, a);
-          double[] transformed = invTransform(rowValues);
-          for (int j = 0; j < c; j++) {
-            pixelsTransformed[i][j][a] = (float) transformed[j];
-          }
-        }
+        applyColumnTransformation(pixelsTransformed, c, a, this::invTransform);
+        applyRowTransformation(pixelsTransformed, c, a, this::invTransform);
+
         c = c * 2;
       }
     }
-    return pixelsTransformed;
   }
 
+  private void applyRowTransformation(float[][][] pixelsTransformed, int c, int a, Function<List<Float>, List<Float>> transformFunction) {
+    for (int i = 0; i < c; i++) {
+      List<Float> rowValues = extractRow(pixelsTransformed[i], c, a);
+      List<Float> transformed = transformFunction.apply(rowValues);
+      for (int j = 0; j < c; j++) {
+        pixelsTransformed[i][j][a] = transformed.get(j);
+      }
+    }
+  }
+
+  private void applyColumnTransformation(float[][][] pixelsTransformed, int c, int a, Function<List<Float>, List<Float>> transformFunction) {
+    for (int j = 0; j < c; j++) {
+      List<Float> colValues = extractCol(pixelsTransformed, j, c, a);
+      List<Float> transformed = transformFunction.apply(colValues);
+      for (int i = 0; i < c; i++) {
+        pixelsTransformed[i][j][a] = transformed.get(i);
+      }
+    }
+  }
 
   private float[][][] getPaddedPixels() {
     int n = Math.max(height, width);
-    int powerOf2 = 1;
-    while (powerOf2 < n) {
-      powerOf2 *= 2;
+    int paddedSize = 1;
+    while (paddedSize < n) {
+      paddedSize *= 2;
     }
 
-    float[][][] result = new float[powerOf2][powerOf2][getChannelCount()];
-    for (int i = 0; i < powerOf2; i++) {
-      for (int j = 0; j < powerOf2; j++) {
+    float[][][] result = new float[paddedSize][paddedSize][getChannelCount()];
+    for (int i = 0; i < paddedSize; i++) {
+      for (int j = 0; j < paddedSize; j++) {
         if ((i >= height) || (j >= width)) {
           result[i][j] = new float[getChannelCount()];
         } else {
@@ -472,32 +458,32 @@ public class ImagePixelImpl implements Image {
     return result;
   }
 
-  private double[] transform(double[] arr) {
-    int n = arr.length;
-    double[] result = new double[n];
+  private List<Float> transform(List<Float> arr) {
+    int n = arr.size();
+    List<Float> result = new ArrayList<>(Collections.nCopies(n, 0f));
 
     for (int i = 0; i < n / 2; i = i + 1) {
       int sumIndex = i * 2;
-      //int diffIndex = i * 2 + 1;
-
+      float a = arr.get(sumIndex);
+      float b = arr.get(sumIndex + 1);
       // Compute the sum and difference coefficients
-      result[i] = (arr[sumIndex] + arr[sumIndex + 1]) / Math.sqrt(2);
-      result[n / 2 + i] = (arr[sumIndex] - arr[1 + sumIndex]) / Math.sqrt(2);
+      result.set(i, (float) ((a + b) / Math.sqrt(2)));
+      result.set(n / 2 + i, (float) ((a - b) / Math.sqrt(2)));
     }
 
     return result;
   }
 
 
-  private double[] invTransform(double[] arr) {
-    int n = arr.length / 2;
+  private List<Float> invTransform(List<Float> arr) {
+    int n = arr.size() / 2;
     double[] avg = new double[n];
     double[] diff = new double[n];
 
     int j = n;
     for (int i = 0; i < n; i++, j++) {
-      double a = arr[i];
-      double b = arr[j];
+      float a = arr.get(i);
+      float b = arr.get(j);
       double av = (a + b) / Math.sqrt(2);
       double de = (a - b) / Math.sqrt(2);
 
@@ -505,10 +491,10 @@ public class ImagePixelImpl implements Image {
       diff[i] = de;
     }
 
-    double[] result = new double[arr.length];
+    List<Float> result = new ArrayList<>();
     for (int i = 0; i < n; i++) {
-      result[i * 2] = avg[i];
-      result[i * 2 + 1] = diff[i];
+      result.add((float) avg[i]);
+      result.add((float) diff[i]);
     }
 
     return result;
@@ -617,6 +603,5 @@ public class ImagePixelImpl implements Image {
     resultPixels[i][j] = imageType.generatePixel();
     resultPixels[i][j].setColor(channelValues);
   }
-
 
 }

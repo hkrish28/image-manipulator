@@ -1,7 +1,6 @@
 package ime.model;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,61 +9,36 @@ import java.util.function.BiConsumer;
 
 /**
  * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
- * name of the image to its actual {@link Image} object. It makes use of {@link FileHandlerProvider}
- * to perform functions like load and save of images.
+ * name of the image to its actual {@link Image} object.
  */
 public class ImageRepositoryImpl implements ImageRepository {
 
-//  private final FileHandlerProvider fileHandlerProvider;
   /**
    * map for storing the image with its name as the key.
    */
   private final Map<String, Image> imageMap;
+  ImageHandler<Image> imageHandler;
+  ImageHandler<BufferedImage> bufferedImageHandler;
 
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
-//    this.fileHandlerProvider = fileHandlerProvider;
+    imageHandler = new ImageHandlerImpl();
+    bufferedImageHandler = new BufferedImageHandler();
   }
-
-
-//  @Override
-//  public void loadImage(String filePath, String imageName) {
-//    try {
-//      float[][][] imagePixels = fileHandlerProvider.getFileHandler(filePath).loadImage(filePath);
-//      Image newImage = new ImagePixelImpl(imagePixels, ImageType.RGB);
-//      imageMap.put(imageName, newImage);
-//    } catch (IOException e) {
-//      throw new IllegalArgumentException(e.getMessage());
-//    }
-//
-//  }
 
   @Override
   public void loadImage(BufferedImage image, String imageName) {
-    Image newImage = new ImagePixelImpl(new BufferedImageHandler().loadImage(image), ImageType.RGB);
+    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
     imageMap.put(imageName, newImage);
   }
-
-//  @Override
-//  public void saveImage(String fileName, String imageName)
-//          throws IllegalArgumentException {
-//    validateImagePresent(imageName);
-//    Image image = imageMap.get(imageName);
-//    try {
-//      fileHandlerProvider.getFileHandler(fileName).saveImage(image, fileName);
-//    } catch (IOException e) {
-//      throw new IllegalArgumentException(e.getMessage());
-//    }
-//
-//  }
 
   @Override
   public BufferedImage getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    float[][][] pixels = new ImageHandlerImpl().loadImage(image);
-    return new BufferedImageHandler().saveImage(pixels, image.getImageType().colorChannels);
+    float[][][] pixels = imageHandler.getImagePixels(image);
+    return bufferedImageHandler.convertIntoImage(pixels, image.getImageType().colorChannels);
   }
 
   @Override

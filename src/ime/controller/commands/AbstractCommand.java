@@ -36,9 +36,9 @@ public abstract class AbstractCommand implements Command {
     return expectedTokens == tokenCount;
   }
 
-  protected String messageSenderHelper(String operation, String src, String dest) {
-    return operation + " operation completed successfully for " + src
-            + " & put in " + dest;
+  protected String messageSenderHelper(String[] tokens) {
+    return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
+            + " & put in " + tokens[destIndex];
   }
 
   public String go(String[] tokens, ImageRepository imageRepository) {
@@ -66,7 +66,7 @@ public abstract class AbstractCommand implements Command {
     String srcImageName = tokens[srcIndex];
     String destImageName = tokens[destIndex];
     consumerMethod(tokens, imageRepository).accept(srcImageName, destImageName);
-    return messageSenderHelper(tokens[0], srcImageName, destImageName);
+    return messageSenderHelper(tokens);
   }
 
   protected abstract BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository);

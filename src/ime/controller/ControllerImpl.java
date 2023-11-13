@@ -89,15 +89,6 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.histogram, new Histogram());
     knownCommands.put(CommandEnum.color_correct, new ColorCorrect());
     knownCommands.put(CommandEnum.levels_adjust,new LevelsAdjust());
-//    knownCommands.put(CommandEnum.run, (String[] tokens, ImageRepository imageRepository) -> {
-//      validateTokenCount(2, tokens.length);
-//      try {
-//        processScriptFile(tokens[1]);
-//      } catch (IllegalArgumentException e) {
-//        return e.getMessage();
-//      }
-//      return "Script run successfully";
-//    });
   }
 
   protected boolean executeCommand(String commandTokens) {
@@ -149,34 +140,6 @@ public class ControllerImpl implements ImageProcessingController {
 
   }
 
-  //  private void processScriptFile(String scriptFileName) {
-//    try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
-//      String line;
-//      while ((line = reader.readLine()) != null) {
-//        // Trim leading and trailing whitespaces
-//        line = line.trim();
-//        // Ignore lines that start with #
-//        if (!(line.startsWith("#") || line.isEmpty())) {
-//          // Call the controller's executeScript method with the current line
-//          executeCommand(line);
-//        }
-//      }
-//    } catch (IOException e) {
-//      throw new IllegalArgumentException("Invalid script location/file.");
-//    }
-//  }
-//  private void processScriptFile(String scriptFileName) throws IllegalArgumentException {
-//    try (BufferedReader reader = new BufferedReader(new FileReader(scriptFileName))) {
-//      new ControllerImpl(new Scanner(reader), view, imgRepo).execute();
-//    } catch (IOException e) {
-//      throw new IllegalArgumentException("Invalid script location/file.");
-//    }
-//  }
-//
-//  private void messageSenderHelper(String operation, String src, String dest) {
-//    view.displayMessage(operation + " operation completed successfully for " + src
-//            + " & put in " + dest);
-//  }
 }
 
 

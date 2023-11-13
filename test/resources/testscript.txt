@@ -1,1 +1,1 @@
-load images/test.ppm test
+load test/resources/testImage.ppm test

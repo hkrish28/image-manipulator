@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ImageHandlerImpl implements ImageHandler<Image> {
   @Override
-  public float[][][] loadImage(Image image){
+  public float[][][] getImagePixels(Image image){
     int height = image.getHeight();
     int width = image.getWidth();
     int channelCount = image.getChannelCount();
@@ -23,7 +23,7 @@ public class ImageHandlerImpl implements ImageHandler<Image> {
   }
 
   @Override
-  public Image saveImage(float[][][] pixelValues, List<Color> colorChannels) {
+  public Image convertIntoImage(float[][][] pixelValues, List<Color> colorChannels) {
     ImageType imageType = ImageType.getImageTypeFromChannels(colorChannels);
     return new ImagePixelImpl(pixelValues, imageType);
   }
