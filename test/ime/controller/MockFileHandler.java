@@ -12,8 +12,8 @@ import ime.model.Image;
  */
 public class MockFileHandler implements FileHandler {
 
-  StringBuilder methodCallLogger;
-  Boolean fail;
+  private StringBuilder methodCallLogger;
+  private Boolean fail;
 
   /**
    * Creates a new instance of the MockFileHandler.

@@ -38,8 +38,8 @@ import ime.view.View;
 public class ControllerImpl implements ImageProcessingController {
 
   private final boolean userPrompt;
-  protected ImageRepository imgRepo;
-  protected View view;
+  private ImageRepository imgRepo;
+  private View view;
   private Scanner in;
   private Map<CommandEnum, Command> knownCommands;
 

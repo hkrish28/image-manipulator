@@ -1,9 +1,10 @@
 package ime.model;
 
+import java.util.List;
+
 public interface Histogram {
 
 
-  float[][][] createHistogram();
 
   /**
    * number of color channels in histogram.
@@ -12,6 +13,8 @@ public interface Histogram {
    */
   int getChannelCount();
 
+  public List<ColorChannelEnum> getColorChannels();
+
   /**
    * @param channelIndex
    * @return
@@ -19,6 +22,8 @@ public interface Histogram {
   int getPeakValue(int channelIndex);
 
   int getMostFrequentValue(int channelIndex);
+
+  int getValueOccurence(int channelIndex, int pixelValue);
 
 
 
