@@ -1,9 +1,7 @@
 package ime.controller.commands;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import ime.controller.FileHandlerProviderImpl;
@@ -20,8 +18,7 @@ public class Save extends AbstractCommand {
     String file = tokens[1];
     String imageName = tokens[2];
     BufferedImage bufferedImage =
-            new BufferedImageHandler().convertIntoImage(imageRepository.getImage(imageName),
-                    Arrays.asList(Color.RED, Color.GREEN, Color.BLUE));
+            new BufferedImageHandler().convertIntoImage(imageRepository.getImage(imageName));
     try {
       new FileHandlerProviderImpl().getFileHandler(file).saveImage(bufferedImage, file);
     } catch (IOException e) {

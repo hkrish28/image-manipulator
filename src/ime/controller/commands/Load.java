@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 
 import ime.controller.FileHandlerProviderImpl;
 import ime.controller.BufferedImageHandler;
-import ime.model.ImageHandler;
+import ime.controller.ImageHandler;
 import ime.model.ImageRepository;
 
 public class Load extends AbstractCommand {

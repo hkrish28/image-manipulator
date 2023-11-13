@@ -1,6 +1,5 @@
 package ime.model;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +64,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-          setPixelValue(this.pixels, i, j, pixelValues[i][j]);
+        setPixelValue(this.pixels, i, j, pixelValues[i][j]);
       }
     }
   }
@@ -219,19 +218,19 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getRedComponent() {
-    int index = getColorChannelIndex(Color.RED);
+    int index = getColorChannelIndex(ColorChannelEnum.RED);
     return toChannel(index);
   }
 
   @Override
   public Image getGreenComponent() {
-    int index = getColorChannelIndex(Color.GREEN);
+    int index = getColorChannelIndex(ColorChannelEnum.GREEN);
     return toChannel(index);
   }
 
   @Override
   public Image getBlueComponent() {
-    int index = getColorChannelIndex(Color.BLUE);
+    int index = getColorChannelIndex(ColorChannelEnum.BLUE);
     return toChannel(index);
   }
 
@@ -500,7 +499,7 @@ public class ImagePixelImpl implements Image {
     return result;
   }
 
-  private int getColorChannelIndex(Color colorChannel) {
+  private int getColorChannelIndex(ColorChannelEnum colorChannel) {
     int index = imageType.colorChannels.indexOf(colorChannel);
     if (index < 0) {
       throw new IllegalArgumentException("red component can not be obtained for the given image");

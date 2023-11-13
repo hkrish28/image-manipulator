@@ -18,12 +18,9 @@ public class ImageRepositoryImpl implements ImageRepository {
    * map for storing the image with its name as the key.
    */
   private final Map<String, Image> imageMap;
-  ImageHandler<Image> imageHandler;
-
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
-    imageHandler = new ImageHandlerImpl();
   }
 
 
@@ -37,7 +34,20 @@ public class ImageRepositoryImpl implements ImageRepository {
   public float[][][] getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    return imageHandler.getImagePixels(image);
+    int height = image.getHeight();
+    int width = image.getWidth();
+    int channelCount = image.getChannelCount();
+    float[][][] result = new float[height][width][channelCount];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float[] pixelValues = image.getPixelValues(i, j);
+        for (int k = 0; k < channelCount; k++) {
+          result[i][j][k] = pixelValues[k];
+        }
+      }
+    }
+    return result;
+//    return imageHandler.getImagePixels(image);
   }
 
 
