@@ -56,8 +56,8 @@ public class CommonFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     };
-    BufferedImage bufferedImage = fileHandler.loadImage("test/resources/testImage.png");
-//    assertTrue(Arrays.deepEquals(expected, pixels));
+    float[][][] pixels = fileHandler.loadImage("test/resources/testImage.png");
+    assertTrue(Arrays.deepEquals(expected, pixels));
     //check for equality
   }
 
@@ -75,8 +75,8 @@ public class CommonFileHandlerTest {
     };
     Image image = new ImagePixelImpl(pixels, ImageType.RGB);
 //    fileHandler.saveImage(image, "test/resources/testImage.png");
-    BufferedImage loaded = fileHandler.loadImage("test/resources/testImage.png");
-//    assertArrayEquals(pixels, loaded);
+    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.png");
+    assertArrayEquals(pixels, loaded);
   }
 
   /**
