@@ -37,10 +37,10 @@ public class ProgramRunner {
 
   private static boolean isValidInput(String[] args) {
     if ((args.length == 2 && args[0].equals("-f") || (args.length == 0))) {
-      System.out.println("Invalid arguments provided to the Program Runner. Either pass " +
-              "no arguments or provide '-f filename'");
       return true;
     } else {
+      System.out.println("Invalid arguments provided to the Program Runner. Either pass " +
+              "no arguments or provide '-f filename'");
       return false;
     }
   }

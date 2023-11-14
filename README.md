@@ -5,10 +5,11 @@
 
 <h3>How to run</h3>
 <ul>
-<p>The program is run using the ProgramRunner class. Once run, input any of the valid command for the operations on your images.
+<p>The program is run using the ProgramRunner class. This class can be run without any arguments which will Once run, input any of the valid command for the operations on your images.
 To run the example script provided, once the program runner is running, input "run resources/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p></ul>
 
 <h3>Supported commands</h3>
+
 <ul><b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name.
 
 <b>save image-path image-name</b>: Save the image with the given name to the specified path which
@@ -46,9 +47,20 @@ image with the given name.
 <b>sepia image-name dest-image-name</b>: produce a sepia-toned version of the given image and store
 the result in another image with the given name.
 
+<b>compress percentage image-name dest-image-name</b>: Create a compressed version of an image. Percentages between 0 and 100 are considered valid.
+
+<b>histogram image-name dest-image-name</b>: Produce an image that represents the histogram of the given image. The size of this image would be 256x256. It contains the histograms for the red, green and blue channels as line graphs.
+
+<b>color-correct image-name dest-image-name</b>: Support the ability to color-correct an image by aligning the meaningful peaks of its histogram.
+
+<b>levels-adjust b m w image-name dest-image-name</b>: This command can be used to adjust levels of an image where b, m and w are the three relevant black, mid and white values respectively. These values should be ascending in that order, and should be within 0 and 255 for this command to work correctly.
+
 <b>run script-file</b>: Load and run the script commands in the specified file.
 
 <b>exit</b>: Exit the execution of the program.
+
+<h3>Note:</h3>
+Some of the commands above support the ability to specify a vertical line to generate a split view of operations. The operations that support this are blur, sharpen, sepia, greyscale, color correction and levels adjustment. The script commands for these operations accommodates an optional parameter for the placement of the splitting line. For example, blur can be done by "blur image-name dest-image-name" or "blur image-name dest-image split p" in that order where 'p' is a percentage of the width (e.g. 50 means place the line halfway through the width of the image). The output image would contain only the relevant part suitably transformed, with the original image in the remaining part.
 
 </ul>
 
