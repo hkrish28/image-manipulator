@@ -1,11 +1,5 @@
 package ime.controller;
 
-import ime.controller.commands.LevelsAdjust;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import ime.controller.commands.BlueComponent;
 import ime.controller.commands.Blur;
 import ime.controller.commands.Brighten;
@@ -17,18 +11,23 @@ import ime.controller.commands.GreenComponent;
 import ime.controller.commands.Histogram;
 import ime.controller.commands.HorizontalFlip;
 import ime.controller.commands.IntensityGreyscale;
+import ime.controller.commands.LevelsAdjust;
 import ime.controller.commands.Load;
 import ime.controller.commands.LumaGreyscale;
 import ime.controller.commands.RedComponent;
+import ime.controller.commands.RgbSplit;
 import ime.controller.commands.Run;
 import ime.controller.commands.Save;
 import ime.controller.commands.Sepia;
 import ime.controller.commands.Sharpen;
-import ime.controller.commands.RgbSplit;
 import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
 import ime.view.View;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * The `controller` class implements the ImageProcessingController interface and provides
@@ -38,9 +37,9 @@ import ime.view.View;
 public class ControllerImpl implements ImageProcessingController {
 
   private final boolean userPrompt;
-  private ImageRepository imgRepo;
-  private View view;
-  private Scanner in;
+  private final ImageRepository imgRepo;
+  private final View view;
+  private final Scanner in;
   private Map<CommandEnum, Command> knownCommands;
 
   /**
@@ -55,8 +54,8 @@ public class ControllerImpl implements ImageProcessingController {
   }
 
   /**
-   * Constructs a new controller instance that does not require user
-   * prompt with the given image files map .
+   * Constructs a new controller instance that does not require user prompt with the given image
+   * files map .
    */
   public ControllerImpl(Scanner in, View view, ImageRepository imgRepo, Boolean userPrompt) {
     this.imgRepo = imgRepo;
@@ -88,9 +87,16 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.compress, new Compress());
     knownCommands.put(CommandEnum.histogram, new Histogram());
     knownCommands.put(CommandEnum.color_correct, new ColorCorrect());
-    knownCommands.put(CommandEnum.levels_adjust,new LevelsAdjust());
+    knownCommands.put(CommandEnum.levels_adjust, new LevelsAdjust());
   }
 
+  /**
+   * the execute command method takes in the commands as tokens from the execute method and checks
+   * if its a valid command from the enum
+   *
+   * @param commandTokens string commands passed.
+   * @return boolean value of true or false to check if the command is valid or not.
+   */
   protected boolean executeCommand(String commandTokens) {
     commandTokens = commandTokens.trim();
     if (commandTokens.startsWith("#") || commandTokens.isEmpty()) {
@@ -123,10 +129,14 @@ public class ControllerImpl implements ImageProcessingController {
     throw new IllegalArgumentException("Command not found"); // Command not found
   }
 
+  /**
+   * The execute method allows the controller to execute the command that is read from the script
+   * file or from the cli.
+   */
   @Override
   public void execute() {
     boolean endFlag = false;
-    try{
+    try {
       while (!endFlag) {
         if (userPrompt) {
           view.displayMessage("Please enter the command to run: ");
@@ -134,7 +144,7 @@ public class ControllerImpl implements ImageProcessingController {
         String command = in.nextLine();
         endFlag = executeCommand(command);
       }
-    }catch(NoSuchElementException e){
+    } catch (NoSuchElementException e) {
       view.displayMessage("Exiting with no more commands");
     }
 

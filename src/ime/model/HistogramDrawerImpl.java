@@ -2,18 +2,37 @@ package ime.model;
 
 import ime.controller.ImageDrawer;
 
+/**
+ * The HistogramDrawerImpl class implements the HistogramDrawer interface, providing methods to
+ * visualize histograms as graphical representations using an associated ImageDrawer. It visualizes
+ * histograms on a canvas image.
+ **/
 public class HistogramDrawerImpl implements HistogramDrawer {
 
   private final int height;
   private final int width;
   private final ImageDrawer imageDrawer;
 
+  /**
+   * Initializes a new instance of the HistogramDrawerImpl class with the specified width, height,
+   * and an associated ImageDrawer.
+   *
+   * @param width       The width of the canvas for histogram visualization.
+   * @param height      The height of the canvas for histogram visualization.
+   * @param imageDrawer An ImageDrawer used for drawing the histogram.
+   */
   public HistogramDrawerImpl(int width, int height, ImageDrawer imageDrawer) {
     this.width = width;
     this.height = height;
     this.imageDrawer = imageDrawer;
   }
 
+  /**
+   * Retrieves the maximum count value from a histogram, considering all color channels.
+   *
+   * @param histogram The histogram from which to find the maximum count.
+   * @return The maximum count value among all color channels in the histogram.
+   */
   private int getMaxCount(Histogram histogram) {
     int max = 0;
     for (int i = 0; i < histogram.getChannelCount(); i++) {
@@ -24,6 +43,11 @@ public class HistogramDrawerImpl implements HistogramDrawer {
     return max;
   }
 
+  /**
+   * Sets up the canvas for drawing the histogram grid lines.
+   *
+   * @param imageDrawer The ImageDrawer to use for drawing the grid lines.
+   */
   private void setUpHistogram(ImageDrawer imageDrawer) {
     imageDrawer.setColor(new int[]{211, 211, 211});
     int columnLineAdder = width / 16;
@@ -36,6 +60,13 @@ public class HistogramDrawerImpl implements HistogramDrawer {
     }
   }
 
+  /**
+   * Visualizes a histogram as a graphical representation. the method computes the normalised value
+   * the start and the end of the pairs of pixels and draws the lines according to the values.
+   *
+   * @param histogram The histogram to visualize.
+   * @return A 3D array of floating-point pixel values representing the visualized histogram.
+   */
   @Override
   public float[][][] visualizeHistogram(Histogram histogram) {
     imageDrawer.setUpCanvas(256, 256);

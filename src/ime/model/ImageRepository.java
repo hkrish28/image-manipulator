@@ -1,10 +1,8 @@
 package ime.model;
 
-import java.io.IOException;
+import ime.controller.ImageDrawer;
 import java.util.List;
 import java.util.function.BiConsumer;
-
-import ime.controller.ImageDrawer;
 
 /**
  * An Image Repository is a class that manages multiple images and performs operations on them. It
@@ -15,16 +13,11 @@ public interface ImageRepository {
   /**
    * This method is used to load an image at a given file path and tag it the given name for the
    * image.
-   *
-   * @param filePath  the path at which the file is present to be loaded.
    * @param imageName the name for the image to be associated with
-   * @throws IOException if any error occurs during the loading of the image or if the file does not
-   *                     exist at the file path.
    */
 //  void loadImage(String filePath, String imageName);
 
-
-  void loadImage(float[][][] image, String imageName );
+  void loadImage(float[][][] image, String imageName);
 
 
   float[][][] getImage(String imageName);
@@ -178,15 +171,75 @@ public interface ImageRepository {
    */
   boolean isImagePresent(String imageNameSrc);
 
+  /**
+   * compresses the given image by the given amount of percentage.
+   *
+   * @param imageNameSrc    name of source file.
+   * @param imageNameDest   name of destination file.
+   * @param compressPercent amount to be compressed.
+   * @throws IllegalArgumentException when the values passed are invalid.
+   */
   void compress(String imageNameSrc, String imageNameDest, int compressPercent)
       throws IllegalArgumentException;
+
+  /**
+   * Generates a preview of an image transformation operation and saves the resulting image. The
+   * method takes a source image, applies an operation to it, and stores the result with the
+   * destination image name.
+   *
+   * @param imageNameSrc  The name of the source image for the transformation.
+   * @param imageNameDest The name of the destination image where the preview will be saved.
+   * @param operation     A BiConsumer that defines the image transformation operation to apply.
+   * @param verticalSplit The percentage of vertical split for the source image (0-100).
+   * @throws IllegalArgumentException If the verticalSplit value is outside the valid range or if
+   *                                  the source image is not found.
+   */
 
   void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation,
       int verticalSplit);
 
+  /**
+   * Adjusts the levels of the source image and saves the result with the specified destination
+   * image name. The levels are adjusted using the provided black point (b), mid-point (m), and
+   * white point (w) values.
+   *
+   * @param imageNameSrc The name of the source image to adjust the levels.
+   * @param destImage    The name of the destination image where the adjusted image will be saved.
+   * @param b            The black point, the lower limit of the input pixel values to map to 0.
+   * @param m            The mid-point, the middle point of the input pixel values to map to a value
+   *                     in the 0-255 range.
+   * @param w            The white point, the upper limit of the input pixel values to map to 255.
+   * @throws IllegalArgumentException If the source image is not found or if the image names are
+   *                                  invalid.
+   */
   void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w);
 
+  /**
+   * Color corrects the image specified by the source image name and saves the corrected image with
+   * the destination image name. The color correction process involves adjusting the brightness of
+   * the image's color channels to match the average peak value across all channels. The corrected
+   * image is saved with the destination image name.
+   *
+   * @param imageNameSrc  The name of the source image to be color-corrected.
+   * @param imageNameDest The name of the destination image where the color-corrected image will be
+   *                      saved.
+   * @throws IllegalArgumentException If the source image is not found or if the image names are
+   *                                  invalid.
+   */
   void colorCorrect(String imageNameSrc, String imageNameDest);
 
+  /**
+   * Converts the specified source image into a histogram visualization and saves it with the
+   * destination image name. The method uses the provided ImageDrawer to generate the histogram
+   * visualization.
+   *
+   * @param imageNameSrc  The name of the source image to be converted into a histogram
+   *                      visualization.
+   * @param imageNameDest The name of the destination image where the histogram visualization will
+   *                      be saved.
+   * @param imageDrawer   The ImageDrawer used to create the histogram visualization.
+   * @throws IllegalArgumentException If the source image is not found, if the image names are
+   *                                  invalid, or if the ImageDrawer is null.
+   */
   void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer);
 }

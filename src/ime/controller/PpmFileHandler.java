@@ -11,6 +11,13 @@ import java.util.Scanner;
  */
 public class PpmFileHandler implements FileHandler {
 
+  /**
+   * loads image and returns a 3d float array.
+   *
+   * @param filename the filename to be loaded.
+   * @return 3d array of pixel values.
+   * @throws FileNotFoundException when file is not found.
+   */
   @Override
   public float[][][] loadImage(String filename) throws FileNotFoundException {
 
@@ -39,6 +46,13 @@ public class PpmFileHandler implements FileHandler {
     return pixelValues;
   }
 
+  /**
+   * saves an image after the operations into
+   *
+   * @param image    the image to be saved
+   * @param filename the filename (or path) that the image will be saved in
+   * @throws IOException when IOexception.
+   */
 
   @Override
   public void saveImage(float[][][] image, String filename) throws IOException {

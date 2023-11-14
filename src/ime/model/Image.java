@@ -163,7 +163,25 @@ public interface Image {
    */
   Image append(Image image);
 
+  /**
+   * to get the image type of a given image ( can be RGB).
+   *
+   * @return image type of the image
+   */
   ImageType getImageType();
 
+  /**
+   * Adjusts the levels of the image using the provided black point (b), mid-point (m), and white
+   * point (w) values. The method applies a contrast adjustment by mapping pixel values within the
+   * specified range to the full 0-255 scale.
+   *
+   * @param b The black point, which is the lower limit of the input pixel values to map to 0.
+   * @param m The mid-point, which is the middle point of the input pixel values to map to a value
+   *          in the 0-255 range.
+   * @param w The white point, which is the upper limit of the input pixel values to map to 255.
+   * @return An Image object with adjusted levels.
+   * @throws IllegalArgumentException If the provided values do not satisfy the condition (b < m)
+   *                                  and (m < w).
+   */
   Image levelAdjust(int b, int m, int w) throws IllegalArgumentException;
 }

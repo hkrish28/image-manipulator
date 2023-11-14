@@ -10,7 +10,7 @@ import java.util.Map;
 public class FileHandlerProviderImpl implements FileHandlerProvider {
 
   private static final Map<FileFormatEnum, FileHandler> FILE_FORMAT_ENUM_MAP =
-          generateFileHandlerClassMap();
+      generateFileHandlerClassMap();
 
   private static Map<FileFormatEnum, FileHandler> generateFileHandlerClassMap() {
     Map<FileFormatEnum, FileHandler> fileHandlers = new HashMap<>();
@@ -37,6 +37,13 @@ public class FileHandlerProviderImpl implements FileHandlerProvider {
     FileFormatEnum type = validateFileType(fileName);
     return FILE_FORMAT_ENUM_MAP.get(type);
   }
+
+  /**
+   * checks if the filetype is valid or not and return the file format.
+   *
+   * @param fileType png/jpg/ppm.
+   * @return the filetype.
+   */
 
   private FileFormatEnum validateFileType(String fileType) {
     try {
