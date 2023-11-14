@@ -1,6 +1,5 @@
 package ime.controller.commands;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
@@ -16,9 +15,9 @@ public class Save extends AbstractCommand {
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
     String file = tokens[1];
     String imageName = tokens[2];
-    BufferedImage bufferedImage = imageRepository.getImage(imageName);
+    float[][][] image = imageRepository.getImage(imageName);
     try {
-      new FileHandlerProviderImpl().getFileHandler(file).saveImage(bufferedImage, file);
+      new FileHandlerProviderImpl().getFileHandler(file).saveImage(image, file);
     } catch (IOException e) {
       return "Invalid file";
     }

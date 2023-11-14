@@ -50,8 +50,7 @@ public class MockImgRepo implements ImageRepository {
    * @param imageName The name to associate with the loaded image.
    */
   @Override
-  public void loadImage(BufferedImage image, String imageName) {
-//    methodCallLogger.append("loadImage called " + " and " + imageName + " passed\n");
+  public void loadImage(float[][][] image, String imageName) {
     methodCallLogger.append(getLoggerMessageForOperation(LOAD, imageName));
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
@@ -67,14 +66,14 @@ public class MockImgRepo implements ImageRepository {
    */
 
   @Override
-  public BufferedImage getImage(String imageName)
+  public float[][][] getImage(String imageName)
           throws IllegalArgumentException {
     methodCallLogger.append(getLoggerMessageForOperation(GET_IMAGE, imageName));
 //    methodCallLogger.append("getImage called " + " and " + imageName + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
-    return new BufferedImage(10, 10, 1);
+    return new float[][][]{};
   }
 
   /**
@@ -390,7 +389,7 @@ public class MockImgRepo implements ImageRepository {
   }
 
   @Override
-  public void toHistogram(String imageNameSrc, String imageNameDest) {
+  public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
 
   }
 

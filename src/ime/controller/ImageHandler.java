@@ -1,4 +1,4 @@
-package ime.model;
+package ime.controller;
 
 import java.awt.*;
 import java.util.List;
@@ -13,6 +13,6 @@ public interface ImageHandler<T> {
   float[][][] getImagePixels(T image);
 
 
-  T convertIntoImage(float[][][] pixelValues, List<Color> colorChannels);
+  T convertIntoImage(float[][][] pixelValues);
 
 }

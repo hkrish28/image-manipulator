@@ -1,11 +1,12 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+
+import ime.controller.ImageDrawer;
 
 /**
  * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
@@ -17,29 +18,38 @@ public class ImageRepositoryImpl implements ImageRepository {
    * map for storing the image with its name as the key.
    */
   private final Map<String, Image> imageMap;
-  ImageHandler<Image> imageHandler;
-  ImageHandler<BufferedImage> bufferedImageHandler;
-
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
-    imageHandler = new ImageHandlerImpl();
-    bufferedImageHandler = new BufferedImageHandler();
+  }
+
+
+  @Override
+  public void loadImage(float[][][] imagePixels, String imageName) {
+    Image image = new ImagePixelImpl(imagePixels, ImageType.RGB);
+    imageMap.put(imageName, image);
   }
 
   @Override
-  public void loadImage(BufferedImage image, String imageName) {
-    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
-    imageMap.put(imageName, newImage);
-  }
-
-  @Override
-  public BufferedImage getImage(String imageName) {
+  public float[][][] getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    float[][][] pixels = imageHandler.getImagePixels(image);
-    return bufferedImageHandler.convertIntoImage(pixels, image.getImageType().colorChannels);
+    int height = image.getHeight();
+    int width = image.getWidth();
+    int channelCount = image.getChannelCount();
+    float[][][] result = new float[height][width][channelCount];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float[] pixelValues = image.getPixelValues(i, j);
+        for (int k = 0; k < channelCount; k++) {
+          result[i][j][k] = pixelValues[k];
+        }
+      }
+    }
+    return result;
+//    return imageHandler.getImagePixels(image);
   }
+
 
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames)
@@ -181,9 +191,9 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     validateImagePresent(imageNameSrc);
     List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
-    imageMap.put("temp", images.get(1));
+    imageMap.put("temp", images.get(0));
     operation.accept("temp", "temp");
-    imageMap.put(imageNameDest, images.get(0).append(imageMap.get("temp")));
+    imageMap.put(imageNameDest, imageMap.get("temp").append(images.get(1)));
     imageMap.remove("temp");
   }
 
@@ -196,7 +206,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   private int calculateAveragePeakValue(Image image) {
     int sumPeakValue = 0;
-    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+    HistogramImpl hist = new HistogramImpl(image);
     for (int channelIndex = 0; channelIndex < hist.getChannelCount(); channelIndex++) {
       sumPeakValue += hist.getMostFrequentValue(channelIndex);
     }
@@ -208,7 +218,7 @@ public class ImageRepositoryImpl implements ImageRepository {
   public void colorCorrect(String imageNameSrc, String imageNameDest) {
     validateImagePresent(imageNameSrc);
     Image image = imageMap.get(imageNameSrc);
-    HistogramImpl hist = new HistogramImpl(image, image.getHeight());
+    HistogramImpl hist = new HistogramImpl(image);
 
     int averagePeakValue = calculateAveragePeakValue(image);
     List<Image> limages = new ArrayList<>();
@@ -227,9 +237,12 @@ public class ImageRepositoryImpl implements ImageRepository {
   }
 
   @Override
-  public void toHistogram(String imageNameSrc, String imageNameDest) {
+  public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
     validateImagePresent(imageNameSrc);
-    Image newImage = new ImagePixelImpl(new HistogramImpl(imageMap.get(imageNameSrc), 256).createHistogram(), ImageType.RGB);
+    Histogram histogram = new HistogramImpl(imageMap.get(imageNameSrc));
+    float[][][] histogramImage = new HistogramDrawerImpl(256, 256, imageDrawer).visualizeHistogram(histogram);
+    Image newImage = new ImagePixelImpl(histogramImage, ImageType.RGB);
+
     imageMap.put(imageNameDest, newImage);
   }
 

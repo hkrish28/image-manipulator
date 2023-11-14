@@ -56,8 +56,8 @@ public class PpmFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     };
-    BufferedImage bufferedImage = fileHandler.loadImage("test/resources/testImage.ppm");
-//    assertTrue(Arrays.deepEquals(expected, pixels));
+    float[][][] pixels = fileHandler.loadImage("test/resources/testImage.ppm");
+    assertTrue(Arrays.deepEquals(expected, pixels));
   }
 
   /**

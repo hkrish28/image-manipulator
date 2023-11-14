@@ -1,7 +1,8 @@
 package ime.model;
 
-import java.awt.*;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -11,22 +12,22 @@ import java.util.stream.Collectors;
  * the specific image types.
  */
 public enum ImageType {
-  RGB(RgbPixel::new, Arrays.asList(Color.RED, Color.GREEN, Color.BLUE));
+  RGB(RgbPixel::new, Collections.unmodifiableList(Arrays.asList(ColorChannelEnum.RED, ColorChannelEnum.GREEN, ColorChannelEnum.BLUE)));
 
   /**
    * The color channels present in the image type.
    */
-  public final List<Color> colorChannels;
+  public final List<ColorChannelEnum> colorChannels;
 
 
   private Supplier<Pixel> pixelSupplier;
 
-  ImageType(Supplier<Pixel> pixelSupplier, List<Color> colorChannels) {
+  ImageType(Supplier<Pixel> pixelSupplier, List<ColorChannelEnum> colorChannels) {
     this.pixelSupplier = pixelSupplier;
     this.colorChannels = colorChannels;
   }
 
-  public static ImageType getImageTypeFromChannels(List<Color> colors) {
+  public static ImageType getImageTypeFromChannels(List<ColorChannelEnum> colors) {
     List<ImageType> colorChannelImageType = Arrays.stream(ImageType.values()).filter(imageType -> {
       if (imageType.colorChannels.size() != colors.size()) {
         return false;
