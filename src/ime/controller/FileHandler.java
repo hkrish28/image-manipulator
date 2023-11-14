@@ -19,7 +19,7 @@ public interface FileHandler {
    * @return the pixel values of the images
    * @throws IOException if any error occurs during file loading or if the file does not exist
    */
-  BufferedImage loadImage(String filename) throws IOException;
+  float[][][] loadImage(String filename) throws IOException;
 
   /**
    * This method saves the given image into the file path passed as parameter.
@@ -28,6 +28,6 @@ public interface FileHandler {
    * @param filename the filename (or path) that the image will be saved in
    * @throws IOException if any error occurs during file saving
    */
-  void saveImage(BufferedImage image, String filename) throws IOException;
+  void saveImage(float[][][] image, String filename) throws IOException;
 
 }
