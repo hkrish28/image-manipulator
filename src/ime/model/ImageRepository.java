@@ -1,6 +1,5 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -27,16 +26,6 @@ public interface ImageRepository {
 
   void loadImage(float[][][] image, String imageName );
 
-  /**
-   * This method is used to save a tagged image to a given file path.
-   *
-   * @param filePath  the path at which the image is to be saved.
-   * @param imageName the name of the image to be saved.
-   * @throws IOException              if any error occurs during the loading of the image or if the
-   *                                  file does not exist at the file path.
-   * @throws IllegalArgumentException if imageName has not been created/tagged yet.
-   */
-//  void saveImage(String filePath, String imageName);
 
   float[][][] getImage(String imageName);
 

@@ -1,6 +1,6 @@
 package ime.model;
 
-import java.awt.*;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +27,7 @@ public enum ImageType {
     this.colorChannels = colorChannels;
   }
 
-  public static ImageType getImageTypeFromChannels(List<Color> colors) {
+  public static ImageType getImageTypeFromChannels(List<ColorChannelEnum> colors) {
     List<ImageType> colorChannelImageType = Arrays.stream(ImageType.values()).filter(imageType -> {
       if (imageType.colorChannels.size() != colors.size()) {
         return false;

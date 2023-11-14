@@ -1,6 +1,5 @@
 package ime.model;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,21 +18,11 @@ public class ImageRepositoryImpl implements ImageRepository {
    * map for storing the image with its name as the key.
    */
   private final Map<String, Image> imageMap;
-  ImageHandler<Image> imageHandler;
-  ImageHandler<BufferedImage> bufferedImageHandler;
-
 
   public ImageRepositoryImpl() {
     imageMap = new HashMap<>();
-    imageHandler = new ImageHandlerImpl();
-    bufferedImageHandler = new BufferedImageHandler();
   }
 
-//  @Override
-//  public void loadImage(BufferedImage image, String imageName) {
-//    Image newImage = new ImagePixelImpl(new BufferedImageHandler().getImagePixels(image), ImageType.RGB);
-//    imageMap.put(imageName, newImage);
-//  }
 
   @Override
   public void loadImage(float[][][] imagePixels, String imageName) {
@@ -45,7 +34,20 @@ public class ImageRepositoryImpl implements ImageRepository {
   public float[][][] getImage(String imageName) {
     validateImagePresent(imageName);
     Image image = imageMap.get(imageName);
-    return imageHandler.getImagePixels(image);
+    int height = image.getHeight();
+    int width = image.getWidth();
+    int channelCount = image.getChannelCount();
+    float[][][] result = new float[height][width][channelCount];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        float[] pixelValues = image.getPixelValues(i, j);
+        for (int k = 0; k < channelCount; k++) {
+          result[i][j][k] = pixelValues[k];
+        }
+      }
+    }
+    return result;
+//    return imageHandler.getImagePixels(image);
   }
 
 
@@ -189,9 +191,9 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     validateImagePresent(imageNameSrc);
     List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
-    imageMap.put("temp", images.get(1));
+    imageMap.put("temp", images.get(0));
     operation.accept("temp", "temp");
-    imageMap.put(imageNameDest, images.get(0).append(imageMap.get("temp")));
+    imageMap.put(imageNameDest, imageMap.get("temp").append(images.get(1)));
     imageMap.remove("temp");
   }
 

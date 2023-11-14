@@ -43,9 +43,7 @@ public class HistogramImpl implements Histogram {
   // y coordinate of peak
   @Override
   public int getPeakValue(int channelIndex) throws IllegalArgumentException {
-    if (channelIndex < 0 || channelIndex >= channelCount) {
-      throw new IllegalArgumentException("Invalid channel index");
-    }
+    validateChannelIndex(channelIndex);
 
     int maxFrequency = 0;
 
@@ -62,9 +60,7 @@ public class HistogramImpl implements Histogram {
   // for the given channel the x coordinate of the peak
   @Override
   public int getMostFrequentValue(int channelIndex) throws IllegalArgumentException {
-    if (channelIndex < 0 || channelIndex >= channelCount) {
-      throw new IllegalArgumentException("Invalid channel index");
-    }
+    validateChannelIndex(channelIndex);
 
     int peakPixelValue = 0;
     int maxFrequency = 0;
@@ -81,8 +77,21 @@ public class HistogramImpl implements Histogram {
 
   @Override
   public int getValueOccurence(int channelIndex, int pixelValue) {
-    return 0;
+    validateChannelIndex(channelIndex);
+    validatePixelValue(pixelValue);
+    return hist[channelIndex][pixelValue];
   }
 
+  private void validatePixelValue(int pixelValue) {
+    if (pixelValue < 0 || pixelValue >= width) {
+      throw new IllegalArgumentException("Invalid channel index");
+    }
+  }
+
+  private void validateChannelIndex(int channelIndex){
+    if (channelIndex < 0 || channelIndex >= channelCount) {
+      throw new IllegalArgumentException("Invalid channel index");
+    }
+  }
 
 }

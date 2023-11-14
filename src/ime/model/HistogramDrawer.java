@@ -1,9 +1,9 @@
 package ime.model;
 
-import ime.controller.ImageDrawer;
-
+/**
+ * A histogram drawer will
+ */
 public interface HistogramDrawer {
-
 
   float[][][] visualizeHistogram(Histogram histogram);
 }
