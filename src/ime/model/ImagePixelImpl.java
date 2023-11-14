@@ -1,6 +1,10 @@
 package ime.model;
 
-import java.awt.*;
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,10 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -65,7 +65,7 @@ public class ImagePixelImpl implements Image {
     pixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-          setPixelValue(this.pixels, i, j, pixelValues[i][j]);
+        setPixelValue(this.pixels, i, j, pixelValues[i][j]);
       }
     }
   }
@@ -167,44 +167,32 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image getIntensityImage() {
+
+    return getImage(Pixel::getIntensity);
+  }
+
+  private Image getImage(Function<Pixel, Float> component) {
     Pixel[][] resultPixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        float pixelIntensity = pixels[i][j].getIntensity();
+        float characteristic = component.apply(pixels[i][j]);
         float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
-        Arrays.fill(greyscale, pixelIntensity);
+        Arrays.fill(greyscale, characteristic);
         setPixelValue(resultPixels, i, j, greyscale);
       }
     }
     return new ImagePixelImpl(resultPixels, imageType);
   }
 
+
   @Override
   public Image getLumaImage() {
-    Pixel[][] resultPixels = new Pixel[height][width];
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        float luma = pixels[i][j].getLuma();
-        float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
-        Arrays.fill(greyscale, luma);
-        setPixelValue(resultPixels, i, j, greyscale);
-      }
-    }
-    return new ImagePixelImpl(resultPixels, imageType);
+    return getImage(Pixel::getLuma);
   }
 
   @Override
   public Image getValueImage() {
-    Pixel[][] resultPixels = new Pixel[height][width];
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        float pixelIntensity = pixels[i][j].getValue();
-        float[] greyscale = new float[pixels[i][j].getColorChannelCount()];
-        Arrays.fill(greyscale, pixelIntensity);
-        setPixelValue(resultPixels, i, j, greyscale);
-      }
-    }
-    return new ImagePixelImpl(resultPixels, imageType);
+    return getImage(Pixel::getValue);
   }
 
   @Override
@@ -309,7 +297,7 @@ public class ImagePixelImpl implements Image {
             resultPixels[i][j][k] = 255;
           } else {
             resultPixels[i][j][k] =
-                    coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+                coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
           }
         }
       }
@@ -351,8 +339,8 @@ public class ImagePixelImpl implements Image {
     for (int i = 0; i < getChannelCount(); i++) {
       Set<Float> uniqueElementSet = getUniqueElements(transformed, i);
       List<Float> sortedElementList = uniqueElementSet.stream()
-              .sorted(Float::compare)
-              .collect(Collectors.toList());
+          .sorted(Float::compare)
+          .collect(Collectors.toList());
       int num = (int) (compressPercent * sortedElementList.size());
       float threshold = sortedElementList.get(num - 1);
       for (int m = 0; m < transformed.length; m++) {
@@ -412,13 +400,13 @@ public class ImagePixelImpl implements Image {
       while (c <= pixelsTransformed.length) {
         applyColumnTransformation(pixelsTransformed, c, a, this::invTransform);
         applyRowTransformation(pixelsTransformed, c, a, this::invTransform);
-
         c = c * 2;
       }
     }
   }
 
-  private void applyRowTransformation(float[][][] pixelsTransformed, int c, int a, Function<List<Float>, List<Float>> transformFunction) {
+  private void applyRowTransformation(float[][][] pixelsTransformed, int c, int a,
+      Function<List<Float>, List<Float>> transformFunction) {
     for (int i = 0; i < c; i++) {
       List<Float> rowValues = extractRow(pixelsTransformed[i], c, a);
       List<Float> transformed = transformFunction.apply(rowValues);
@@ -428,7 +416,8 @@ public class ImagePixelImpl implements Image {
     }
   }
 
-  private void applyColumnTransformation(float[][][] pixelsTransformed, int c, int a, Function<List<Float>, List<Float>> transformFunction) {
+  private void applyColumnTransformation(float[][][] pixelsTransformed, int c, int a,
+      Function<List<Float>, List<Float>> transformFunction) {
     for (int j = 0; j < c; j++) {
       List<Float> colValues = extractCol(pixelsTransformed, j, c, a);
       List<Float> transformed = transformFunction.apply(colValues);
@@ -566,7 +555,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-                .getChannelValues()[channel];
+            .getChannelValues()[channel];
       }
     }
 
