@@ -67,7 +67,7 @@ the result in another image with the given name.
 <p>This controller interface lists down the public methods (which is currently one - to start execution of the program) which should be implemented by every concrete class for the interface.</p></ul>
 </br>
 
-<h4>ScriptController</h4>
+<h4>ControllerImpl</h4>
 <i>Class</i>
 <ul>
 <p>This concrete implementation of the controller interface supports a list of commands that can be inputted by the user. The user can either run commands from the console or can alterntively embed them in a script file and run the script file using the controller.</p></ul>

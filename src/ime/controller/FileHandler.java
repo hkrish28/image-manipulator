@@ -21,7 +21,7 @@ public interface FileHandler {
   /**
    * This method saves the given image into the file path passed as parameter.
    *
-   * @param image    the image to be saved
+   * @param image    the image to be saved represented in terms of its color channels/pixel values
    * @param filename the filename (or path) that the image will be saved in
    * @throws IOException if any error occurs during file saving
    */
