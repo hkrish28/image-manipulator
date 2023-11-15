@@ -640,11 +640,8 @@ public class ImagePixelImplTest {
 
   @Test
   public void testGetImageType() {
-    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
-    // Test the getImageType method
-    ImageType expectedType = ImageType.RGB;
+    ImageType expectedType = imageType.RGB;
     ImageType actualType = image.getImageType();
-    // Verify that the actual type matches the expected type
     assertEquals(expectedType, actualType);
   }
 
@@ -695,6 +692,21 @@ public class ImagePixelImplTest {
 
     assertImagesEqual(expectedImage, adjustedImage);
   }
+  @Test
+  public void testLevelAdjustExtremeValues2() {
+    int b = 50;
+    int m = 140;
+    int w = 245;
+    float[][][] testPixel = new float[][][]{{{40, 200, 255}, {100, 10, 255}}};
+    Image image = new ImagePixelImpl(testPixel, imageType);
+    float[][][] expected = new float[][][]{{{0, 203.51648f, 255}, {73.292625f, 0, 255}}};
+    Image adjustedImage = image.levelAdjust(b, m, w);
+    Image expectedImage = new ImagePixelImpl(expected, imageType);
+
+    assertImagesEqual(expectedImage, adjustedImage);
+  }
+
+
 
   private void assertImagesEqual(Image expected, Image actual) {
     assertEquals(expected.getHeight(), actual.getHeight());

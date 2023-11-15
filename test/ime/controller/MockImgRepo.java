@@ -1,7 +1,4 @@
 package ime.controller;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -61,8 +58,7 @@ public class MockImgRepo implements ImageRepository {
    * Retrieves the image tagged by the given name.
    *
    * @param imageName The name of the image to be retrieved.
-   * @throws IOException If an error occurs during the saving process or if the MockImgRepo is set
-   *                     to fail.
+
    */
 
   @Override
