@@ -1,4 +1,5 @@
 load resources/images/bird.jpg bird
+#load helper/manhattan-small.png bird
 blur bird bird-blursplit split 50
 save resources/res/bird-blursplit.png bird-blursplit
 
