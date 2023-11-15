@@ -181,6 +181,146 @@ to depend on BufferedImage class or awt package as the getImageDrawing method wi
 drawn image as a float[][][] object.
 </p></ul>
 
+<h4>Command</h4>
+<i>Interface</i>
+<ul>
+<p>This interface is designed to represent a command that is supported by the application. 
+It provides a method, go, that will be implemented by each supported command in the application.
+</p></ul>
+
+<h4>AbstractCommand</h4>
+<i>Abstract Class</i>
+<ul>
+<p>This abstract class implements the Command interface and provides a common structure for all 
+command classes that will extend it.
+</p></ul>
+
+<h4>RedComponent</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that extracts the red component from an image.
+</p></ul>
+
+<h4>GreenComponent</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that extracts the green component from an image.
+</p></ul>
+
+<h4>BlueComponent</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that extracts the blue component from an image.
+</p></ul>
+
+<h4>Blur</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that applies a blur effect to an image.
+</p></ul>
+
+<h4>Sharpen</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that applies a sharpen effect to an image.
+</p></ul>
+
+<h4>Brighten</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that brightens an image.
+</p></ul>
+
+<h4>ColorCorrect</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that applies color correction on an image.
+</p></ul>
+
+<h4>Combine</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that combines images using their respective color channels.
+</p></ul>
+
+<h4>Compress</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that compresses an image.
+</p></ul>
+
+<h4>HorizontalFlip</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that flips an image horizontally.
+</p></ul>
+
+<h4>VerticalFlip</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that flips an image vertically.
+</p></ul>
+
+<h4>Histogram</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that generates a histogram from an image.
+</p></ul>
+
+<h4>RgbSplit</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that splits an image into its red, green, and blue color channels.
+</p></ul>
+
+<h4>Sepia</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that applies a sepia effect to an image.
+</p></ul>
+
+<h4>LumaGreyscale</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that converts an image to its luma greyscale.
+</p></ul>
+
+<h4>ValueGreyscale</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that converts an image to its value greyscale.
+</p></ul>
+
+<h4>IntensityGreyscale</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that converts an image to its intensity greyscale.
+</p></ul>
+
+<h4>LevelsAdjust</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that adjusts the levels of an image.
+</p></ul>
+
+<h4>Load</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that loads an image into the application.
+</p></ul>
+
+<h4>Run</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that runs a script file.
+</p></ul>
+
+<h4>Save</h4>
+<i>Class</i>
+<ul>
+<p>This class extends the AbstractCommand class and represents a specific command that saves an image from the application to a file.
+</p></ul>
+
 <h3><u>View Classes</u></h3>
 <h4>View</h4>
 <i>Interface</i>
