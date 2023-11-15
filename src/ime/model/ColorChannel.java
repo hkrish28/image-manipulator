@@ -15,3 +15,6 @@ public enum ColorChannel {
     this.rgb = rgbValues;
   }
 }
+// color channel.value will give array convert into stream containing map and filter
+// colorchannel.values passed as arg to arrayaslist
+//value.rgb.size !=3 collect.collectors.list
