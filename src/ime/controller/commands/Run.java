@@ -1,7 +1,6 @@
 package ime.controller.commands;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
@@ -22,7 +21,7 @@ public class Run extends AbstractCommand {
   @Override
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(tokens[1]));
+      File reader = new File(tokens[1]);
       new ControllerImpl(new Scanner(reader), view, imageRepository, false).execute();
       return "Script file execution complete.";
     } catch (IOException e) {

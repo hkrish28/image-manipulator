@@ -76,8 +76,9 @@ public interface Image {
    * @param row the row position of the pixel
    * @param col the column position of the pixel
    * @return the value of the pixel
+   * @throws IllegalArgumentException if the row or column lies outside the image
    */
-  float[] getPixelValues(int row, int col);
+  float[] getPixelValues(int row, int col) throws IllegalArgumentException;
 
   /**
    * Convert this image into its intensity greyscale and return the copy of it.
@@ -113,7 +114,6 @@ public interface Image {
    * @return the number of color channels
    */
   int getChannelCount();
-
 
   /**
    * Return the red component of the image as a new copy. Original image should not be changed.
@@ -164,7 +164,7 @@ public interface Image {
   Image append(Image image);
 
   /**
-   * to get the image type of a given image ( can be RGB).
+   * This method can be used to get the image type of given image ( can be RGB).
    *
    * @return image type of the image
    */
@@ -176,8 +176,9 @@ public interface Image {
    * specified range to the full 0-255 scale.
    *
    * @param b The black point, which is the lower limit of the input pixel values to map to 0.
+   *          This value should be lesser than {@param m}.
    * @param m The mid-point, which is the middle point of the input pixel values to map to a value
-   *          in the 0-255 range.
+   *          in the 0-255 range. This value should be lesser than {@param w}.
    * @param w The white point, which is the upper limit of the input pixel values to map to 255.
    * @return An Image object with adjusted levels.
    * @throws IllegalArgumentException If the provided values do not satisfy the condition (b < m)

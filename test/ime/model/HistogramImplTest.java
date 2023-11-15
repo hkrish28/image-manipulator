@@ -40,9 +40,9 @@ public class HistogramImplTest {
   @Test
   public void testGetColorChannels() {
 
-    List<ColorChannelEnum> expectedChannels = Arrays.asList(ColorChannelEnum.RED,
-        ColorChannelEnum.GREEN, ColorChannelEnum.BLUE);
-    List<ColorChannelEnum> actualChannels = histogram.getColorChannels();
+    List<ColorChannel> expectedChannels = Arrays.asList(ColorChannel.RED,
+        ColorChannel.GREEN, ColorChannel.BLUE);
+    List<ColorChannel> actualChannels = histogram.getColorChannels();
     //System.out.println(actualChannels);
     assertEquals(expectedChannels, actualChannels);
   }
