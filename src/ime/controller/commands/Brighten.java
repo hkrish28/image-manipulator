@@ -4,14 +4,21 @@ import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that brightens
+ * or darkens an image depending on the given constant.
+ */
 public class Brighten extends AbstractCommand {
 
+  /**
+   * Constructor to initialize the fields.
+   */
   public Brighten() {
     super(4, 2, 3);
   }
 
   @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
     try {
       float brightnessConstant = Float.parseFloat(tokens[1]);
       return (src, dest) -> imageRepository.brightenImage(src, dest, brightnessConstant);

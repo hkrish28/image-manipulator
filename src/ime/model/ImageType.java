@@ -20,7 +20,7 @@ public enum ImageType {
   public final List<ColorChannel> colorChannels;
 
 
-  private Supplier<Pixel> pixelSupplier;
+  private final Supplier<Pixel> pixelSupplier;
 
   ImageType(Supplier<Pixel> pixelSupplier, List<ColorChannel> colorChannels) {
     this.pixelSupplier = pixelSupplier;

@@ -42,9 +42,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         float[] pixelValues = image.getPixelValues(i, j);
-        for (int k = 0; k < channelCount; k++) {
-          result[i][j][k] = pixelValues[k];
-        }
+        System.arraycopy(pixelValues, 0, result[i][j], 0, channelCount);
       }
     }
     return result;

@@ -642,7 +642,7 @@ public class ImagePixelImplTest {
   public void testGetImageType() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
     // Test the getImageType method
-    ImageType expectedType = imageType.RGB;
+    ImageType expectedType = ImageType.RGB;
     ImageType actualType = image.getImageType();
     // Verify that the actual type matches the expected type
     assertEquals(expectedType, actualType);

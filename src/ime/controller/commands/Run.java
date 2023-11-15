@@ -9,10 +9,18 @@ import ime.controller.ControllerImpl;
 import ime.model.ImageRepository;
 import ime.view.View;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that runs a
+ * script file.
+ */
 public class Run extends AbstractCommand {
 
   private final View view;
 
+  /**
+   * Constructor to initialize the fields that also takes in the view which will be used to
+   * create a new controller object.
+   */
   public Run(View view) {
     super(2);
     this.view = view;
@@ -28,11 +36,5 @@ public class Run extends AbstractCommand {
       return "Invalid script location/file.";
     }
   }
-
-  @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
-    return null;
-  }
-
 
 }
