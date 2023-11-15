@@ -36,8 +36,8 @@ public class HistogramDrawerImpl implements HistogramDrawer {
   private int getMaxCount(Histogram histogram) {
     int max = 0;
     for (int i = 0; i < histogram.getChannelCount(); i++) {
-      if (histogram.getPeakValue(i) > max) {
-        max = histogram.getPeakValue(i);
+      if (histogram.getPeakValue(i,0,255) > max) {
+        max = histogram.getPeakValue(i,0,255);
       }
     }
     return max;

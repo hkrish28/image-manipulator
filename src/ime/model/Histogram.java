@@ -28,7 +28,7 @@ public interface Histogram {
    * @param channelIndex The index of the color channel.
    * @return The peak value (y-coordinate) of the histogram for the specified channel.
    */
-  int getPeakValue(int channelIndex);
+  int getPeakValue(int channelIndex, int start, int end);
 
   /**
    * Finds the most frequent value (x-coordinate of the peak) for the specified channel index.
@@ -36,7 +36,7 @@ public interface Histogram {
    * @param channelIndex The index of the color channel.
    * @return The most frequent value (x-coordinate of the peak) for the specified channel.
    */
-  int getMostFrequentValue(int channelIndex);
+  int getMostFrequentValue(int channelIndex, int start , int end);
 
   /**
    * Retrieves the occurrence frequency of a specific pixel value for a given channel index.

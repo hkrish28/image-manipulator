@@ -1,5 +1,9 @@
 package ime.model;
 
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,10 +12,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -24,7 +24,7 @@ public class ImagePixelImpl implements Image {
 
   private final ImageType imageType;
 
-  private Pixel[][] pixels;
+  private final Pixel[][] pixels;
 
   /**
    * This constructor initializes the {@link ImagePixelImpl} using a 2D pixel array.
@@ -364,7 +364,7 @@ public class ImagePixelImpl implements Image {
   }
 
 
-  public void haarTransform(float[][][] pixelsToBeTransformed) {
+  private void haarTransform(float[][][] pixelsToBeTransformed) {
     for (int a = 0; a < getChannelCount(); a++) {
       int c = pixelsToBeTransformed.length; // Find the maximum dimension
       while (c > 1) {
@@ -391,7 +391,7 @@ public class ImagePixelImpl implements Image {
     return result;
   }
 
-  public void invHaar(float[][][] pixelsTransformed) {
+  private void invHaar(float[][][] pixelsTransformed) {
 
     for (int a = 0; a < getChannelCount(); a++) {
       int c = 2;
@@ -582,10 +582,10 @@ public class ImagePixelImpl implements Image {
     return new ImagePixelImpl(resultPixels, imageType);
   }
 
-  /*
-  This method is used to generate a pixel for the given image type and assign the values given to
-   the coordinates of the resulting Image.
-   */
+  /**
+   * This method is used to generate a pixel for the given image type and assign the values given to
+   * the coordinates of the resulting Image.
+   **/
   private void setPixelValue(Pixel[][] resultPixels, int i, int j, float[] channelValues) {
     resultPixels[i][j] = imageType.generatePixel();
     resultPixels[i][j].setColor(channelValues);

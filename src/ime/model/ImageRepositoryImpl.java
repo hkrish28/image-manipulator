@@ -47,7 +47,6 @@ public class ImageRepositoryImpl implements ImageRepository {
       }
     }
     return result;
-//    return imageHandler.getImagePixels(image);
   }
 
 
@@ -208,7 +207,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     int sumPeakValue = 0;
     HistogramImpl hist = new HistogramImpl(image);
     for (int channelIndex = 0; channelIndex < hist.getChannelCount(); channelIndex++) {
-      sumPeakValue += hist.getMostFrequentValue(channelIndex);
+      sumPeakValue += hist.getMostFrequentValue(channelIndex, 10,245);
     }
     return sumPeakValue / hist.getChannelCount();
   }
@@ -226,7 +225,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     // Calculate brightness adjustment for each channel
     float[] brightnessAdjustment = new float[image.getChannelCount()];
     for (int channelIndex = 0; channelIndex < image.getChannelCount(); channelIndex++) {
-      int currentPeakValue = hist.getMostFrequentValue(channelIndex);
+      int currentPeakValue = hist.getMostFrequentValue(channelIndex,10,245);
       int peakDifference = averagePeakValue - currentPeakValue;
       brightnessAdjustment[channelIndex] = peakDifference;
       limages.add(image.brighten(brightnessAdjustment[channelIndex]));

@@ -1,15 +1,14 @@
 package ime.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link ImagePixelImpl} class.
@@ -27,7 +26,7 @@ public class ImagePixelImplTest {
   public ImagePixelImplTest() {
     // Create a test Pixel matrix
     testPixels = new float[][][]{{{0, 0, 0}, {0, 10, 10}, {0, 20, 20}},
-      {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
+        {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
     imageType = ImageType.RGB;
     image = new ImagePixelImpl(testPixels, imageType);
 
@@ -40,9 +39,9 @@ public class ImagePixelImplTest {
   @Test
   public void testFloatConstructor() {
     float[][][] testPixels = {{{0, 0, 0}, {0, 10, 10}, {0, 20}},
-      {{10, 0, 10}, {10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
+        {{10, 0, 10}, {10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
     assertThrows(IllegalArgumentException.class, () ->
-            new ImagePixelImpl(testPixels, imageType));
+        new ImagePixelImpl(testPixels, imageType));
   }
 
   /**
@@ -196,8 +195,8 @@ public class ImagePixelImplTest {
   @Test
   public void testCombine() {
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
@@ -206,15 +205,15 @@ public class ImagePixelImplTest {
     int width = testImage.getWidth();
     List<Image> imagesToCombine = new ArrayList<>();
     float[][][] image1Values = {
-            {{0, 0, 0}, {50, 50, 50}},
-            {{0, 0, 0}, {25, 25, 25}}
+        {{0, 0, 0}, {50, 50, 50}},
+        {{0, 0, 0}, {25, 25, 25}}
     };
     Image image1 = new ImagePixelImpl(image1Values, imageType);
     imagesToCombine.add(image1);
 
     float[][][] image2Values = {
-            {{255, 255, 255}, {100, 100, 100}},
-            {{255, 255, 255}, {200, 200, 200}}
+        {{255, 255, 255}, {100, 100, 100}},
+        {{255, 255, 255}, {200, 200, 200}}
     };
     Image image2 = new ImagePixelImpl(image2Values, imageType);
     imagesToCombine.add(image2);
@@ -247,14 +246,14 @@ public class ImagePixelImplTest {
   public void testBlur() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{100, 25, 50}, {75, 35, 22}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{100, 25, 50}, {75, 35, 22}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
     float[][][] expectedPixelValues = {
-            {{67.187f, 36.562f, 48.25f}, {78.125f, 49.687f, 59}},
-            {{59.375f, 26.25f, 35.562f}, {62.5f, 33.75f, 38.3125f}}
+        {{67.187f, 36.562f, 48.25f}, {78.125f, 49.687f, 59}},
+        {{59.375f, 26.25f, 35.562f}, {62.5f, 33.75f, 38.3125f}}
     };
     Image blurredImage = testImage.blur();
     assertExpectedImage(testPixelValues, testImage);
@@ -262,8 +261,8 @@ public class ImagePixelImplTest {
 
     //Blur one more time
     float[][][] expectedPixelValuesBlurred = {
-            {{37.89f, 20.742f, 26.277f}, {39.453f, 22.851f, 27.792f}},
-            {{35.937f, 18.457f, 23.398f}, {37.011f, 20.214f, 24.414f}}
+        {{37.89f, 20.742f, 26.277f}, {39.453f, 22.851f, 27.792f}},
+        {{35.937f, 18.457f, 23.398f}, {37.011f, 20.214f, 24.414f}}
     };
     blurredImage = blurredImage.blur();
     assertExpectedImage(expectedPixelValuesBlurred, blurredImage);
@@ -277,14 +276,14 @@ public class ImagePixelImplTest {
   public void testSharpen() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
     float[][][] expectedPixelValues = {
-            {{187.5f, 112.5f, 150f}, {255.0f, 187.5f, 225f}},
-            {{150f, 93.75f, 121.875f}, {187.5f, 131.25f, 159.375f}}
+        {{187.5f, 112.5f, 150f}, {255.0f, 187.5f, 225f}},
+        {{150f, 93.75f, 121.875f}, {187.5f, 131.25f, 159.375f}}
     };
 
     Image sharpenedImage = testImage.sharpen();
@@ -349,15 +348,15 @@ public class ImagePixelImplTest {
   @Test
   public void testGetIntensityImage() {
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
     float[][][] expectedIntensities = {
-            {{75, 75, 75}, {175, 175, 175}},
-            {{37.5f, 37.5f, 37.5f}, {87.5f, 87.5f, 87.5f}}
+        {{75, 75, 75}, {175, 175, 175}},
+        {{37.5f, 37.5f, 37.5f}, {87.5f, 87.5f, 87.5f}}
     };
 
     Image intensityImage = testImage.getIntensityImage();
@@ -375,20 +374,20 @@ public class ImagePixelImplTest {
   @Test
   public void testGetLumaImage() {
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
     float[][][] expectedLumaValues =
-            new float[testImage.getHeight()][testImage.getWidth()][testImage.getChannelCount()];
+        new float[testImage.getHeight()][testImage.getWidth()][testImage.getChannelCount()];
 
     for (int row = 0; row < testImage.getHeight(); row++) {
       for (int col = 0; col < testImage.getWidth(); col++) {
         float[] pixelValues = testImage.getPixelValues(row, col);
         float lumaValue
-                = 0.2126f * pixelValues[0] + 0.7152f * pixelValues[1] + 0.0722f * pixelValues[2];
+            = 0.2126f * pixelValues[0] + 0.7152f * pixelValues[1] + 0.0722f * pixelValues[2];
         Arrays.fill(expectedLumaValues[row][col], lumaValue);
       }
     }
@@ -406,8 +405,8 @@ public class ImagePixelImplTest {
   public void testGetChannelCount() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
@@ -423,16 +422,16 @@ public class ImagePixelImplTest {
   public void testGetValueImage() {
     // initialise test image.
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
 
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
     // Calculate the expected grayscale intensity values for the test image.
     float[][][] expectedGrayscaleValues = {
-            {{100, 100, 100}, {200, 200, 200}},
-            {{50, 50, 50}, {100, 100, 100}}
+        {{100, 100, 100}, {200, 200, 200}},
+        {{50, 50, 50}, {100, 100, 100}}
     };
 
     // Get the grayscale intensity image
@@ -450,17 +449,17 @@ public class ImagePixelImplTest {
   public void testInvalidPixelValues() {
     // initialise test image.
     float[][][] testPixelValues = {
-            {{100, -75, 87.5f}}
+        {{100, -75, 87.5f}}
     };
     float[][][] testPixelValues2 = {
-            {{300, 50, 75}},
+        {{300, 50, 75}},
     };
 
     //Image testImage = new ImagePixelImpl(testPixelValues,imageType);
     assertThrows(IllegalArgumentException.class, () ->
-            new ImagePixelImpl(testPixelValues, imageType));
+        new ImagePixelImpl(testPixelValues, imageType));
     assertThrows(IllegalArgumentException.class, () ->
-            new ImagePixelImpl(testPixelValues2, imageType));
+        new ImagePixelImpl(testPixelValues2, imageType));
   }
 
   /**
@@ -470,7 +469,7 @@ public class ImagePixelImplTest {
   public void testGetSepia() {
 
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}}
+        {{100, 50, 75}, {200, 150, 175}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
     float[][][] expected = {{{91.925f, 81.8f, 63.725f}, {227.025f, 202.1f, 157.425f}}};
@@ -487,12 +486,12 @@ public class ImagePixelImplTest {
   public void testToRedChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     float[][][] expectedPixels = {
-            {{100, 0, 0}, {200, 0, 0}},
-            {{50, 0, 0}, {100, 0, 0}}
+        {{100, 0, 0}, {200, 0, 0}},
+        {{50, 0, 0}, {100, 0, 0}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
@@ -508,12 +507,12 @@ public class ImagePixelImplTest {
   public void testToGreenChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     float[][][] expectedPixels = {
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
     Image greenChannelImage = testImage.getGreenComponent();
@@ -529,12 +528,12 @@ public class ImagePixelImplTest {
   public void testToBlueChannel() {
     // Create a test image with known pixel values
     float[][][] testPixelValues = {
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     float[][][] expectedPixels = {
-            {{0, 0, 75}, {0, 0, 175}},
-            {{0, 0, 37.5f}, {0, 0, 87.5f}}
+        {{0, 0, 75}, {0, 0, 175}},
+        {{0, 0, 37.5f}, {0, 0, 87.5f}}
     };
     Image testImage = new ImagePixelImpl(testPixelValues, imageType);
 
@@ -550,18 +549,18 @@ public class ImagePixelImplTest {
   public void testCombineExc() {
     // Create test images for the color channels
     Image redChannel = new ImagePixelImpl(new float[][][]{
-            {{100, 0, 0}, {200, 0, 0}},
-            {{50, 0, 0}, {100, 0, 0}}
+        {{100, 0, 0}, {200, 0, 0}},
+        {{50, 0, 0}, {100, 0, 0}}
     }, imageType);
 
     Image greenChannel = new ImagePixelImpl(new float[][][]{
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     }, imageType);
 
     Image blueChannel = new ImagePixelImpl(new float[][][]{
-            {{0, 0, 75}, {0, 0, 175}},
-            {{0, 0, 37.5f}, {0, 0, 87.5f}}
+        {{0, 0, 75}, {0, 0, 175}},
+        {{0, 0, 37.5f}, {0, 0, 87.5f}}
     }, imageType);
 
     List<Image> colorChannels = new ArrayList<>();
@@ -571,17 +570,17 @@ public class ImagePixelImplTest {
     colorChannels.add(blueChannel);
     Image combinedImage = redChannel.combine(colorChannels);
     float[][][] expectedCombinedImage = new float[][][]{
-            {{100, 50, 75}, {200, 150, 175}},
-            {{50, 25, 37.5f}, {100, 75, 87.5f}}
+        {{100, 50, 75}, {200, 150, 175}},
+        {{50, 25, 37.5f}, {100, 75, 87.5f}}
     };
     assertExpectedImage(expectedCombinedImage, combinedImage);
   }
 
   @Test
-  public void testCompress(){
-    float[][][] testPixels = new float[][][]{{{5,5,5},{3,3,3}},{{2,2,2},{4,4,4}}};
-    float[][][] testPixels2 = new float[][][]{{{0,0,0},{0,0,0}},{{0,0,0},{0,0,0}}};
-    ImagePixelImpl image = new ImagePixelImpl(testPixels,ImageType.RGB);
+  public void testCompress() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    float[][][] testPixels2 = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
+    ImagePixelImpl image = new ImagePixelImpl(testPixels, ImageType.RGB);
 
     Image compressed = image.compress(0);
     assertExpectedImage(testPixels, compressed);
@@ -598,6 +597,112 @@ public class ImagePixelImplTest {
     for (int i = 0; i < expectedPixelValues.length; i++) {
       for (int j = 0; j < expectedPixelValues[0].length; j++) {
         assertArrayEquals(expectedPixelValues[i][j], blurredImage.getPixelValues(i, j), 0.01f);
+      }
+    }
+  }
+
+  @Test
+  public void testAppendValid() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    float[][][] testPixels2 = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
+    Image testImage = new ImagePixelImpl(testPixels, imageType);
+    Image testImage2 = new ImagePixelImpl(testPixels2, imageType);
+
+    Image result = testImage.append(testImage2);
+    // Verify the dimensions of the result image
+    assertEquals(testImage.getHeight(), result.getHeight());
+    assertEquals(testImage.getWidth() + testImage2.getWidth(), result.getWidth());
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAppendInvalidHeight() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    float[][][] invalidHeight = new float[][][]{{{5, 4, 3}, {3, 2, 1}}};
+    // Test when appending an image with an invalid height
+    Image invalidImage = new ImagePixelImpl(invalidHeight, imageType);
+    Image testImage = new ImagePixelImpl(testPixels, imageType);
+    testImage.append(invalidImage);
+  }
+
+  /**
+   * test for invalid image type.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testAppendInValidType() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 300}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    float[][][] testPixels2 = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
+    Image testImage = new ImagePixelImpl(testPixels, imageType);
+    Image testImage2 = new ImagePixelImpl(testPixels2, imageType);
+
+    testImage.append(testImage2);
+  }
+
+  @Test
+  public void testGetImageType() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    // Test the getImageType method
+    ImageType expectedType = imageType.RGB;
+    ImageType actualType = image.getImageType();
+    // Verify that the actual type matches the expected type
+    assertEquals(expectedType, actualType);
+  }
+
+  /**
+   * Test valid level adjustments
+   */
+  @Test
+  public void testLevelAdjustValid() {
+
+    int b = 50;
+    int m = 100;
+    int w = 200;
+    float[][][] testPixel = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    Image image = new ImagePixelImpl(testPixel, imageType);
+    float[][][] expected = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
+    Image adjustedImage = image.levelAdjust(b, m, w);
+    Image expectedImage = new ImagePixelImpl(expected, imageType);
+    assertImagesEqual(expectedImage, adjustedImage);
+  }
+
+  /**
+   * Test when invalid arguments are provided
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testLevelAdjustInvalidArguments() {
+
+    int b = 100;
+    int m = 80;  // m should be greater than b
+    int w = 200;
+
+    image.levelAdjust(b, m, w);
+  }
+
+  /**
+   * Test when adjusting with extreme values
+   */
+  @Test
+  public void testLevelAdjustExtremeValues() {
+
+    int b = 0;
+    int m = 128;
+    int w = 255;
+    float[][][] testPixel = new float[][][]{{{50, 150, 255}, {0, 128, 255}}};
+    Image image = new ImagePixelImpl(testPixel, imageType);
+    float[][][] expected = new float[][][]{{{50, 150, 255}, {0, 128, 255}}};
+    Image adjustedImage = image.levelAdjust(b, m, w);
+    Image expectedImage = new ImagePixelImpl(expected, imageType);
+
+    assertImagesEqual(expectedImage, adjustedImage);
+  }
+
+  private void assertImagesEqual(Image expected, Image actual) {
+    assertEquals(expected.getHeight(), actual.getHeight());
+    assertEquals(expected.getWidth(), actual.getWidth());
+
+    for (int i = 0; i < expected.getHeight(); i++) {
+      for (int j = 0; j < expected.getWidth(); j++) {
+        assertArrayEquals(expected.getPixelValues(i, j), actual.getPixelValues(i, j), 0.001F);
       }
     }
   }
