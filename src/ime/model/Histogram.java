@@ -20,7 +20,7 @@ public interface Histogram {
    *
    * @return A list of ColorChannelEnum representing the color channels in the image type.
    */
-  List<ColorChannelEnum> getColorChannels();
+  List<ColorChannel> getColorChannels();
 
   /**
    * Finds the y-coordinate (peak value) of the histogram peak for the specified channel index.

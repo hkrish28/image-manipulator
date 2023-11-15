@@ -7,7 +7,7 @@ import ime.model.ImageRepository;
 public class LevelsAdjust extends AbstractCommand {
 
   public LevelsAdjust() {
-    super(6, 4, 5);
+    super(6, 4, 5, true);
   }
 
   @Override

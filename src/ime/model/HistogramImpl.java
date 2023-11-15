@@ -55,7 +55,7 @@ public class HistogramImpl implements Histogram {
    * @return A list of ColorChannelEnum representing the color channels in the image type.
    */
   @Override
-  public List<ColorChannelEnum> getColorChannels() {
+  public List<ColorChannel> getColorChannels() {
     return imageType.colorChannels;
   }
 

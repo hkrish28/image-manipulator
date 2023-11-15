@@ -15,6 +15,12 @@ save resources/res/bird-lumasplit.png bird-lumasplit
 intensity-component bird bird-intensitysplit split 99
 save resources/res/bird-intensitysplit.png bird-intensitysplit
 
+sharpen bird bird-sharpen-split split 50
+save resources/res/bird-sharpen-split.png bird-sharpen-split
+
+levels-adjust 10 150 225 bird bird-level-split split 25
+save resources/res/bird-level-split.png bird-level-split
+
 compress 50 bird bird-compress50
 save bird-compress50.png bird-compress50
 

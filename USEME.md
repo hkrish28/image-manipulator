@@ -3,13 +3,13 @@
 <ul>
 <b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name.
 <p><i>Example</i>: load resources/bird.jpg bird</p>
-<p><i>Condition:</i>
+<p><i>Conditions</i>:
 <ul><li>The image format must be supported by the application. Supported formats are currently jpg, png and ppm</li></ul></p>
 
 <b>save image-path image-name</b>: Save the image with the given name to the specified path which
 should include the name of the file.
 <p><i>Example</i>: save resources/bird.jpg bird</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The image to be saved must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -18,10 +18,56 @@ presence of at least one load command (and usually other commands as well) befor
 
 <b>red-component image-name dest-image-name</b>: Create an image with the red-component of the image
 with the given name, and refer to it henceforth in the program by the given destination name.
-Similar commands for green, blue, value, luma, intensity components should be supported. Note that
-the images for value, luma and intensity will be greyscale images.
 <p><i>Example</i>: red-component bird bird-red</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
+<ul>
+<li>The source image must be present in the application, which implies the 
+presence of at least one load command (and usually other commands as well) before this command.</li>
+</ul></p>
+
+<b>green-component image-name dest-image-name</b>: Create an image with the green-component of the image
+with the given name, and refer to it henceforth in the program by the given destination name.
+<p><i>Example</i>: green-component bird bird-green</p>
+<p><i>Conditions</i>: 
+<ul>
+<li>The source image must be present in the application, which implies the 
+presence of at least one load command (and usually other commands as well) before this command.</li>
+</ul></p>
+
+<b>blue-component image-name dest-image-name</b>: Create an image with the blue-component of the image
+with the given name, and refer to it henceforth in the program by the given destination name.
+<p><i>Example</i>: blue-component bird bird-blue</p>
+<p><i>Conditions</i>: 
+<ul>
+<li>The source image must be present in the application, which implies the 
+presence of at least one load command (and usually other commands as well) before this command.</li>
+</ul></p>
+
+<b>value-component image-name dest-image-name</b>: Create an image with the value-component of the image
+with the given name, and refer to it henceforth in the program by the given destination name. This will be 
+a greyscale image.
+<p><i>Example</i>: value-component bird bird-value</p>
+<p><i>Conditions</i>: 
+<ul>
+<li>The source image must be present in the application, which implies the 
+presence of at least one load command (and usually other commands as well) before this command.</li>
+</ul></p>
+
+<b>luma-component image-name dest-image-name</b>: Create an image with the luma-component of the image
+with the given name, and refer to it henceforth in the program by the given destination name. This will be
+a greyscale image.
+<p><i>Example</i>: luma-component bird bird-luma</p>
+<p><i>Conditions</i>: 
+<ul>
+<li>The source image must be present in the application, which implies the 
+presence of at least one load command (and usually other commands as well) before this command.</li>
+</ul></p>
+
+<b>intensity-component image-name dest-image-name</b>: Create an image with the intensity-component of the image
+with the given name, and refer to it henceforth in the program by the given destination name. This will be
+a greyscale image.
+<p><i>Example</i>: intensity-component bird bird-intensity</p>
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -30,7 +76,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>horizontal-flip image-name dest-image-name</b>: Flip an image horizontally to create a new image,
 referred to henceforth by the given destination name.
 <p><i>Example</i>: horizontal-flip bird bird-horizontal-flip</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -39,7 +85,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>vertical-flip image-name dest-image-name</b>: Flip an image vertically to create a new image,
 referred to henceforth by the given destination name.
 <p><i>Example</i>: vertical-flip bird bird-vertical-flip</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -50,7 +96,7 @@ create a new image, referred to henceforth by the given destination name. The in
 positive (brightening) or negative (darkening).
 <p><i>Example</i>: brighten 20 bird bird-brighter</p>
 <p><i>Example 2</i>: brighten -20 bird bird-darker</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -61,7 +107,7 @@ the given image into three images containing its red, green and blue components 
 would be the same images that would be individually produced with the red-component, green-component
 and blue-component commands.
 <p><i>Example</i>: rgb-split bird bird-red bird-green bird-blue</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -70,7 +116,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>rgb-combine image-name red-image green-image blue-image</b>: Combine the three greyscale images
 into a single image that gets its red, green and blue components from the three images respectively.
 <p><i>Example</i>: rgb-combine bird bird-red bird-green bird-blue</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source images(note that there are three here, namely bird-red, bird-green, and bird-blue) must be present in the application, which implies the 
 presence of at least three commands(of which at least one is load) which creates the source images for this command.</li>
@@ -79,7 +125,7 @@ presence of at least three commands(of which at least one is load) which creates
 <b>blur image-name dest-image-name</b>: blur the given image and store the result in another image
 with the given name.
 <p><i>Example</i>: blur bird bird-blur</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -88,7 +134,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>sharpen image-name dest-image-name</b>: sharpen the given image and store the result in another
 image with the given name.
 <p><i>Example</i>: sharpen bird bird-sharp</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -97,7 +143,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>sepia image-name dest-image-name</b>: produce a sepia-toned version of the given image and store
 the result in another image with the given name.
 <p><i>Example</i>: sepia bird bird-sepia</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -106,7 +152,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>compress percentage image-name dest-image-name</b>: Create a compressed version of an image.
 Percentages between 0 and 100 are considered valid.
 <p><i>Example</i>: compress 10 bird bird-compressed</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -117,7 +163,7 @@ presence of at least one load command (and usually other commands as well) befor
 given image. The size of this image would be 256x256. It contains the histograms for the red, green
 and blue channels as line graphs.
 <p><i>Example</i>: histogram bird bird-histogram</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -126,7 +172,7 @@ presence of at least one load command (and usually other commands as well) befor
 <b>color-correct image-name dest-image-name</b>: Support the ability to color-correct an image by
 aligning the meaningful peaks of its histogram.
 <p><i>Example</i>: color-correct bird bird-color-correct</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -137,7 +183,7 @@ an image where b, m and w are the three relevant black, mid and white values res
 values should be ascending in that order, and should be within 0 and 255 for this command to work
 correctly.
 <p><i>Example</i>: levels-adjust 12 140 244 bird bird-level-adjust</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>
@@ -146,7 +192,7 @@ presence of at least one load command (and usually other commands as well) befor
 
 <b>run script-file</b>: Load and run the script commands in the specified file.
 <p><i>Example</i>: run example_script.txt</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source file should be present in the File System at the specified location.</li>
 </ul></p>
@@ -164,7 +210,7 @@ the width (e.g. 50 means place the line halfway through the width of the image).
 would contain only the relevant part suitably transformed, with the original image in the remaining
 part.
 <p><i>Example</i>: color-correct bird bird-color-correct split 20</p>
-<p><i>Condition</i>: 
+<p><i>Conditions</i>: 
 <ul>
 <li>The source image must be present in the application, which implies the 
 presence of at least one load command (and usually other commands as well) before this command.</li>

@@ -475,8 +475,21 @@ to remove duplicity of code.</ul>
 <ul>To perform adequate data hiding, changes were made across fields in the project to ensure that
 they were given the most narrow scope</ul>
 
+<b>ImageType now makes use of unmodifiable list to store the list of ColorChannel enum object to denote the order of color channels in the image type.
+<ul>This is to ensure that the values cannot be modified from outside the class and for it to remain unmodfiable.</ul>
+
 <b></b>
 <ul></ul>
 <h3><i>Features added:</i></h3>
+<b>Support for new command : Histogram</b>
+<ul>This command will allow users to create a histogram for an image which would be represented as an image as well(as line graph that connects adjacent pixel values frequencies for each of the red, green and blue color channels). An ImageDrawer interface was introduced in the controller package which has currently been implemented in ImageDrawerImpl reusing the BufferedImage class and its related methods to provide the drawing capabilities. For the histogram creation, controller passes an ImageDrawer object to the model to give it the capability of drawing on an image as it wishes. This ensures that the model is in no way coupled to the awt package that provides the BufferedImage class but is only dependent on an Interface defined in the application.</ul>
+<b>Support for new commands : Color Correction, Levels Adjust </b>
+<ul>The addition of the histogram capability brought about these other related features. The command color-correct will allow users to perform color correction on a given image and the command levels-adjust will allow users to adjust the levels of an image given the black, mid, and white values. </ul>
+<b>Support for new command : Compression </b>
+<ul>This command allows users to compress a given image and provide a compression percentage that determines how much the given image should be compressed. Values between 0 and 100 can be provided, with 0 doing no compression and 100 compressing the image into nothing but a black image of the given image's height and width. The compression utilizes Haar transform algorithm.</ul>
+<b>Support for adding optional parameters to preview the output of a command </b>
+<ul>Some operations(command) can be previewed now by splitting the image into 2 parts that contains the image after the given operation on the left part and the original image on the right part. Commands that support these features will take in the parameter 'split x' where x is a number between 0 to 100 which determines where the splitting occurs (value of 50 will split the image into 2 halves, other numbers will slide the vertical splitter accordingly).
+<p>The commands that currently support this feature are blur, luma-component, value-component, intensity-component, sepia, color-correct, levels-adjust, and sharpen. Any of these commands can be substituted in place of 'command' in the below usage description. The number parameters are only for the commands that require them such as levels-adjust that takes 3 numbers as parameters. </ul>
+<p><i>Usage: command [number params if any] src-image dest-image</i>
 </ul>
 
