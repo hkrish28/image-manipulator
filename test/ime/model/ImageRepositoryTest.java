@@ -408,11 +408,8 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.toBlueChannelImage("ImageName", "blueImage");
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
+
     assertTrue("blue image not found ",
         imageRepository.isImagePresent("blueImage"));
   }
@@ -426,11 +423,8 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.compress("ImageName", "flippedImage", 20);
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
+
     assertTrue("compressed image not found ",
         imageRepository.isImagePresent("flippedImage"));
   }
@@ -443,13 +437,9 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.preview("ImageName", "previewedImage",
           imageRepository::toValueGreyScale, 50);
 
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
     assertEquals(imageRepository.getImage("previewedImage"), testPixels);
     assertTrue("previewedImage image not found ",
         imageRepository.isImagePresent("previewedImage"));
@@ -487,13 +477,9 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.preview("ImageName", "previewedImage",
           imageRepository::toValueGreyScale, 100);
 
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
     assertEquals(imageRepository.getImage("previewedImage"), expected);
     assertTrue("previewedImage image not found ",
         imageRepository.isImagePresent("previewedImage"));
@@ -507,13 +493,9 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.preview("ImageName", "previewedImage",
           imageRepository::toValueGreyScale, -50);
 
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
     assertEquals(imageRepository.getImage("previewedImage"), testPixels);
     assertTrue("previewedImage image not found ",
         imageRepository.isImagePresent("previewedImage"));
@@ -527,19 +509,16 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 150, 210);
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
-    assertTrue("compressed image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+
+    assertTrue("levels adjusted image not found ",
+        imageRepository.isImagePresent("AdjustedImage"));
   }
 
   /**
-   * TEST DOES NOT THROW ILLEGRAL ARG EXCEPTION WHEN BMW IS NEGATIVE OR GREATER THAN 255.
+   * TEST DOES NOT THROW ILLEGAL ARG EXCEPTION WHEN BMW IS NEGATIVE OR GREATER THAN 255.
    *
-   * @throws IllegalArgumentException
+   * @throws IllegalArgumentException not there?
    */
   @Test(expected = IllegalArgumentException.class)
   public void testLevelsAdjustInvalidBMW() throws IllegalArgumentException {
@@ -549,13 +528,11 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
+
       imageRepository.levelsAdjust("ImageName", "AdjustedImage", -20, 260, 400);
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
-    assertTrue("compressed image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+
+    assertTrue("levels adjusted image not found ",
+        imageRepository.isImagePresent("AdjustedImage"));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -566,13 +543,11 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
+
       imageRepository.levelsAdjust("ImageName", "AdjustedImage", 220, 130, 20);
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
-    assertTrue("compressed image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+
+    assertTrue("levels adjusted image not found ",
+        imageRepository.isImagePresent("AdjustedImage"));
   }
 
   @Test
@@ -583,11 +558,8 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.colorCorrect("ImageName", "ColorCorrect");
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
+
     assertTrue("Color Corrected image not found ",
         imageRepository.isImagePresent("ColorCorrect"));
   }
@@ -601,11 +573,8 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    try {
       imageRepository.toHistogram("ImageName", "histogram", imageDrawer);
-    } catch (NullPointerException e) {
-      fail("Not supposed to fail");
-    }
+
     assertTrue("histogram image not found ",
         imageRepository.isImagePresent("histogram"));
   }
