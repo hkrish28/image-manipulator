@@ -12,33 +12,19 @@ import java.util.stream.Collectors;
  * the specific image types.
  */
 public enum ImageType {
-  RGB(RgbPixel::new, Collections.unmodifiableList(Arrays.asList(ColorChannelEnum.RED, ColorChannelEnum.GREEN, ColorChannelEnum.BLUE)));
+  RGB(RgbPixel::new, Collections.unmodifiableList(Arrays.asList(ColorChannel.RED, ColorChannel.GREEN, ColorChannel.BLUE)));
 
   /**
    * The color channels present in the image type.
    */
-  public final List<ColorChannelEnum> colorChannels;
+  public final List<ColorChannel> colorChannels;
 
 
   private Supplier<Pixel> pixelSupplier;
 
-  ImageType(Supplier<Pixel> pixelSupplier, List<ColorChannelEnum> colorChannels) {
+  ImageType(Supplier<Pixel> pixelSupplier, List<ColorChannel> colorChannels) {
     this.pixelSupplier = pixelSupplier;
     this.colorChannels = colorChannels;
-  }
-
-  public static ImageType getImageTypeFromChannels(List<ColorChannelEnum> colors) {
-    List<ImageType> colorChannelImageType = Arrays.stream(ImageType.values()).filter(imageType -> {
-      if (imageType.colorChannels.size() != colors.size()) {
-        return false;
-      }
-      return Arrays.deepEquals(colors.toArray(), imageType.colorChannels.toArray());
-    }).collect(Collectors.toList());
-    if (colorChannelImageType.isEmpty()) {
-      return null;
-    } else {
-      return colorChannelImageType.get(0);
-    }
   }
 
   /**

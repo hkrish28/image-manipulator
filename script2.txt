@@ -1,4 +1,5 @@
 load resources/images/bird.jpg bird
+#load helper/manhattan-small.png bird
 blur bird bird-blursplit split 50
 save resources/res/bird-blursplit.png bird-blursplit
 
@@ -14,6 +15,12 @@ save resources/res/bird-lumasplit.png bird-lumasplit
 intensity-component bird bird-intensitysplit split 99
 save resources/res/bird-intensitysplit.png bird-intensitysplit
 
+sharpen bird bird-sharpen-split split 50
+save resources/res/bird-sharpen-split.png bird-sharpen-split
+
+levels-adjust 10 150 225 bird bird-level-split split 25
+save resources/res/bird-level-split.png bird-level-split
+
 compress 50 bird bird-compress50
 save bird-compress50.png bird-compress50
 
@@ -22,6 +29,9 @@ save bird-compress99.png bird-compress99
 
 compress 25 bird bird-compress25
 save bird-compress25.png bird-compress25
+
+compress 90 bird bird-compress90
+save bird-compress90.png bird-compress90
 
 histogram bird bird-hist
 save bird-hist.png bird-hist

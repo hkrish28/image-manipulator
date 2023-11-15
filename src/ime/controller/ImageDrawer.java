@@ -1,7 +1,8 @@
 package ime.controller;
 
 /**
- * ImageDrawer acts as an adapter class which supports the awt library from the controller.
+ * This interface is designed to provide methods for drawing on an image and retrieving the image
+ * data.
  */
 public interface ImageDrawer {
 
