@@ -1,9 +1,5 @@
 package ime.model;
 
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +8,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -167,10 +167,20 @@ public class ImagePixelImpl implements Image {
   @Override
   public Image getIntensityImage() {
 
-    return getImage(Pixel::getIntensity);
+    return getGreyscaleImage(Pixel::getIntensity);
   }
 
-  private Image getImage(Function<Pixel, Float> component) {
+  @Override
+  public Image getLumaImage() {
+    return getGreyscaleImage(Pixel::getLuma);
+  }
+
+  @Override
+  public Image getValueImage() {
+    return getGreyscaleImage(Pixel::getValue);
+  }
+
+  private Image getGreyscaleImage(Function<Pixel, Float> component) {
     Pixel[][] resultPixels = new Pixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -181,17 +191,6 @@ public class ImagePixelImpl implements Image {
       }
     }
     return new ImagePixelImpl(resultPixels, imageType);
-  }
-
-
-  @Override
-  public Image getLumaImage() {
-    return getImage(Pixel::getLuma);
-  }
-
-  @Override
-  public Image getValueImage() {
-    return getImage(Pixel::getValue);
   }
 
   @Override
@@ -235,9 +234,11 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public List<Image> splitVertically(int splitPercent) {
-    int splitPosition = splitPercent * width / 100;
-    if (splitPosition <= 0 || splitPosition >= width) {
-      return Arrays.asList(new ImagePixelImpl(pixels, imageType));
+    int splitPosition = Math.round(splitPercent * width / 100f);
+    if (splitPosition <= 0) {
+      return Arrays.asList(null, new ImagePixelImpl(pixels, imageType));
+    } else if (splitPosition >= width) {
+      return Arrays.asList(new ImagePixelImpl(pixels, imageType), null);
     }
     Pixel[][] leftImagePixels = new Pixel[height][splitPosition];
     Pixel[][] rightImagePixels = new Pixel[height][width - splitPosition];
@@ -296,7 +297,7 @@ public class ImagePixelImpl implements Image {
             resultPixels[i][j][k] = 255;
           } else {
             resultPixels[i][j][k] =
-                coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+                    coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
           }
         }
       }
@@ -404,7 +405,7 @@ public class ImagePixelImpl implements Image {
   }
 
   private void applyRowTransformation(float[][][] pixelsTransformed, int c, int a,
-      Function<List<Float>, List<Float>> transformFunction) {
+                                      Function<List<Float>, List<Float>> transformFunction) {
     for (int i = 0; i < c; i++) {
       List<Float> rowValues = extractRow(pixelsTransformed[i], c, a);
       List<Float> transformed = transformFunction.apply(rowValues);
@@ -415,7 +416,7 @@ public class ImagePixelImpl implements Image {
   }
 
   private void applyColumnTransformation(float[][][] pixelsTransformed, int c, int a,
-      Function<List<Float>, List<Float>> transformFunction) {
+                                         Function<List<Float>, List<Float>> transformFunction) {
     for (int j = 0; j < c; j++) {
       List<Float> colValues = extractCol(pixelsTransformed, j, c, a);
       List<Float> transformed = transformFunction.apply(colValues);
@@ -553,7 +554,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-            .getChannelValues()[channel];
+                .getChannelValues()[channel];
       }
     }
 
