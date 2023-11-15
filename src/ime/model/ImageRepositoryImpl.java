@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 
 import ime.controller.ImageDrawer;
@@ -41,9 +42,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         float[] pixelValues = image.getPixelValues(i, j);
-        for (int k = 0; k < channelCount; k++) {
-          result[i][j][k] = pixelValues[k];
-        }
+        System.arraycopy(pixelValues, 0, result[i][j], 0, channelCount);
       }
     }
     return result;
@@ -190,10 +189,35 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
     validateImagePresent(imageNameSrc);
     List<Image> images = imageMap.get(imageNameSrc).splitVertically(verticalSplit);
-    imageMap.put("temp", images.get(0));
-    operation.accept("temp", "temp");
-    imageMap.put(imageNameDest, imageMap.get("temp").append(images.get(1)));
-    imageMap.remove("temp");
+    //If the vertical split provides empty left part and whole image right part
+    if (images.get(0) == null) {
+      imageMap.put(imageNameDest, images.get(1));
+      return;
+    }
+    addOperatedImagePart(imageNameDest, operation, images);
+  }
+
+  private void addOperatedImagePart(String imageNameDest, BiConsumer<String, String> operation, List<Image> images) {
+    String tempKey = getTempKey();
+    imageMap.put(tempKey, images.get(0));
+    operation.accept(tempKey, tempKey);
+    //If the vertical split provided empty right part and whole image left part(now operated)
+    if (images.get(1) == null) {
+      imageMap.put(imageNameDest, imageMap.get(tempKey));
+    } else {
+      imageMap.put(imageNameDest, imageMap.get(tempKey).append(images.get(1)));
+    }
+    imageMap.remove(tempKey);
+  }
+
+  /* This method returns a temporary key that does not already exist in the imageMap */
+  private String getTempKey() {
+    String tempKey = UUID.randomUUID().toString();
+    // Check if the key exists in the HashMap
+    while (isImagePresent(tempKey)) {
+      tempKey = UUID.randomUUID().toString();
+    }
+    return tempKey;
   }
 
   @Override
@@ -207,7 +231,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     int sumPeakValue = 0;
     HistogramImpl hist = new HistogramImpl(image);
     for (int channelIndex = 0; channelIndex < hist.getChannelCount(); channelIndex++) {
-      sumPeakValue += hist.getMostFrequentValue(channelIndex, 10,245);
+      sumPeakValue += hist.getMostFrequentValue(channelIndex, 10, 245);
     }
     return sumPeakValue / hist.getChannelCount();
   }
@@ -225,7 +249,7 @@ public class ImageRepositoryImpl implements ImageRepository {
     // Calculate brightness adjustment for each channel
     float[] brightnessAdjustment = new float[image.getChannelCount()];
     for (int channelIndex = 0; channelIndex < image.getChannelCount(); channelIndex++) {
-      int currentPeakValue = hist.getMostFrequentValue(channelIndex,10,245);
+      int currentPeakValue = hist.getMostFrequentValue(channelIndex, 10, 245);
       int peakDifference = averagePeakValue - currentPeakValue;
       brightnessAdjustment[channelIndex] = peakDifference;
       limages.add(image.brighten(brightnessAdjustment[channelIndex]));

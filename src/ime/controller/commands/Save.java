@@ -6,8 +6,15 @@ import java.util.function.BiConsumer;
 import ime.controller.FileHandlerProviderImpl;
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that saves an
+ * image from the application to a file.
+ */
 public class Save extends AbstractCommand {
 
+  /**
+   * Constructor to initialize the fields.
+   */
   public Save() {
     super(3, 1, 2);
   }
@@ -23,11 +30,6 @@ public class Save extends AbstractCommand {
     }
 
     return messageSenderHelper(tokens);
-  }
-
-  @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
-    return null;
   }
 
   @Override

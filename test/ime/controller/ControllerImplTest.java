@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ControllerImplTest {
 
-  private MockImgRepo mockImgRepo;
+  private final MockImgRepo mockImgRepo;
   private OutputStream outputStream;
   private PrintStream printStream;
   private View view;
