@@ -4,6 +4,10 @@ import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that adjusts the
+ * levels of an image.
+ */
 public class LevelsAdjust extends AbstractCommand {
 
   public LevelsAdjust() {
@@ -11,7 +15,7 @@ public class LevelsAdjust extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
     int b = Integer.parseInt(tokens[1]);
     int m = Integer.parseInt(tokens[2]);
     int w = Integer.parseInt(tokens[3]);

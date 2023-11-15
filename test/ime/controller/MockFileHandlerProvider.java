@@ -10,7 +10,7 @@ public class MockFileHandlerProvider implements FileHandlerProvider {
 
   private StringBuilder methodCallLogger;
   private Boolean fail;
-  private MockFileHandler mockFileHandler;
+  private final MockFileHandler mockFileHandler;
 
   /**
    * Creates a new instance of the MockFileHandlerProvider.

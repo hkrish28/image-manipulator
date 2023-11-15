@@ -4,6 +4,10 @@ import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that converts an
+ * image to its intensity greyscale.
+ */
 public class IntensityGreyscale extends AbstractCommand {
 
   public IntensityGreyscale(){
@@ -11,7 +15,7 @@ public class IntensityGreyscale extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository){
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository){
     return imageRepository::toIntensityGreyScale;
   }
 }

@@ -1,16 +1,20 @@
 package ime.controller.commands;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
-import ime.controller.BufferedImageHandler;
 import ime.controller.FileHandlerProviderImpl;
-import ime.controller.ImageHandler;
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that loads an
+ * image into the application.
+ */
 public class Load extends AbstractCommand {
 
+  /**
+   * Constructor to initialize the fields.
+   */
   public Load() {
     super(3, 1, 2);
   }
@@ -28,8 +32,4 @@ public class Load extends AbstractCommand {
     return "Loaded successfully.";
   }
 
-  @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
-    return null;
-  }
 }

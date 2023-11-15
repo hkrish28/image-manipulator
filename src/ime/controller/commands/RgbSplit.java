@@ -6,14 +6,21 @@ import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
+/**
+ * This class extends the AbstractCommand class and represents a specific command that splits an
+ * image into its red, green, and blue color channels.
+ */
 public class RgbSplit extends AbstractCommand {
 
+  /**
+   * Constructor to initialize the fields.
+   */
   public RgbSplit() {
     super(5, 1, 0);
   }
 
   @Override
-  protected BiConsumer<String, String> consumerMethod(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
     List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
     return (src, dest) -> imageRepository.splitImageIntoColorChannels(src, colorChannelsImages);
   }
