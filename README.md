@@ -5,8 +5,11 @@
 
 <h3>How to run</h3>
 <ul>
-<p>The program is run using the ProgramRunner class. This class can be run without any arguments which will Once run, input any of the valid command for the operations on your images.
-To run the example script provided, once the program runner is running, input "run resources/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p></ul>
+<p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run, will prompt user to input any of the valid command for the operations on images.
+To run the example script provided in this way, once the program runner is running, input "run resources/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p>
+<p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-f <i>filename</i>'. To run the example script provided this way,
+run the ProgramRunner class with '-f resources/script.txt' as command line argument.
+</p></ul>
 
 <h3>Supported commands</h3>
 
@@ -143,6 +146,41 @@ The class uses a map, FILE_FORMAT_ENUM_MAP, to store different FileHandler imple
 </p></ul>
 <br>
 
+<h4>ImageHandler</h4>
+<i>Interface</i>
+<ul>
+<p>This interface is designed to provide methods for converting an image into a 3D array of its 
+pixel values and vice versa. A pixel value is represented as an array of each of its color channels.
+The ImageHandler interface can be used with any type of image object. The type of the image object is 
+represented by the type parameter T.
+</p></ul>
+
+<h4>BufferedImageHandler</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the ImageHandler interface for BufferedImage objects, providing methods to 
+convert between a BufferedImage and a 3D array of floating-point pixel values.
+</p></ul>
+
+<h4>ImageDrawer</h4>
+<i>Interface</i>
+<ul>
+<p>This interface is designed to provide methods for drawing on an image and retrieving the image data.
+The ImageDrawer could act as an adapter for other libraries that provides implementations for the methods 
+and can bring down the dependency on any such libraries for the clients of the libraries by utilizing this interface.
+</p></ul>
+
+<h4>ImageDrawerImpl</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the ImageDrawer interface and provides methods for drawing on an image 
+and retrieving the image data. 
+This implementation of the ImageDrawer class utilizes the BufferedImage class and the methods provided 
+by Graphics class for performing the drawing functions on the image. Clients of this class do not have
+to depend on BufferedImage class or awt package as the getImageDrawing method will finally return the
+drawn image as a float[][][] object.
+</p></ul>
+
 <h3><u>View Classes</u></h3>
 <h4>View</h4>
 <i>Interface</i>
@@ -204,7 +242,7 @@ variable is a 2-D array that stores the Pixel objects that make up the image.</p
 <p>This class is designed to hold constants that are used for operations on different types of images.</p></ul>
 <br>
 
-<h4>ColorChannel</h4>
+<h4>ColorChannelEnum</h4>
 <i>Enum</i>
 <ul>
 <p>This enum lists the different color channels that a pixel can contain in an image.</p></ul>
@@ -221,7 +259,38 @@ variable is a 2-D array that stores the Pixel objects that make up the image.</p
 <i>Class</i>
 <ul><p>This class implements the Pixel interface and is specifically designed to represent a pixel in an RGB image.
 </p></ul>
+<br>
 
+<h4>Histogram</h4>
+<i>Interface</i>
+<ul>
+<p>This interface is designed to represent a histogram of an image. 
+</p></ul>
+<br>
+
+<h4>HistogramImpl</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the Histogram interface and provides methods to generate and analyze histograms
+based on the pixel values of an Image object of the model. 
+</p></ul>
+<br>
+
+<h4>HistogramDrawer</h4>
+<i>Interface</i>
+<ul>
+<p>This interface is designed to provide a method for visualizing a histogram.
+</p></ul>
+<br>
+
+<h4>HistogramDrawerImpl</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the HistogramDrawer interface and provides a method for visualizing a histogram.
+This implementation of HistogramDrawer takes in an object of ImageDrawer as an argument and draws lines
+between the frequencies of adjacent pixel values for each color channel of the histogram using the ImageDrawer object.
+</p></ul>
+<br>
 </ul>
 
 

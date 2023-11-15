@@ -1,14 +1,19 @@
 package ime.controller;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * This class implements the ImageDrawer interface and provides methods for drawing on an image
+ * and retrieving the image data. This implementation of the ImageDrawer class utilizes the
+ * BufferedImage class and the methods provided by Graphics class for performing the drawing
+ * functions on the image.
+ */
 public class ImageDrawerImpl implements ImageDrawer {
 
   private final int channelCount = 3;
-  private BufferedImage image;
   private final BufferedImageHandler imageHandler;
+  private BufferedImage image;
   private int height;
   private int width;
 
@@ -50,8 +55,16 @@ public class ImageDrawerImpl implements ImageDrawer {
    */
   @Override
   public void drawLine(int x1, int y1, int x2, int y2) {
-    //check if part of image width and height
+    if (isInvalidCoordinate(x1, y1) || isInvalidCoordinate(x2, y2)) {
+      throw new IllegalArgumentException("Invalid co-ordinates provided");
+    }
     graphics.drawLine(x1, y1, x2, y2);
+  }
+
+  private boolean isInvalidCoordinate(int x, int y) {
+    return x < 0 || x > width || y < 0 || y > height;
+
+
   }
 
   /**
@@ -65,7 +78,7 @@ public class ImageDrawerImpl implements ImageDrawer {
   public void setColor(int[] colorPalette) {
     if (colorPalette.length != channelCount) {
       throw new IllegalArgumentException("Color Palette should contain three values corresponding" +
-          "to Red, Green, and Blue values.");
+              "to Red, Green, and Blue values.");
     }
     graphics.setColor(new Color(colorPalette[0], colorPalette[1], colorPalette[2]));
   }

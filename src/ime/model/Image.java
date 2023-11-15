@@ -164,7 +164,7 @@ public interface Image {
   Image append(Image image);
 
   /**
-   * to get the image type of a given image ( can be RGB).
+   * This method can be used to get the image type of given image ( can be RGB).
    *
    * @return image type of the image
    */

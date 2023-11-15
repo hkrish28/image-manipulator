@@ -49,7 +49,7 @@ public class HistogramDrawerImpl implements HistogramDrawer {
    * @param imageDrawer The ImageDrawer to use for drawing the grid lines.
    */
   private void setUpHistogram(ImageDrawer imageDrawer) {
-    imageDrawer.setColor(new int[]{211, 211, 211});
+    imageDrawer.setColor(new int[]{211, 211, 211}); //Set the grid line color as Grey
     int columnLineAdder = width / 16;
     int rowLineAdder = height / 16;
     for (int i = 0; i < width; i += columnLineAdder) {
