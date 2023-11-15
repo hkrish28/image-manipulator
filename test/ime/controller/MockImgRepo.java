@@ -375,7 +375,11 @@ public class MockImgRepo implements ImageRepository {
 
   @Override
   public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
-
+    methodCallLogger.append(
+        "compress called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+    if (fail) {
+      throw new IllegalArgumentException("compress failed");
+    }
   }
 
   @Override
