@@ -31,17 +31,7 @@ public class ImageDrawerImpl implements ImageDrawer {
    */
   @Override
   public float[][][] getImageDrawing() {
-//    float[][][] imagePixels = new float[height][width][];
-//    for (int i = 0; i < height; i++) {
-//      for (int j = 0; j < width; j++) {
-//        Color color = new Color(image.getRGB(j, i));
-//        float red = color.getRed();
-//        float green = color.getGreen();
-//        float blue = color.getBlue();
-//        imagePixels[i][j] = new float[]{red, green, blue};
-//      }
-//    }
-//    return imagePixels;
+
     return imageHandler.getImagePixels(image);
   }
 
@@ -63,8 +53,6 @@ public class ImageDrawerImpl implements ImageDrawer {
 
   private boolean isInvalidCoordinate(int x, int y) {
     return x < 0 || x > width || y < 0 || y > height;
-
-
   }
 
   /**
