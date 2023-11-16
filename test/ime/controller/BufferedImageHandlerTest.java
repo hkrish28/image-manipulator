@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import org.junit.Test;
 
+/**
+ * JUnit test class for testing the {@link BufferedImageHandler} class.
+ */
 public class BufferedImageHandlerTest {
 
   /**

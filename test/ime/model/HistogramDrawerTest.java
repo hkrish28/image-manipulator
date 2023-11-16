@@ -8,11 +8,14 @@ import ime.controller.ImageDrawerImpl;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class HistogramDrawerImplNoMockTest {
+/**
+ * JUnit test class for the HistogramDrawerImpl class that does not mock the drawer object.
+ */
+public class HistogramDrawerTest {
   private Histogram histogram;
   private HistogramDrawerImpl histogramDrawer;
 
-  public HistogramDrawerImplNoMockTest() {
+  public HistogramDrawerTest() {
     this.histogram = new HistogramImpl(new ImagePixelImpl(new float[][][]{{{0, 1, 2}, {0, 0, 2}}},
             ImageType.RGB));
   }
