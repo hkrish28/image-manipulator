@@ -1,8 +1,7 @@
 package ime.controller.commands;
 
-import java.util.function.BiConsumer;
-
 import ime.model.ImageRepository;
+import java.util.function.BiConsumer;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that converts an
@@ -14,11 +13,12 @@ public class ValueGreyscale extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public ValueGreyscale() {
-    super(3,1,2, true);
+    super(3, 1, 2, true);
   }
 
   @Override
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository){
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     return imageRepository::toValueGreyScale;
   }
 }

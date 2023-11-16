@@ -5,8 +5,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import org.junit.Test;
 
+/**
+ * to test color channel enum.
+ */
 public class ColorChannelTest {
 
+  /**
+   * test for color channel size.
+   */
   @Test
   public void testColorChannelSize() {
     Arrays.asList(ColorChannel.values())

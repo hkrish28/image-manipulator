@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * This enum list the different types of images and provides some functions pertaining to each of
  * the specific image types.
  */
 public enum ImageType {
-  RGB(RgbPixel::new, Collections.unmodifiableList(Arrays.asList(ColorChannel.RED, ColorChannel.GREEN, ColorChannel.BLUE)));
+  RGB(RgbPixel::new, Collections.unmodifiableList(
+      Arrays.asList(ColorChannel.RED, ColorChannel.GREEN, ColorChannel.BLUE)));
 
   /**
    * The color channels present in the image type.

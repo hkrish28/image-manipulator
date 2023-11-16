@@ -1,12 +1,11 @@
 package ime.controller.commands;
 
+import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
 
-import ime.model.ImageRepository;
-
 /**
- * This class extends the AbstractCommand class and represents a specific command that brightens
- * or darkens an image depending on the given constant.
+ * This class extends the AbstractCommand class and represents a specific command that brightens or
+ * darkens an image depending on the given constant.
  */
 public class Brighten extends AbstractCommand {
 
@@ -18,19 +17,21 @@ public class Brighten extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     try {
       float brightnessConstant = Float.parseFloat(tokens[1]);
       return (src, dest) -> imageRepository.brightenImage(src, dest, brightnessConstant);
     } catch (NumberFormatException e) {
-      throw new IllegalArgumentException("brightness command expects a number following the command");
+      throw new IllegalArgumentException(
+          "brightness command expects a number following the command");
     }
   }
 
   @Override
   protected String messageSenderHelper(String[] tokens) {
     return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
-            + " & put in " + tokens[destIndex] + " with constant value: " + tokens[1];
+        + " & put in " + tokens[destIndex] + " with constant value: " + tokens[1];
   }
 
 }

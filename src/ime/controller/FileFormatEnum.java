@@ -5,8 +5,6 @@ package ime.controller;
  * operations.
  */
 public enum FileFormatEnum {
-  png,
-  jpg,
-  ppm
+  png, jpg, ppm
 
 }

@@ -38,25 +38,47 @@ public class HistogramImpl implements Histogram {
 
   }
 
+  /**
+   * get channel count.
+   *
+   * @return integer count.
+   */
   @Override
   public int getChannelCount() {
     return channelCount;
   }
 
+  /**
+   * getter for color channels.
+   *
+   * @return list of color channels.
+   */
   @Override
   public List<ColorChannel> getColorChannels() {
     return imageType.colorChannels;
   }
 
-  // y coordinate of peak
+  /**
+   * y coordinate of peak.
+   *
+   * @param channelIndex The index of the color channel.
+   * @param start        The start index of pixel values in consideration
+   * @param end          The last index of pixel values in consideration
+   * @return int.
+   * @throws IllegalArgumentException invalid values.
+   */
   @Override
   public int getPeakValue(int channelIndex, int start, int end) throws IllegalArgumentException {
     return getMaxFrequency(channelIndex, start, end);
   }
 
-  // for the given channel the x coordinate of the peak
+  /**
+   * for the given channel the x coordinate of the peak.
+   */
+
   @Override
-  public int getMostFrequentValue(int channelIndex, int start, int end) throws IllegalArgumentException {
+  public int getMostFrequentValue(int channelIndex, int start, int end)
+      throws IllegalArgumentException {
     int maxFrequency = getMaxFrequency(channelIndex, start, end);
     int pixelValue;
     for (pixelValue = start; pixelValue <= end; pixelValue++) {

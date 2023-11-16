@@ -576,6 +576,9 @@ public class ImagePixelImplTest {
     assertExpectedImage(expectedCombinedImage, combinedImage);
   }
 
+  /**
+   * test the compress method.
+   */
   @Test
   public void testCompress() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
@@ -587,7 +590,6 @@ public class ImagePixelImplTest {
 
     Image fullycompressed = image.compress(100);
     assertExpectedImage(testPixels2, fullycompressed);
-//    image.invHaar(new float[][][]{{{7.071f},{2.828f},{1.0f},{0f},{1.414f},{-1.414f},{0.707f},{-2.121f}}});
   }
 
   private void assertExpectedImage(float[][][] expectedPixelValues, Image blurredImage) {
@@ -601,6 +603,9 @@ public class ImagePixelImplTest {
     }
   }
 
+  /**
+   * test to check append function for valid values.
+   */
   @Test
   public void testAppendValid() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
@@ -615,6 +620,9 @@ public class ImagePixelImplTest {
 
   }
 
+  /**
+   * test of append when invalid values.
+   */
   @Test(expected = IllegalArgumentException.class)
   public void testAppendInvalidHeight() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
@@ -638,6 +646,9 @@ public class ImagePixelImplTest {
     testImage.append(testImage2);
   }
 
+  /**
+   * test to get image type.
+   */
   @Test
   public void testGetImageType() {
     ImageType expectedType = imageType.RGB;
@@ -692,6 +703,10 @@ public class ImagePixelImplTest {
 
     assertImagesEqual(expectedImage, adjustedImage);
   }
+
+  /**
+   * test for level adjust extreme values.
+   */
   @Test
   public void testLevelAdjustExtremeValues2() {
     int b = 50;
@@ -705,7 +720,6 @@ public class ImagePixelImplTest {
 
     assertImagesEqual(expectedImage, adjustedImage);
   }
-
 
 
   private void assertImagesEqual(Image expected, Image actual) {

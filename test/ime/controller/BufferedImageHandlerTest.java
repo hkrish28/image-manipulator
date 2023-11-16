@@ -10,7 +10,7 @@ import org.junit.Test;
 public class BufferedImageHandlerTest {
 
   /**
-   * failing idk why.
+   * test to get image pixels.
    */
   @Test
   public void testGetImagePixels() {
@@ -32,6 +32,9 @@ public class BufferedImageHandlerTest {
     assertArrayEquals(expectedPixels, resultPixels);
   }
 
+  /**
+   * test to convert into image.
+   */
   @Test
   public void testConvertIntoImage() {
     BufferedImageHandler handler = new BufferedImageHandler();

@@ -1,13 +1,12 @@
 package ime.model;
 
+import ime.controller.ImageDrawer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-
-import ime.controller.ImageDrawer;
 
 /**
  * This implementation of {@link ImageRepository} stores multiple images as a map between the tagged
@@ -51,7 +50,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(srcImage);
     List<Image> destImages = imageMap.get(srcImage).splitIntoColorChannels();
     for (int i = 0; i < destImages.size(); i++) {
@@ -61,7 +60,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void combineImages(List<String> srcImageNames, String imageDestName)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagesPresent(srcImageNames);
     List<Image> srcImageList = new ArrayList<>();
     Image firstSrcImage = imageMap.get(srcImageNames.get(0));
@@ -74,7 +73,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).brighten(brightnessConstant);
     imageMap.put(imageNameDest, newImage);
@@ -82,7 +81,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void blurImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).blur();
     imageMap.put(imageNameDest, newImage);
@@ -90,7 +89,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void sharpenImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).sharpen();
     imageMap.put(imageNameDest, newImage);
@@ -98,7 +97,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void flipImageHorizontally(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).flipHorizontally();
     imageMap.put(imageNameDest, newImage);
@@ -106,7 +105,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void flipImageVertically(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).flipVertically();
     imageMap.put(imageNameDest, newImage);
@@ -114,7 +113,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getIntensityImage();
     imageMap.put(imageNameDest, newImage);
@@ -122,7 +121,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getLumaImage();
     imageMap.put(imageNameDest, newImage);
@@ -130,7 +129,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getValueImage();
     imageMap.put(imageNameDest, newImage);
@@ -138,7 +137,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getSepia();
     imageMap.put(imageNameDest, newImage);
@@ -146,7 +145,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getRedComponent();
     imageMap.put(imageNameDest, newImage);
@@ -154,7 +153,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getGreenComponent();
     imageMap.put(imageNameDest, newImage);
@@ -162,7 +161,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).getBlueComponent();
     imageMap.put(imageNameDest, newImage);
@@ -175,7 +174,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
-          throws IllegalArgumentException {
+      throws IllegalArgumentException {
     validateImagePresent(imageNameSrc);
     Image newImage = imageMap.get(imageNameSrc).compress(compressPercent);
     imageMap.put(imageNameDest, newImage);
@@ -183,7 +182,7 @@ public class ImageRepositoryImpl implements ImageRepository {
 
   @Override
   public void preview(String imageNameSrc, String imageNameDest,
-                      BiConsumer<String, String> operation, int verticalSplit) {
+      BiConsumer<String, String> operation, int verticalSplit) {
     if (verticalSplit < 0 || verticalSplit > 100) {
       throw new IllegalArgumentException("Invalid split position");
     }
@@ -197,7 +196,8 @@ public class ImageRepositoryImpl implements ImageRepository {
     addOperatedImagePart(imageNameDest, operation, images);
   }
 
-  private void addOperatedImagePart(String imageNameDest, BiConsumer<String, String> operation, List<Image> images) {
+  private void addOperatedImagePart(String imageNameDest, BiConsumer<String, String> operation,
+      List<Image> images) {
     String tempKey = getTempKey();
     imageMap.put(tempKey, images.get(0));
     operation.accept(tempKey, tempKey);
@@ -263,7 +263,8 @@ public class ImageRepositoryImpl implements ImageRepository {
   public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
     validateImagePresent(imageNameSrc);
     Histogram histogram = new HistogramImpl(imageMap.get(imageNameSrc));
-    float[][][] histogramImage = new HistogramDrawerImpl(256, 256, imageDrawer).visualizeHistogram(histogram);
+    float[][][] histogramImage = new HistogramDrawerImpl(256, 256, imageDrawer).visualizeHistogram(
+        histogram);
     Image newImage = new ImagePixelImpl(histogramImage, ImageType.RGB);
 
     imageMap.put(imageNameDest, newImage);

@@ -1,15 +1,26 @@
 package ime.controller;
 
-public class MockImageDrawer implements ImageDrawer{
+/**
+ * mock image drawer for image drawer interface.
+ */
+public class MockImageDrawer implements ImageDrawer {
+
   private StringBuilder methodCallLogger;
   private Boolean fail;
 
-  public MockImageDrawer(){
+  /**
+   * instatiates objects.
+   */
+  public MockImageDrawer() {
     this.methodCallLogger = new StringBuilder();
     this.fail = false;
   }
 
-
+  /**
+   * get image drawing
+   *
+   * @return float array.
+   */
   @Override
   public float[][][] getImageDrawing() {
     methodCallLogger.append("get Image called\n");
@@ -19,14 +30,28 @@ public class MockImageDrawer implements ImageDrawer{
     return new float[256][256][3];
   }
 
+  /**
+   * draw line.
+   *
+   * @param x1 The x-coordinate of the starting point.
+   * @param y1 The y-coordinate of the starting point.
+   * @param x2 The x-coordinate of the ending point.
+   * @param y2 The y-coordinate of the ending point.
+   */
   @Override
   public void drawLine(int x1, int y1, int x2, int y2) {
-    methodCallLogger.append("draw line called\n" + x1+ " "+ y1+ " "+ x2+ " "+y2);
+    methodCallLogger.append("draw line called\n" + x1 + " " + y1 + " " + x2 + " " + y2);
     if (fail) {
       throw new IllegalArgumentException("image drawer failed");
     }
   }
 
+  /**
+   * sets color.
+   *
+   * @param colorPalette An array of three values representing the Red, Green, and Blue color
+   *                     components.
+   */
   @Override
   public void setColor(int[] colorPalette) {
     methodCallLogger.append("set color called\n");
@@ -35,6 +60,12 @@ public class MockImageDrawer implements ImageDrawer{
     }
   }
 
+  /**
+   * set up canvas.
+   *
+   * @param width  The width of the canvas.
+   * @param height The height of the canvas.
+   */
   @Override
   public void setUpCanvas(int width, int height) {
     methodCallLogger.append("set up canvas called\n");
@@ -42,6 +73,12 @@ public class MockImageDrawer implements ImageDrawer{
       throw new IllegalArgumentException("image drawer failed");
     }
   }
+
+  /**
+   * get logger method.
+   *
+   * @return string.
+   */
   public String getLogger() {
     return methodCallLogger.toString();
   }

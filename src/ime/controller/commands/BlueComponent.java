@@ -1,8 +1,7 @@
 package ime.controller.commands;
 
-import java.util.function.BiConsumer;
-
 import ime.model.ImageRepository;
+import java.util.function.BiConsumer;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that extracts the
@@ -13,7 +12,7 @@ public class BlueComponent extends AbstractCommand {
   /**
    * Constructor to initialize the fields.
    */
-  public BlueComponent(){
+  public BlueComponent() {
     super(3);
   }
 
@@ -26,7 +25,8 @@ public class BlueComponent extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository){
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     return imageRepository::toIntensityGreyScale;
   }
 }

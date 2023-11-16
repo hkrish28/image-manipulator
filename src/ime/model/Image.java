@@ -175,8 +175,8 @@ public interface Image {
    * point (w) values. The method applies a contrast adjustment by mapping pixel values within the
    * specified range to the full 0-255 scale.
    *
-   * @param b The black point, which is the lower limit of the input pixel values to map to 0.
-   *          This value should be lesser than {@param m}.
+   * @param b The black point, which is the lower limit of the input pixel values to map to 0. This
+   *          value should be lesser than {@param m}.
    * @param m The mid-point, which is the middle point of the input pixel values to map to a value
    *          in the 0-255 range. This value should be lesser than {@param w}.
    * @param w The white point, which is the upper limit of the input pixel values to map to 255.

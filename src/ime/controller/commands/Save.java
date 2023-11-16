@@ -1,11 +1,8 @@
 package ime.controller.commands;
 
-import java.io.IOException;
-import java.util.function.BiConsumer;
-
 import ime.controller.FileHandlerProvider;
-import ime.controller.FileHandlerProviderImpl;
 import ime.model.ImageRepository;
+import java.io.IOException;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that saves an
@@ -14,6 +11,7 @@ import ime.model.ImageRepository;
 public class Save extends AbstractCommand {
 
   private final FileHandlerProvider fileHandlerProvider;
+
   /**
    * Constructor to initialize the fields.
    */

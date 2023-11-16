@@ -4,6 +4,7 @@ package ime.model;
  * A Histogram drawer is used to provide a visualization for a given histogram.
  */
 public interface HistogramDrawer {
+
   /**
    * Visualizes a histogram as a graphical representation.
    *
