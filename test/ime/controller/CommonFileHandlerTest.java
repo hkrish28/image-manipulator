@@ -73,8 +73,7 @@ public class CommonFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     };
-    Image image = new ImagePixelImpl(pixels, ImageType.RGB);
-//    fileHandler.saveImage(image, "test/resources/testImage.png");
+    fileHandler.saveImage(pixels, "test/resources/testImage.png");
     float[][][] loaded = fileHandler.loadImage("test/resources/testImage.png");
     assertArrayEquals(pixels, loaded);
   }
@@ -87,11 +86,11 @@ public class CommonFileHandlerTest {
    */
   @Test
   public void testSaveImageInvalidDirectory() throws IOException {
-    Image image = new ImagePixelImpl(new float[][][]{
+    float[][][] imagePixel = new float[][][]{
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
-    }, ImageType.RGB);
-//    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.png"));
-//    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.jpg"));
+    };
+    assertThrows(IOException.class, () -> fileHandler.saveImage(imagePixel, "test/invalid/test.png"));
+    assertThrows(IOException.class, () -> fileHandler.saveImage(imagePixel, "test/invalid/test.jpg"));
   }
 }

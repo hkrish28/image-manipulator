@@ -3,6 +3,7 @@ package ime.controller.commands;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
+import ime.controller.FileHandlerProvider;
 import ime.controller.FileHandlerProviderImpl;
 import ime.model.ImageRepository;
 
@@ -12,11 +13,13 @@ import ime.model.ImageRepository;
  */
 public class Save extends AbstractCommand {
 
+  private final FileHandlerProvider fileHandlerProvider;
   /**
    * Constructor to initialize the fields.
    */
-  public Save() {
+  public Save(FileHandlerProvider fileHandlerProvider) {
     super(3, 1, 2);
+    this.fileHandlerProvider = fileHandlerProvider;
   }
 
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
@@ -24,7 +27,7 @@ public class Save extends AbstractCommand {
     String imageName = tokens[2];
     float[][][] image = imageRepository.getImage(imageName);
     try {
-      new FileHandlerProviderImpl().getFileHandler(file).saveImage(image, file);
+      fileHandlerProvider.getFileHandler(file).saveImage(image, file);
     } catch (IOException e) {
       return "Invalid file";
     }

@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import ime.controller.ControllerImpl;
+import ime.controller.FileHandlerProvider;
+import ime.controller.FileHandlerProviderImpl;
 import ime.controller.ImageProcessingController;
 import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
@@ -24,11 +26,12 @@ public class ProgramRunner {
     }
     View view = new ViewImpl(System.out);
     ImageRepository imageRepository = new ImageRepositoryImpl();
+    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
     try {
       Scanner controllerInput = getControllerInput(args);
       boolean userPrompt = args.length != 2; //no user prompt if file provided as input
       ImageProcessingController controller = new ControllerImpl(controllerInput, view,
-              imageRepository, userPrompt);
+              imageRepository, fileHandlerProvider, userPrompt);
       controller.execute();
     } catch (FileNotFoundException e) {
       System.out.println("Invalid file provided. Exiting.");

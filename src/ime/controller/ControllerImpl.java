@@ -1,5 +1,10 @@
 package ime.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 import ime.controller.commands.BlueComponent;
 import ime.controller.commands.Blur;
 import ime.controller.commands.Brighten;
@@ -24,10 +29,6 @@ import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
 import ime.view.View;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 /**
  * The `controller` class implements the ImageProcessingController interface and provides
@@ -40,28 +41,31 @@ public class ControllerImpl implements ImageProcessingController {
   private final ImageRepository imgRepo;
   private final View view;
   private final Scanner in;
+  private final FileHandlerProvider fileHandlerProvider;
   private Map<CommandEnum, Command> knownCommands;
 
-  /**
-   * Constructs a new controller instance with the given image files map.
-   */
-  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo) {
-    this.imgRepo = imgRepo;
-    this.in = in;
-    this.view = view;
-    this.userPrompt = true;
-    initializeKnownCommands();
-  }
+//  /**
+//   * Constructs a new controller instance with the given image files map.
+//   */
+//  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo) {
+//    this.imgRepo = imgRepo;
+//    this.in = in;
+//    this.view = view;
+//    this.userPrompt = true;
+//    initializeKnownCommands();
+//  }
 
   /**
    * Constructs a new controller instance that does not require user prompt with the given image
    * files map .
    */
-  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo, Boolean userPrompt) {
+  public ControllerImpl(Scanner in, View view, ImageRepository imgRepo,
+                        FileHandlerProvider fileHandlerProvider, Boolean userPrompt) {
     this.imgRepo = imgRepo;
     this.in = in;
     this.view = view;
     this.userPrompt = userPrompt;
+    this.fileHandlerProvider = fileHandlerProvider;
     initializeKnownCommands();
   }
 
@@ -70,8 +74,8 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.blur, new Blur());
     knownCommands.put(CommandEnum.sharpen, new Sharpen());
     knownCommands.put(CommandEnum.brighten, new Brighten());
-    knownCommands.put(CommandEnum.load, new Load());
-    knownCommands.put(CommandEnum.save, new Save());
+    knownCommands.put(CommandEnum.load, new Load(fileHandlerProvider));
+    knownCommands.put(CommandEnum.save, new Save(fileHandlerProvider));
     knownCommands.put(CommandEnum.horizontalFlip, new HorizontalFlip());
     knownCommands.put(CommandEnum.verticalFlip, new VerticaFlip());
     knownCommands.put(CommandEnum.rgb_combine, new Combine());
@@ -83,7 +87,7 @@ public class ControllerImpl implements ImageProcessingController {
     knownCommands.put(CommandEnum.red_component, new RedComponent());
     knownCommands.put(CommandEnum.green_component, new GreenComponent());
     knownCommands.put(CommandEnum.blue_component, new BlueComponent());
-    knownCommands.put(CommandEnum.run, new Run(view));
+    knownCommands.put(CommandEnum.run, new Run(view, fileHandlerProvider));
     knownCommands.put(CommandEnum.compress, new Compress());
     knownCommands.put(CommandEnum.histogram, new Histogram());
     knownCommands.put(CommandEnum.color_correct, new ColorCorrect());

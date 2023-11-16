@@ -29,8 +29,10 @@ public class MockImgRepo implements ImageRepository {
   public static final String SHARPEN = "sharpenImage";
   public static final String IMAGE_PRESENT = "imagePresent";
 
-  StringBuilder methodCallLogger;
-  Boolean fail;
+  private StringBuilder methodCallLogger;
+  private Boolean fail;
+
+  private float[][][] lastLoadedFloat;
 
   /**
    * Creates a new instance of the MockImgRepo.
@@ -52,6 +54,7 @@ public class MockImgRepo implements ImageRepository {
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
+    lastLoadedFloat = image;
   }
 
   /**
@@ -65,11 +68,10 @@ public class MockImgRepo implements ImageRepository {
   public float[][][] getImage(String imageName)
           throws IllegalArgumentException {
     methodCallLogger.append(getLoggerMessageForOperation(GET_IMAGE, imageName));
-//    methodCallLogger.append("getImage called " + " and " + imageName + " passed\n");
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
-    return new float[][][]{};
+    return lastLoadedFloat;
   }
 
   /**
@@ -161,8 +163,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void sharpenImage(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "sharpenImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(SHARPEN, imageNameSrc, imageNameDest));
     if (fail) {
@@ -275,8 +275,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "sepia called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(SEPIA, imageNameSrc, imageNameDest));
     if (fail) {
@@ -295,8 +293,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "red channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(RED_COMP, imageNameSrc, imageNameDest));
     if (fail) {
@@ -316,8 +312,6 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
-//    methodCallLogger.append(
-//            "green channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(GREEN_COMP, imageNameSrc, imageNameDest));
     if (fail) {
@@ -337,8 +331,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
-//    methodCallLogger.append(
-//            "blue channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+
     methodCallLogger.append(
             getLoggerMessageForOperation(BLUE_COMP, imageNameSrc, imageNameDest));
     if (fail) {
@@ -430,4 +423,7 @@ public class MockImgRepo implements ImageRepository {
     return operation + " called and " + param1 + " passed\n";
   }
 
+  public float[][][] getLastLoadedFloat() {
+    return lastLoadedFloat;
+  }
 }

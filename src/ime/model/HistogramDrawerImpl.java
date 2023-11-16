@@ -36,8 +36,8 @@ public class HistogramDrawerImpl implements HistogramDrawer {
   private int getMaxCount(Histogram histogram) {
     int max = 0;
     for (int i = 0; i < histogram.getChannelCount(); i++) {
-      if (histogram.getPeakValue(i,0,255) > max) {
-        max = histogram.getPeakValue(i,0,255);
+      if (histogram.getPeakValue(i, 0, 255) > max) {
+        max = histogram.getPeakValue(i, 0, 255);
       }
     }
     return max;
@@ -76,8 +76,10 @@ public class HistogramDrawerImpl implements HistogramDrawer {
     for (int i = 0; i < histogram.getChannelCount(); i++) {
       imageDrawer.setColor(histogram.getColorChannels().get(i).rgb);
       for (int j = 0; j < width - 1; j++) {
-        int normalizedValueStart = height * histogram.getValueOccurence(i, j) / maxCount;
-        int normalizedValueEnd = height * histogram.getValueOccurence(i, j + 1) / maxCount;
+        int normalizedValueStart
+                = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j, j) / maxCount;
+        int normalizedValueEnd
+                = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j + 1, j + 1) / maxCount;
         imageDrawer.drawLine(j, height - normalizedValueStart, j + 1, height - normalizedValueEnd);
       }
     }

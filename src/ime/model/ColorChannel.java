@@ -14,6 +14,7 @@ public enum ColorChannel {
   ColorChannel(int[] rgbValues) {
     this.rgb = rgbValues;
   }
+  
 }
 // color channel.value will give array convert into stream containing map and filter
 // colorchannel.values passed as arg to arrayaslist

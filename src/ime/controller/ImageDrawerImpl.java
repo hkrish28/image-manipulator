@@ -7,7 +7,8 @@ import java.awt.image.BufferedImage;
  * This class implements the ImageDrawer interface and provides methods for drawing on an image
  * and retrieving the image data. This implementation of the ImageDrawer class utilizes the
  * BufferedImage class and the methods provided by Graphics class for performing the drawing
- * functions on the image.
+ * functions on the image. The method setUpCanvas has to be invoked first to set up the canvas
+ * before invoking other methods of the class.
  */
 public class ImageDrawerImpl implements ImageDrawer {
 
@@ -31,7 +32,7 @@ public class ImageDrawerImpl implements ImageDrawer {
    */
   @Override
   public float[][][] getImageDrawing() {
-
+    validateCanvas();
     return imageHandler.getImagePixels(image);
   }
 
@@ -45,10 +46,17 @@ public class ImageDrawerImpl implements ImageDrawer {
    */
   @Override
   public void drawLine(int x1, int y1, int x2, int y2) {
+    validateCanvas();
     if (isInvalidCoordinate(x1, y1) || isInvalidCoordinate(x2, y2)) {
       throw new IllegalArgumentException("Invalid co-ordinates provided");
     }
     graphics.drawLine(x1, y1, x2, y2);
+  }
+
+  private void validateCanvas() {
+    if (image == null) {
+      throw new IllegalArgumentException("Canvas not set up yet.");
+    }
   }
 
   private boolean isInvalidCoordinate(int x, int y) {
@@ -64,6 +72,7 @@ public class ImageDrawerImpl implements ImageDrawer {
    */
   @Override
   public void setColor(int[] colorPalette) {
+    validateCanvas();
     if (colorPalette.length != channelCount) {
       throw new IllegalArgumentException("Color Palette should contain three values corresponding" +
               "to Red, Green, and Blue values.");
@@ -72,7 +81,8 @@ public class ImageDrawerImpl implements ImageDrawer {
   }
 
   /**
-   * Sets up a drawing canvas with the specified width and height.
+   * Sets up a drawing canvas with the specified width and height. Color will be set to
+   * white by default.
    *
    * @param width  The width of the canvas.
    * @param height The height of the canvas.

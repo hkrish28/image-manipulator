@@ -1,3 +1,25 @@
 
-t
-java:S3012c"YUse "Arrays.copyOf", "Arrays.asList", "Collections.addAll" or "System.arraycopy" instead.(†ìêıÿÿÿÿ
+n	java:S117¶"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€µ–Ù8èş¡½1
+n	java:S117·"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ëøÿ–8èş¡½1
+s	java:S117¸"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ù‰¯áúÿÿÿÿ8èş¡½1
+m	java:S117¹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œ£©Q8¾Ó¨¡½1
+b
+java:S2184¶"DCast one of the operands of this subtraction operation to a "float".(€µ–Ù8êş¡½1
+b
+java:S2184·"DCast one of the operands of this subtraction operation to a "float".(Ëøÿ–8êş¡½1
+g
+java:S2184¸"DCast one of the operands of this subtraction operation to a "float".(Ù‰¯áúÿÿÿÿ8êş¡½1
+a
+java:S2184¹"DCast one of the operands of this subtraction operation to a "float".(Œ£©Q8ÀÓ¨¡½1
+{
+java:S3012j"YUse "Arrays.copyOf", "Arrays.asList", "Collections.addAll" or "System.arraycopy" instead.(†ìêıÿÿÿÿ8³‚¡½1
+L
+java:S1940")Use the opposite operator (">=") instead.(µä·šÿÿÿÿÿ8š×¨¡½1
+L
+java:S1940")Use the opposite operator (">=") instead.(µä·šÿÿÿÿÿ8š×¨¡½1
+u
+java:S6204Õ"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(Ö«¬Íüÿÿÿÿ8¦×¨¡½1
+|
+java:S4276˜"YRefactor this code to use the more specialised Functional Interface 'UnaryOperator<List>'(ØÇ¼ùÿÿÿÿ8·×¨¡½1
+|
+java:S4276£"YRefactor this code to use the more specialised Functional Interface 'UnaryOperator<List>'(ØÇ¼ùÿÿÿÿ8½×¨¡½1

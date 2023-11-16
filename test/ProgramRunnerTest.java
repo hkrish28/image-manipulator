@@ -32,7 +32,7 @@ public class ProgramRunnerTest {
     System.setOut(originalOut);
   }
   @Rule
-  public Timeout globalTimeout = Timeout.seconds(3); // 3 seconds max per method tested
+  public Timeout globalTimeout = Timeout.seconds(2); // 3 seconds max per method tested
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
