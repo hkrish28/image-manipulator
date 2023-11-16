@@ -239,6 +239,9 @@ public class ImagePixelImpl implements Image {
   @Override
   public Image compress(int compressPercent) {
 
+    if(compressPercent < 0 || compressPercent > 100){
+      throw new IllegalArgumentException("Compress percentage invalid");
+    }
     float[][][] resultPixels = getPaddedPixels();
     haarTransform(resultPixels);
     applyThreshold(compressPercent, resultPixels);

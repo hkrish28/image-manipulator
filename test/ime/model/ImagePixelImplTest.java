@@ -581,7 +581,7 @@ public class ImagePixelImplTest {
    * test the compress method.
    */
   @Test
-  public void testCompress() {
+  public void testCompressEdgeCases() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
     float[][][] testPixels2 = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
     ImagePixelImpl image = new ImagePixelImpl(testPixels, ImageType.RGB);
@@ -593,15 +593,40 @@ public class ImagePixelImplTest {
     assertExpectedImage(testPixels2, fullycompressed);
   }
 
-  private void assertExpectedImage(float[][][] expectedPixelValues, Image blurredImage) {
-    assertEquals(expectedPixelValues.length, blurredImage.getHeight());
-    assertEquals(expectedPixelValues[0].length, blurredImage.getWidth());
+  @Test
+  public void testCompression() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    float[][][] expected = new float[][][]{{{4.5f, 4.5f, 4.5f}, {2.49f, 2.49f, 2.49f}},
+            {{2.49f, 2.49f, 2.49f}, {4.5f, 4.5f, 4.5f}}};
+    ImagePixelImpl image = new ImagePixelImpl(testPixels, ImageType.RGB);
+
+    Image compressed = image.compress(50);
+    assertExpectedImage(testPixels, compressed,1);
+    assertExpectedImage(expected,compressed,0.1f);
+  }
+
+  @Test
+  public void testCompressionInvalid() {
+    float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
+    ImagePixelImpl image = new ImagePixelImpl(testPixels, ImageType.RGB);
+
+    assertThrows(IllegalArgumentException.class, () -> image.compress(-10));
+    assertThrows(IllegalArgumentException.class, () -> image.compress(110));
+  }
+
+  private void assertExpectedImage(float[][][] expectedPixelValues, Image actualImage, float delta) {
+    assertEquals(expectedPixelValues.length, actualImage.getHeight());
+    assertEquals(expectedPixelValues[0].length, actualImage.getWidth());
 
     for (int i = 0; i < expectedPixelValues.length; i++) {
       for (int j = 0; j < expectedPixelValues[0].length; j++) {
-        assertArrayEquals(expectedPixelValues[i][j], blurredImage.getPixelValues(i, j), 0.01f);
+        assertArrayEquals(expectedPixelValues[i][j], actualImage.getPixelValues(i, j), delta);
       }
     }
+  }
+
+  private void assertExpectedImage(float[][][] expectedPixelValues, Image actual) {
+    assertExpectedImage(expectedPixelValues, actual, 0.01f);
   }
 
   /**
