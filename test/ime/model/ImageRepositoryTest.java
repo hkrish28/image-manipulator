@@ -410,7 +410,7 @@ public class ImageRepositoryTest {
             imageRepository.isImagePresent("previewedImage"));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testPreviewInvalidSplit() throws IllegalArgumentException {
     ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
@@ -418,12 +418,13 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    imageRepository.preview("ImageName", "previewedImage",
-            imageRepository::toValueGreyScale, -50);
+    assertThrows(IllegalArgumentException.class,
+            () -> imageRepository.preview("ImageName", "previewedImage",
+                    imageRepository::toValueGreyScale, -50));
+    assertThrows(IllegalArgumentException.class,
+            () -> imageRepository.preview("ImageName", "previewedImage",
+                    imageRepository::toValueGreyScale, 150));
 
-    assertEquals(imageRepository.getImage("previewedImage"), testPixels);
-    assertTrue("previewedImage image not found ",
-            imageRepository.isImagePresent("previewedImage"));
   }
 
   @Test
