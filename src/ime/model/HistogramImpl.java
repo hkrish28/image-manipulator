@@ -38,104 +38,45 @@ public class HistogramImpl implements Histogram {
 
   }
 
-  /**
-   * Retrieves the number of color channels in the image.
-   *
-   * @return The number of color channels present in the image.
-   */
-
   @Override
   public int getChannelCount() {
     return channelCount;
   }
 
-  /**
-   * Retrieves the list of color channels associated with the image type used in the histogram.
-   *
-   * @return A list of ColorChannelEnum representing the color channels in the image type.
-   */
   @Override
   public List<ColorChannel> getColorChannels() {
     return imageType.colorChannels;
   }
 
-  /**
-   * Finds the y-coordinate (peak value) of the histogram peak for the specified channel index.
-   *
-   * @param channelIndex The index of the color channel.
-   * @return The peak value (y-coordinate) of the histogram for the specified channel.
-   * @throws IllegalArgumentException If the channel index or start or end values is invalid.
-   */
   // y coordinate of peak
   @Override
   public int getPeakValue(int channelIndex, int start, int end) throws IllegalArgumentException {
-    validateChannelIndex(channelIndex);
-    validateStartAndEnd(start, end);
-
-
-    int maxFrequency = 0;
-
-    for (int pixelValue = start; pixelValue < end; pixelValue++) {
-      if (hist[channelIndex][pixelValue] > maxFrequency) {
-        maxFrequency = hist[channelIndex][pixelValue];
-
-      }
-    }
-
-    return maxFrequency;
+    return getMaxFrequency(channelIndex, start, end);
   }
 
-
-  /**
-   * Finds the most frequent value (x-coordinate of the peak) for the specified channel index.
-   *
-   * @param channelIndex The index of the color channel.
-   * @return The most frequent value (x-coordinate of the peak) for the specified channel.
-   * @throws IllegalArgumentException If the channel index or start or end values is invalid.
-   */
   // for the given channel the x coordinate of the peak
   @Override
   public int getMostFrequentValue(int channelIndex, int start, int end) throws IllegalArgumentException {
-    validateChannelIndex(channelIndex);
-    validateStartAndEnd(start, end);
-
-    int peakPixelValue = 0;
-    int maxFrequency = 0;
-
-    for (int pixelValue = start; pixelValue < end; pixelValue++) {
-      if (hist[channelIndex][pixelValue] > maxFrequency) {
-        maxFrequency = hist[channelIndex][pixelValue];
-        peakPixelValue = pixelValue;
+    int maxFrequency = getMaxFrequency(channelIndex, start, end);
+    int pixelValue;
+    for (pixelValue = start; pixelValue <= end; pixelValue++) {
+      if (hist[channelIndex][pixelValue] == maxFrequency) {
+        break;
       }
     }
-
-    return peakPixelValue;
+    return pixelValue;
   }
 
-  /**
-   * Retrieves the occurrence frequency of a specific pixel value for a given channel index.
-   *
-   * @param channelIndex The index of the color channel.
-   * @param pixelValue   The value of the pixel for which occurrence frequency is required.
-   * @return The frequency of occurrence of the specified pixel value in the given channel.
-   * @throws IllegalArgumentException If the channel index or pixel value is invalid.
-   */
-  @Override
-  public int getValueOccurence(int channelIndex, int pixelValue) {
+  private int getMaxFrequency(int channelIndex, int start, int end) {
     validateChannelIndex(channelIndex);
-    validatePixelValue(pixelValue);
-    return hist[channelIndex][pixelValue];
-  }
-
-  /**
-   * checks if the pixel value is a valid value( less than 255).
-   *
-   * @param pixelValue is the pixel value that has to be validated.
-   */
-  private void validatePixelValue(int pixelValue) {
-    if (pixelValue < 0 || pixelValue >= width) {
-      throw new IllegalArgumentException("Invalid channel index");
+    validateStartAndEnd(start, end);
+    int maxFrequency = 0;
+    for (int pixelValue = start; pixelValue <= end; pixelValue++) {
+      if (hist[channelIndex][pixelValue] > maxFrequency) {
+        maxFrequency = hist[channelIndex][pixelValue];
+      }
     }
+    return maxFrequency;
   }
 
   /**
@@ -150,7 +91,7 @@ public class HistogramImpl implements Histogram {
   }
 
   private void validateStartAndEnd(int start, int end) {
-    if (start < 0 || end > 255 || start > end) {
+    if (start < 0 || end > width || start > end) {
       throw new IllegalArgumentException("Invalid start / end value");
     }
   }

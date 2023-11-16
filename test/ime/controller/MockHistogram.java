@@ -48,14 +48,6 @@ public class MockHistogram implements Histogram {
     return 0;
   }
 
-  @Override
-  public int getValueOccurence(int channelIndex, int pixelValue) {
-    methodCallLogger.append("get value occurence called\n");
-    if (fail) {
-      throw new IllegalArgumentException("histogram drawer failed");
-    }
-    return 0;
-  }
   public String getLogger() {
     return methodCallLogger.toString();
   }
