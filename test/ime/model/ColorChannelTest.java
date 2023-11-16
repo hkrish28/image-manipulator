@@ -12,7 +12,6 @@ public class ColorChannelTest {
     Arrays.asList(ColorChannel.values())
         .stream()
         .map(channel -> channel.rgb.length)
-        .filter(size -> size == 3)
         .forEach(size -> assertTrue("RGB array size is not 3", size == 3));
   }
 }
