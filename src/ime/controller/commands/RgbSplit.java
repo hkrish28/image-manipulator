@@ -1,10 +1,9 @@
 package ime.controller.commands;
 
+import ime.model.ImageRepository;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-
-import ime.model.ImageRepository;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that splits an
@@ -20,7 +19,8 @@ public class RgbSplit extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     List<String> colorChannelsImages = Arrays.asList(tokens).subList(2, tokens.length);
     return (src, dest) -> imageRepository.splitImageIntoColorChannels(src, colorChannelsImages);
   }
@@ -29,6 +29,6 @@ public class RgbSplit extends AbstractCommand {
   protected String messageSenderHelper(String[] tokens) {
     List<String> destImages = Arrays.asList(tokens[2], tokens[3], tokens[4]);
     return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
-            + " & put in " + destImages;
+        + " & put in " + destImages;
   }
 }

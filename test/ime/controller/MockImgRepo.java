@@ -1,4 +1,5 @@
 package ime.controller;
+
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -28,6 +29,12 @@ public class MockImgRepo implements ImageRepository {
   public static final String GREEN_COMP = "green channel";
   public static final String SHARPEN = "sharpenImage";
   public static final String IMAGE_PRESENT = "imagePresent";
+  public static final String COMPRESS = "compress";
+  public static final String LEVELS_ADJUST = "levels adjust";
+  public static final String COLOR_CORRECT = "color correct";
+  public static final String HISTOGRAM = "histogram";
+
+  public static final String PREVIEW = "preview";
 
   private StringBuilder methodCallLogger;
   private Boolean fail;
@@ -61,7 +68,6 @@ public class MockImgRepo implements ImageRepository {
    * Retrieves the image tagged by the given name.
    *
    * @param imageName The name of the image to be retrieved.
-
    */
 
   @Override
@@ -129,7 +135,8 @@ public class MockImgRepo implements ImageRepository {
 //    methodCallLogger.append(
 //            "brightenImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
-            getLoggerMessageForOperation(BRIGHTEN_IMAGE, imageNameSrc, imageNameDest, brightnessConstant));
+            getLoggerMessageForOperation(BRIGHTEN_IMAGE, imageNameSrc, imageNameDest,
+                    brightnessConstant));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -354,36 +361,51 @@ public class MockImgRepo implements ImageRepository {
   }
 
   @Override
-  public void compress(String imageNameSrc, String imageNameDest, int compressPercent) throws IllegalArgumentException {
+  public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
+          throws IllegalArgumentException {
     methodCallLogger.append(
-            "compress called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(COMPRESS, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("compress failed");
     }
   }
 
   @Override
-  public void preview(String imageNameSrc, String imageNameDest, BiConsumer<String, String> operation, int verticalSplit) {
+  public void preview(String imageNameSrc, String imageNameDest,
+                      BiConsumer<String, String> operation, int verticalSplit) {
     methodCallLogger.append(
-        "compress called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(PREVIEW, imageNameSrc, imageNameDest, verticalSplit));
+    operation.accept(imageNameSrc, imageNameDest);
     if (fail) {
-      throw new IllegalArgumentException("compress failed");
+      throw new IllegalArgumentException("preview failed");
     }
   }
 
   @Override
   public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
-
+    methodCallLogger.append(
+            getLoggerMessageForOperation(LEVELS_ADJUST, imageNameSrc, destImage));
+    if (fail) {
+      throw new IllegalArgumentException(LEVELS_ADJUST + " failed");
+    }
   }
 
   @Override
   public void colorCorrect(String imageNameSrc, String imageNameDest) {
-
+    methodCallLogger.append(
+            getLoggerMessageForOperation(COLOR_CORRECT, imageNameSrc, imageNameDest));
+    if (fail) {
+      throw new IllegalArgumentException(COLOR_CORRECT + " failed");
+    }
   }
 
   @Override
   public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
-
+    methodCallLogger.append(
+            getLoggerMessageForOperation(HISTOGRAM, imageNameSrc, imageNameDest));
+    if (fail) {
+      throw new IllegalArgumentException(HISTOGRAM + " failed");
+    }
   }
 
   /**
@@ -415,7 +437,8 @@ public class MockImgRepo implements ImageRepository {
     return operation + " called " + param1 + " and " + param2 + " passed\n";
   }
 
-  public String getLoggerMessageForOperation(String operation, String param1, String param2, float param3) {
+  public String getLoggerMessageForOperation(String operation, String param1, String param2,
+                                             float param3) {
     return operation + " called " + param3 + " and " + param1 + " and " + param2 + " passed\n";
   }
 

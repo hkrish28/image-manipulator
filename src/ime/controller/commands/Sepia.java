@@ -1,11 +1,11 @@
 package ime.controller.commands;
 
+import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
 
-import ime.model.ImageRepository;
-
 /**
- * This class extends the AbstractCommand class and represents a specific command that applies a sepia effect to an image.
+ * This class extends the AbstractCommand class and represents a specific command that applies a
+ * sepia effect to an image.
  */
 public class Sepia extends AbstractCommand {
 
@@ -17,7 +17,8 @@ public class Sepia extends AbstractCommand {
   }
 
   @Override
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     return imageRepository::toSepiaImage;
   }
 }

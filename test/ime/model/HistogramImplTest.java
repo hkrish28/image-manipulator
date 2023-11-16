@@ -1,13 +1,12 @@
 package ime.model;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * class to test the histogramImpl class.
@@ -17,10 +16,13 @@ public class HistogramImplTest {
   private Image image;
   private Histogram histogram;
 
+  /**
+   * set up method to set before tests.
+   */
   @Before
   public void setUp() {
     float[][][] testPixels = new float[][][]{{{55, 5, 5}, {73, 3, 83}},
-            {{122, 242, 2}, {55, 4, 4}}};
+        {{122, 242, 2}, {55, 4, 4}}};
     image = new ImagePixelImpl(testPixels, ImageType.RGB);
     histogram = new HistogramImpl(image);
   }
@@ -43,7 +45,7 @@ public class HistogramImplTest {
   public void testGetColorChannels() {
 
     List<ColorChannel> expectedChannels = Arrays.asList(ColorChannel.RED,
-            ColorChannel.GREEN, ColorChannel.BLUE);
+        ColorChannel.GREEN, ColorChannel.BLUE);
     List<ColorChannel> actualChannels = histogram.getColorChannels();
     assertEquals(expectedChannels, actualChannels);
   }
@@ -69,9 +71,9 @@ public class HistogramImplTest {
   public void testGetPeakValueInvalidIndex() {
 
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(-10, 11, 23));
+        () -> histogram.getPeakValue(-10, 11, 23));
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(5, 11, 23));
+        () -> histogram.getPeakValue(5, 11, 23));
   }
 
 
@@ -82,9 +84,9 @@ public class HistogramImplTest {
   public void testGetPeakValueInvalidStart() {
 
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(1, -1, 23));
+        () -> histogram.getPeakValue(1, -1, 23));
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(1, 275, 23));
+        () -> histogram.getPeakValue(1, 275, 23));
   }
 
   /**
@@ -94,9 +96,9 @@ public class HistogramImplTest {
   public void testGetPeakValueInvalidEnd() {
 
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(1, 1, -23));
+        () -> histogram.getPeakValue(1, 1, -23));
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getPeakValue(1, 25, 283));
+        () -> histogram.getPeakValue(1, 25, 283));
   }
 
   /**
@@ -153,11 +155,11 @@ public class HistogramImplTest {
   public void testGetMostFrequentValueInvalidStartEnd() {
 
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getMostFrequentValue(0, -10, 235));
+        () -> histogram.getMostFrequentValue(0, -10, 235));
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getMostFrequentValue(0, 40, 20));
+        () -> histogram.getMostFrequentValue(0, 40, 20));
     assertThrows(IllegalArgumentException.class,
-            () -> histogram.getMostFrequentValue(0, 40, 300));
+        () -> histogram.getMostFrequentValue(0, 40, 300));
   }
 
 }

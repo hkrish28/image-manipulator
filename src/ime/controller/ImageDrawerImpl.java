@@ -1,11 +1,12 @@
 package ime.controller;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 /**
- * This class implements the ImageDrawer interface and provides methods for drawing on an image
- * and retrieving the image data. This implementation of the ImageDrawer class utilizes the
+ * This class implements the ImageDrawer interface and provides methods for drawing on an image and
+ * retrieving the image data. This implementation of the ImageDrawer class utilizes the
  * BufferedImage class and the methods provided by Graphics class for performing the drawing
  * functions on the image. The method setUpCanvas has to be invoked first to set up the canvas
  * before invoking other methods of the class.
@@ -75,14 +76,14 @@ public class ImageDrawerImpl implements ImageDrawer {
     validateCanvas();
     if (colorPalette.length != channelCount) {
       throw new IllegalArgumentException("Color Palette should contain three values corresponding" +
-              "to Red, Green, and Blue values.");
+          "to Red, Green, and Blue values.");
     }
     graphics.setColor(new Color(colorPalette[0], colorPalette[1], colorPalette[2]));
   }
 
   /**
-   * Sets up a drawing canvas with the specified width and height. Color will be set to
-   * white by default.
+   * Sets up a drawing canvas with the specified width and height. Color will be set to white by
+   * default.
    *
    * @param width  The width of the canvas.
    * @param height The height of the canvas.

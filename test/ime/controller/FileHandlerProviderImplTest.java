@@ -1,12 +1,11 @@
 package ime.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This class contains the unit tests for {@link FileHandlerProviderImpl}.
@@ -80,7 +79,7 @@ public class FileHandlerProviderImplTest {
   @Test
   public void testFileWithNoExtension() throws IllegalArgumentException {
     assertThrows(IllegalArgumentException.class, () ->
-            fileHandlerProvider.getFileHandler("image"));
+        fileHandlerProvider.getFileHandler("image"));
   }
 
 }

@@ -78,9 +78,9 @@ public class HistogramDrawerImpl implements HistogramDrawer {
       imageDrawer.setColor(histogram.getColorChannels().get(i).rgb);
       for (int j = 0; j < width - 1; j++) {
         int normalizedValueStart
-                = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j, j) / maxCount;
+            = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j, j) / maxCount;
         int normalizedValueEnd
-                = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j + 1, j + 1) / maxCount;
+            = maxCount == 0 ? 0 : height * histogram.getPeakValue(i, j + 1, j + 1) / maxCount;
         imageDrawer.drawLine(j, height - normalizedValueStart, j + 1, height - normalizedValueEnd);
       }
     }

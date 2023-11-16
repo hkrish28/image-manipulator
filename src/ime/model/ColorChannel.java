@@ -1,8 +1,8 @@
 package ime.model;
 
 /**
- * enum class to establish the RED, GREEN, BLUE channels of the image.
- * Finalised the channels sizes.
+ * enum class to establish the RED, GREEN, BLUE channels of the image. Finalised the channels
+ * sizes.
  */
 public enum ColorChannel {
   RED(new int[]{255, 0, 0}),
@@ -14,8 +14,5 @@ public enum ColorChannel {
   ColorChannel(int[] rgbValues) {
     this.rgb = rgbValues;
   }
-  
+
 }
-// color channel.value will give array convert into stream containing map and filter
-// colorchannel.values passed as arg to arrayaslist
-//value.rgb.size !=3 collect.collectors.list

@@ -1,5 +1,9 @@
 package ime.model;
 
+import static ime.model.ImageConstants.BLUR_FILTER;
+import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
+import static ime.model.ImageConstants.SHARPEN_FILTER;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,10 +12,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ime.model.ImageConstants.BLUR_FILTER;
-import static ime.model.ImageConstants.SEPIA_TRANSFORMER;
-import static ime.model.ImageConstants.SHARPEN_FILTER;
 
 /**
  * This implementation of {@link ImagePixelImpl} stores width x height number of pixels and has an
@@ -69,16 +69,31 @@ public class ImagePixelImpl implements Image {
     }
   }
 
+  /**
+   * getter for width.
+   *
+   * @return integer width.
+   */
   @Override
   public int getWidth() {
     return this.width;
   }
 
+  /**
+   * getter height.
+   *
+   * @return integer height.
+   */
   @Override
   public int getHeight() {
     return this.height;
   }
 
+  /**
+   * split into color channels
+   *
+   * @return list of image channels.
+   */
   @Override
   public List<Image> splitIntoColorChannels() {
     List<Image> result = new ArrayList<>();
@@ -297,7 +312,7 @@ public class ImagePixelImpl implements Image {
             resultPixels[i][j][k] = 255;
           } else {
             resultPixels[i][j][k] =
-                    coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
+                coefficients[0] * x[k] * x[k] + coefficients[1] * x[k] + coefficients[2];
           }
         }
       }
@@ -405,7 +420,7 @@ public class ImagePixelImpl implements Image {
   }
 
   private void applyRowTransformation(float[][][] pixelsTransformed, int c, int a,
-                                      Function<List<Float>, List<Float>> transformFunction) {
+      Function<List<Float>, List<Float>> transformFunction) {
     for (int i = 0; i < c; i++) {
       List<Float> rowValues = extractRow(pixelsTransformed[i], c, a);
       List<Float> transformed = transformFunction.apply(rowValues);
@@ -416,7 +431,7 @@ public class ImagePixelImpl implements Image {
   }
 
   private void applyColumnTransformation(float[][][] pixelsTransformed, int c, int a,
-                                         Function<List<Float>, List<Float>> transformFunction) {
+      Function<List<Float>, List<Float>> transformFunction) {
     for (int j = 0; j < c; j++) {
       List<Float> colValues = extractCol(pixelsTransformed, j, c, a);
       List<Float> transformed = transformFunction.apply(colValues);
@@ -554,7 +569,7 @@ public class ImagePixelImpl implements Image {
     for (int m = topOffset; m < filterHeight - bottomOffset; m++) {
       for (int n = leftOffset; n < filterWidth - rightOffset; n++) {
         sum += filter[m][n] * pixels[i - (filterHeight / 2) + m][j - (filterWidth / 2) + n]
-                .getChannelValues()[channel];
+            .getChannelValues()[channel];
       }
     }
 

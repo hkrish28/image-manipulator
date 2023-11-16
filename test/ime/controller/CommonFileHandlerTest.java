@@ -1,20 +1,14 @@
 package ime.controller;
 
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Arrays;
-
-import ime.model.Image;
-import ime.model.ImagePixelImpl;
-import ime.model.ImageType;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.Arrays;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * JUnit test class for testing the {@link CommonFileHandler} class.
@@ -53,8 +47,8 @@ public class CommonFileHandlerTest {
   @Test
   public void testLoadImagePng() throws IOException {
     float[][][] expected = {
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     };
     float[][][] pixels = fileHandler.loadImage("test/resources/testImage.png");
     assertTrue(Arrays.deepEquals(expected, pixels));
@@ -70,8 +64,8 @@ public class CommonFileHandlerTest {
   @Test
   public void testSaveImage() throws IOException {
     float[][][] pixels = new float[][][]{
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     };
     fileHandler.saveImage(pixels, "test/resources/testImage.png");
     float[][][] loaded = fileHandler.loadImage("test/resources/testImage.png");
@@ -87,10 +81,12 @@ public class CommonFileHandlerTest {
   @Test
   public void testSaveImageInvalidDirectory() throws IOException {
     float[][][] imagePixel = new float[][][]{
-            {{0, 50, 0}, {0, 150, 0}},
-            {{0, 25, 0}, {0, 75, 0}}
+        {{0, 50, 0}, {0, 150, 0}},
+        {{0, 25, 0}, {0, 75, 0}}
     };
-    assertThrows(IOException.class, () -> fileHandler.saveImage(imagePixel, "test/invalid/test.png"));
-    assertThrows(IOException.class, () -> fileHandler.saveImage(imagePixel, "test/invalid/test.jpg"));
+    assertThrows(IOException.class,
+        () -> fileHandler.saveImage(imagePixel, "test/invalid/test.png"));
+    assertThrows(IOException.class,
+        () -> fileHandler.saveImage(imagePixel, "test/invalid/test.jpg"));
   }
 }

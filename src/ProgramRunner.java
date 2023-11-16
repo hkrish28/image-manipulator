@@ -1,7 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 import ime.controller.ControllerImpl;
 import ime.controller.FileHandlerProvider;
 import ime.controller.FileHandlerProviderImpl;
@@ -10,6 +6,9 @@ import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
 import ime.view.View;
 import ime.view.ViewImpl;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * This class contains the main method to be run to start the application.
@@ -31,7 +30,7 @@ public class ProgramRunner {
       Scanner controllerInput = getControllerInput(args);
       boolean userPrompt = args.length != 2; //no user prompt if file provided as input
       ImageProcessingController controller = new ControllerImpl(controllerInput, view,
-              imageRepository, fileHandlerProvider, userPrompt);
+          imageRepository, fileHandlerProvider, userPrompt);
       controller.execute();
     } catch (FileNotFoundException e) {
       System.out.println("Invalid file provided. Exiting.");
@@ -43,7 +42,7 @@ public class ProgramRunner {
       return true;
     } else {
       System.out.println("Invalid arguments provided to the Program Runner. Either pass " +
-              "no arguments or provide '-f filename'");
+          "no arguments or provide '-f filename'");
       return false;
     }
   }
