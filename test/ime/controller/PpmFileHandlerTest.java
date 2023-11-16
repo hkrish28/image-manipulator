@@ -4,13 +4,8 @@ package ime.controller;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
-
-import ime.model.Image;
-import ime.model.ImagePixelImpl;
-import ime.model.ImageType;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThrows;
@@ -38,7 +33,7 @@ public class PpmFileHandlerTest {
    * @throws IOException If the test does not throw an exception as expected.
    */
   @Test
-  public void testLoadImage() throws IOException {
+  public void testLoadImage(){
 
     assertThrows(IOException.class, () -> fileHandler.loadImage("invalidImage.ppm"));
 
@@ -72,10 +67,9 @@ public class PpmFileHandlerTest {
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
     };
-    Image image = new ImagePixelImpl(pixels, ImageType.RGB);
-//    fileHandler.saveImage(image, "test/resources/testImage.ppm");
-//    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.ppm");
-//    assertArrayEquals(pixels, loaded);
+    fileHandler.saveImage(pixels, "test/resources/testImage.ppm");
+    float[][][] loaded = fileHandler.loadImage("test/resources/testImage.ppm");
+    assertArrayEquals(pixels, loaded);
   }
 
   /**
@@ -85,11 +79,11 @@ public class PpmFileHandlerTest {
    * @throws IOException If the test does not throw an exception as expected.
    */
   @Test
-  public void testSaveImageInvalidDirectory() throws IOException {
-    Image image = new ImagePixelImpl(new float[][][]{
+  public void testSaveImageInvalidDirectory() {
+    float[][][] image = new float[][][]{
             {{0, 50, 0}, {0, 150, 0}},
             {{0, 25, 0}, {0, 75, 0}}
-    }, ImageType.RGB);
-//    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.ppm"));
+    };
+    assertThrows(IOException.class, () -> fileHandler.saveImage(image, "test/invalid/test.ppm"));
   }
 }

@@ -1,14 +1,16 @@
 package ime.model;
 
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import ime.controller.ImageDrawer;
+import ime.controller.ImageDrawerImpl;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import ime.controller.ImageDrawer;
-import ime.controller.ImageDrawerImpl;
-import java.util.Arrays;
-import org.junit.Test;
 
 /**
  * Class that tests for {@link ImageRepositoryImpl}.
@@ -40,83 +42,6 @@ public class ImageRepositoryTest {
     }
   }
 
-  /**
-   * test when invalid file format is passed.
-   */
-  @Test
-  public void testLoadThrowsExceptionWhenInvalidFileFormat() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.loadImage(testPixels, "ImageName"));
-  }
-
-  /**
-   * test when invalid file is passed to load.
-   */
-  @Test
-  public void testLoadThrowsExceptionWhenInvalidFile() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.loadImage(testPixels, "ImageName"));
-
-  }
-
-  /**
-   * test and invalid file and invalid file format is passed.
-   */
-  @Test
-  public void testLoadThrowsExceptionWhenInvalidFileFormatAndInvalidFile() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.loadImage(testPixels, "ImageName"));
-  }
-
-  /**
-   * test save for invalid dirrectory.
-   */
-  @Test
-  public void testSaveThrowsExceptionWhenInvalidDirectory() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    try {
-      imageRepository.loadImage(testPixels, "ImageName");
-    } catch (IllegalArgumentException e) {
-      fail("Not supposed to fail");
-    }
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.getImage("ImageName"));
-  }
-
-  /**
-   * test save for invalif file format.
-   */
-  @Test
-  public void testSaveThrowsExceptionWhenInvalidFileFormat() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    try {
-      imageRepository.loadImage(testPixels, "ImageName");
-    } catch (IllegalArgumentException e) {
-      fail("Not supposed to fail");
-    }
-
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.getImage("ImageName"));
-  }
-
-  /**
-   * test save when invalid file and invalid format is passed.
-   */
-  @Test
-  public void testSaveThrowsExceptionWhenInvalidFileFormatAndInvalidDirectory() {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    try {
-      imageRepository.loadImage(testPixels, "ImageName");
-    } catch (IllegalArgumentException e) {
-      fail("Not supposed to fail");
-    }
-
-    assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.getImage("ImageName"));
-  }
 
   /**
    * test save wghen valid arguments are passed.
@@ -148,7 +73,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("Value needs to be present",
-        imageRepository.isImagePresent("ImageName"));
+            imageRepository.isImagePresent("ImageName"));
   }
 
   /**
@@ -160,50 +85,50 @@ public class ImageRepositoryTest {
     ImageDrawer imageDrawer = new ImageDrawerImpl();
 
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.getImage("ImageName"));
+            imageRepository.getImage("ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.brightenImage("fileName", "ImageName", 5));
+            imageRepository.brightenImage("fileName", "ImageName", 5));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.combineImages(Arrays.asList("red", "green", "blue"), "ImageName"));
+            imageRepository.combineImages(Arrays.asList("red", "green", "blue"), "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.blurImage("fileName", "ImageName"));
+            imageRepository.blurImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.sharpenImage("fileName", "ImageName"));
+            imageRepository.sharpenImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.flipImageHorizontally("fileName", "ImageName"));
+            imageRepository.flipImageHorizontally("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.flipImageVertically("fileName", "ImageName"));
+            imageRepository.flipImageVertically("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toIntensityGreyScale("fileName", "ImageName"));
+            imageRepository.toIntensityGreyScale("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toLumaGreyScale("fileName", "ImageName"));
+            imageRepository.toLumaGreyScale("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toValueGreyScale("fileName", "ImageName"));
+            imageRepository.toValueGreyScale("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toSepiaImage("fileName", "ImageName"));
+            imageRepository.toSepiaImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toRedChannelImage("fileName", "ImageName"));
+            imageRepository.toRedChannelImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toGreenChannelImage("fileName", "ImageName"));
+            imageRepository.toGreenChannelImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toBlueChannelImage("fileName", "ImageName"));
+            imageRepository.toBlueChannelImage("fileName", "ImageName"));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.splitImageIntoColorChannels("fileName",
-            Arrays.asList("red", "green", "blue")));
+            imageRepository.splitImageIntoColorChannels("fileName",
+                    Arrays.asList("red", "green", "blue")));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.compress("fileName", "ImageName"
-            , 20));
+            imageRepository.compress("fileName", "ImageName"
+                    , 20));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.preview("fileName", "ImageName"
-            , imageRepository::toValueGreyScale, 20));
+            imageRepository.preview("fileName", "ImageName"
+                    , imageRepository::toValueGreyScale, 20));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.levelsAdjust("fileName", "ImageName"
-            , 20, 130, 220));
+            imageRepository.levelsAdjust("fileName", "ImageName"
+                    , 20, 130, 220));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.toHistogram("fileName", "ImageName"
-            , imageDrawer));
+            imageRepository.toHistogram("fileName", "ImageName"
+                    , imageDrawer));
     assertThrows(IllegalArgumentException.class, () ->
-        imageRepository.colorCorrect("fileName", "ImageName"));
+            imageRepository.colorCorrect("fileName", "ImageName"));
   }
 
   /**
@@ -227,7 +152,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("brighten not found ",
-        imageRepository.isImagePresent("brightenedImage"));
+            imageRepository.isImagePresent("brightenedImage"));
   }
 
   @Test
@@ -244,7 +169,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("blurred image not found ",
-        imageRepository.isImagePresent("blurImage"));
+            imageRepository.isImagePresent("blurImage"));
   }
 
   @Test
@@ -261,7 +186,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("sharpened image not found ",
-        imageRepository.isImagePresent("sharpenImage"));
+            imageRepository.isImagePresent("sharpenImage"));
   }
 
   @Test
@@ -278,7 +203,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("horizontally flipped image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+            imageRepository.isImagePresent("flippedImage"));
   }
 
   @Test
@@ -295,7 +220,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("vertically flipped image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+            imageRepository.isImagePresent("flippedImage"));
   }
 
   @Test
@@ -312,7 +237,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("intensity image not found ",
-        imageRepository.isImagePresent("intensityImage"));
+            imageRepository.isImagePresent("intensityImage"));
   }
 
   @Test
@@ -329,7 +254,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("luma image not found ",
-        imageRepository.isImagePresent("lumaImage"));
+            imageRepository.isImagePresent("lumaImage"));
   }
 
   @Test
@@ -346,7 +271,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("valued image not found ",
-        imageRepository.isImagePresent("valueImage"));
+            imageRepository.isImagePresent("valueImage"));
   }
 
   @Test
@@ -363,7 +288,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("sepia image not found ",
-        imageRepository.isImagePresent("sepiaImage"));
+            imageRepository.isImagePresent("sepiaImage"));
   }
 
   @Test
@@ -380,7 +305,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("red image not found ",
-        imageRepository.isImagePresent("redImage"));
+            imageRepository.isImagePresent("redImage"));
   }
 
   @Test
@@ -397,7 +322,7 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
     assertTrue("green image not found ",
-        imageRepository.isImagePresent("greenImage"));
+            imageRepository.isImagePresent("greenImage"));
   }
 
   @Test
@@ -408,10 +333,10 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.toBlueChannelImage("ImageName", "blueImage");
+    imageRepository.toBlueChannelImage("ImageName", "blueImage");
 
     assertTrue("blue image not found ",
-        imageRepository.isImagePresent("blueImage"));
+            imageRepository.isImagePresent("blueImage"));
   }
 
   //test for image present after operation
@@ -423,10 +348,10 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.compress("ImageName", "flippedImage", 20);
+    imageRepository.compress("ImageName", "flippedImage", 20);
 
     assertTrue("compressed image not found ",
-        imageRepository.isImagePresent("flippedImage"));
+            imageRepository.isImagePresent("flippedImage"));
   }
 
   @Test
@@ -437,12 +362,12 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.preview("ImageName", "previewedImage",
-          imageRepository::toValueGreyScale, 50);
+    imageRepository.preview("ImageName", "previewedImage",
+            imageRepository::toValueGreyScale, 50);
 
     assertEquals(imageRepository.getImage("previewedImage"), testPixels);
     assertTrue("previewedImage image not found ",
-        imageRepository.isImagePresent("previewedImage"));
+            imageRepository.isImagePresent("previewedImage"));
   }
 
   @Test
@@ -455,14 +380,14 @@ public class ImageRepositoryTest {
     }
     try {
       imageRepository.preview("ImageName", "previewedImage",
-          imageRepository::toValueGreyScale, 0);
+              imageRepository::toValueGreyScale, 0);
 
     } catch (NullPointerException e) {
       fail("Not supposed to fail");
     }
     assertEquals(imageRepository.getImage("previewedImage"), testPixels);
     assertTrue("previewedImage image not found ",
-        imageRepository.isImagePresent("previewedImage"));
+            imageRepository.isImagePresent("previewedImage"));
   }
 
   @Test
@@ -477,12 +402,12 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.preview("ImageName", "previewedImage",
-          imageRepository::toValueGreyScale, 100);
+    imageRepository.preview("ImageName", "previewedImage",
+            imageRepository::toValueGreyScale, 100);
 
     assertEquals(imageRepository.getImage("previewedImage"), expected);
     assertTrue("previewedImage image not found ",
-        imageRepository.isImagePresent("previewedImage"));
+            imageRepository.isImagePresent("previewedImage"));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -493,12 +418,12 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.preview("ImageName", "previewedImage",
-          imageRepository::toValueGreyScale, -50);
+    imageRepository.preview("ImageName", "previewedImage",
+            imageRepository::toValueGreyScale, -50);
 
     assertEquals(imageRepository.getImage("previewedImage"), testPixels);
     assertTrue("previewedImage image not found ",
-        imageRepository.isImagePresent("previewedImage"));
+            imageRepository.isImagePresent("previewedImage"));
   }
 
   @Test
@@ -509,10 +434,10 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 150, 210);
+    imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 150, 210);
 
     assertTrue("levels adjusted image not found ",
-        imageRepository.isImagePresent("AdjustedImage"));
+            imageRepository.isImagePresent("AdjustedImage"));
   }
 
   /**
@@ -520,7 +445,7 @@ public class ImageRepositoryTest {
    *
    * @throws IllegalArgumentException not there?
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testLevelsAdjustInvalidBMW() throws IllegalArgumentException {
     ImageRepository imageRepository = new ImageRepositoryImpl();
     try {
@@ -529,25 +454,12 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
 
-      imageRepository.levelsAdjust("ImageName", "AdjustedImage", -20, 260, 400);
-
-    assertTrue("levels adjusted image not found ",
-        imageRepository.isImagePresent("AdjustedImage"));
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testLevelsAdjustDescendingBMW() throws IllegalArgumentException {
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    try {
-      imageRepository.loadImage(testPixels, "ImageName");
-    } catch (IllegalArgumentException e) {
-      fail("Not supposed to fail");
-    }
-
-      imageRepository.levelsAdjust("ImageName", "AdjustedImage", 220, 130, 20);
-
-    assertTrue("levels adjusted image not found ",
-        imageRepository.isImagePresent("AdjustedImage"));
+    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", -20, 100, 200));
+    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 200, 300));
+    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 10, 200));
+    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 220, 130, 20));
+    assertTrue("levels adjusted image found when it should not be ",
+            !imageRepository.isImagePresent("AdjustedImage"));
   }
 
   @Test
@@ -558,10 +470,10 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.colorCorrect("ImageName", "ColorCorrect");
+    imageRepository.colorCorrect("ImageName", "ColorCorrect");
 
     assertTrue("Color Corrected image not found ",
-        imageRepository.isImagePresent("ColorCorrect"));
+            imageRepository.isImagePresent("ColorCorrect"));
   }
 
   @Test
@@ -573,10 +485,10 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-      imageRepository.toHistogram("ImageName", "histogram", imageDrawer);
+    imageRepository.toHistogram("ImageName", "histogram", imageDrawer);
 
     assertTrue("histogram image not found ",
-        imageRepository.isImagePresent("histogram"));
+            imageRepository.isImagePresent("histogram"));
   }
 
 }

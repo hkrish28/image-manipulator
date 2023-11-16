@@ -282,7 +282,7 @@ public class ImagePixelImpl implements Image {
 
   @Override
   public Image levelAdjust(int b, int m, int w) throws IllegalArgumentException {
-    if (!(b < m) || !(m < w)) {
+    if (!(b < m) || !(m < w) || b < 0 || w > 255) {
       throw new IllegalArgumentException("invalid b/m/w values");
     }
     float[] coefficients = compute(b, m, w);
@@ -344,7 +344,7 @@ public class ImagePixelImpl implements Image {
     for (int i = 0; i < getChannelCount(); i++) {
       for (int m = 0; m < transformed.length; m++) {
         for (int n = 0; n < transformed[0].length; n++) {
-          if (Math.round(Math.abs(transformed[m][n][i])) <= threshold) {
+          if ((Math.abs(transformed[m][n][i])) <= threshold) {
             transformed[m][n][i] = 0;
           }
         }

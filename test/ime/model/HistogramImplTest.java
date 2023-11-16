@@ -1,11 +1,13 @@
 package ime.model;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 /**
  * class to test the histogramImpl class.
@@ -18,7 +20,7 @@ public class HistogramImplTest {
   @Before
   public void setUp() {
     float[][][] testPixels = new float[][][]{{{55, 5, 5}, {73, 3, 83}},
-        {{122, 242, 2}, {84, 4, 4}}};
+            {{122, 242, 2}, {84, 4, 4}}};
     image = new ImagePixelImpl(testPixels, ImageType.RGB);
     histogram = new HistogramImpl(image);
   }
@@ -41,7 +43,7 @@ public class HistogramImplTest {
   public void testGetColorChannels() {
 
     List<ColorChannel> expectedChannels = Arrays.asList(ColorChannel.RED,
-        ColorChannel.GREEN, ColorChannel.BLUE);
+            ColorChannel.GREEN, ColorChannel.BLUE);
     List<ColorChannel> actualChannels = histogram.getColorChannels();
     //System.out.println(actualChannels);
     assertEquals(expectedChannels, actualChannels);
@@ -72,11 +74,12 @@ public class HistogramImplTest {
   /**
    * Test getPeakValue with an invalid channel index
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetPeakValueInvalidIndex() {
 
-    int invalidChannelIndex = 422;
-    histogram.getPeakValue(invalidChannelIndex, 11, 23);
+    assertThrows(IllegalArgumentException.class, () -> histogram.getPeakValue(-10, 11, 23));
+    assertThrows(IllegalArgumentException.class, () -> histogram.getPeakValue(5, 11, 23));
+
   }
 
 
@@ -149,25 +152,12 @@ public class HistogramImplTest {
   /**
    * test for invalid start.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testGetMostFrequentValueInvalidStart() {
-    int channelIndex = 0;
-    int invalidStart = 1;
-    int invalidEnd = 245;
 
-    histogram.getMostFrequentValue(channelIndex, invalidStart, invalidEnd);
-  }
-
-  /**
-   * test for invalid end.
-   */
-  @Test(expected = IllegalArgumentException.class)
-  public void testGetMostFrequentInavlidEnd() {
-    // Test when providing an empty range
-    int channelIndex = 0;
-    int start = 10;
-    int end = 250;
-    int mostFrequentValue = histogram.getMostFrequentValue(channelIndex, start, end);
+    assertThrows(IllegalArgumentException.class, () -> histogram.getMostFrequentValue(0, -10, 235));
+    assertThrows(IllegalArgumentException.class, () -> histogram.getMostFrequentValue(0, 40, 20));
+    assertThrows(IllegalArgumentException.class, () -> histogram.getMostFrequentValue(0, 40, 300));
   }
 
   /**

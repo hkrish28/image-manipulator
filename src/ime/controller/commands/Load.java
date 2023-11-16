@@ -3,6 +3,7 @@ package ime.controller.commands;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
+import ime.controller.FileHandlerProvider;
 import ime.controller.FileHandlerProviderImpl;
 import ime.model.ImageRepository;
 
@@ -12,11 +13,13 @@ import ime.model.ImageRepository;
  */
 public class Load extends AbstractCommand {
 
+  private final FileHandlerProvider fileHandlerProvider;
   /**
    * Constructor to initialize the fields.
    */
-  public Load() {
+  public Load(FileHandlerProvider fileHandlerProvider) {
     super(3, 1, 2);
+    this.fileHandlerProvider = fileHandlerProvider;
   }
 
   @Override
@@ -24,7 +27,7 @@ public class Load extends AbstractCommand {
     String path = tokens[1];
     String imageName = tokens[2];
     try {
-      float[][][] imagePixels = new FileHandlerProviderImpl().getFileHandler(path).loadImage(path);
+      float[][][] imagePixels = fileHandlerProvider.getFileHandler(path).loadImage(path);
       imageRepository.loadImage(imagePixels, imageName);
     } catch (IOException e) {
       return "Invalid file";

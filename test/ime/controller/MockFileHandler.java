@@ -41,7 +41,7 @@ public class MockFileHandler implements FileHandler {
     if (fail) {
       throw new IOException("file handler failed");
     }
-    return new float[][][]{};
+    return testPixelValues;
   }
 
   /**

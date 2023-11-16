@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -19,6 +20,8 @@ import static org.junit.Assert.assertEquals;
 public class ControllerImplTest {
 
   private final MockImgRepo mockImgRepo;
+  private final MockFileHandler mockFileHandler;
+  private final MockFileHandlerProvider mockFileHandlerProvider;
   private OutputStream outputStream;
   private PrintStream printStream;
   private View view;
@@ -31,6 +34,8 @@ public class ControllerImplTest {
     outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(new ByteArrayOutputStream());
     view = new ViewImpl(printStream);
+    mockFileHandler = new MockFileHandler();
+    mockFileHandlerProvider = new MockFileHandlerProvider(mockFileHandler);
   }
 
   /**
@@ -43,6 +48,7 @@ public class ControllerImplTest {
     printStream = new PrintStream(outputStream);
     view = new ViewImpl(printStream);
     mockImgRepo.setFailureFlag(true);
+    mockFileHandlerProvider.setFailureFlag(false);
     mockImgRepo.clearLogger();
   }
 
@@ -51,7 +57,7 @@ public class ControllerImplTest {
 
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("load\nsave\nsplit\nhorizontal-flip\nvertical-flip\nbrighten\nexit"),
-            view, mockImgRepo);
+            view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals("", mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n"
@@ -73,7 +79,7 @@ public class ControllerImplTest {
   public void testRunInvalidScript() {
 
     ImageProcessingController controller =
-            new ControllerImpl(new Scanner("run testscript.txt\nexit"), view, mockImgRepo);
+            new ControllerImpl(new Scanner("run testscript.txt\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals("", mockImgRepo.getLogger());
     String expectedView = "Please enter the command to run: \n" +
@@ -84,18 +90,21 @@ public class ControllerImplTest {
 
   @Test
   public void testRunValidScript() {
-
+    mockFileHandler.setFailureFlag(false);
     ImageProcessingController controller =
             new ControllerImpl(new Scanner("run test/resources/testscript.txt\nexit"),
-                    view, mockImgRepo);
+                    view, mockImgRepo, mockFileHandlerProvider, false);
     controller.execute();
+
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.LOAD, "test"),
             mockImgRepo.getLogger());
-    String expectedView = "Please enter the command to run: \n" +
-            "Image Repository failed\n" +
+
+    assertEquals("loadImage called test/resources/testImage.ppm passed\n",
+            mockFileHandler.getLogger());
+
+    String expectedView = "Image Repository failed\n" +
             "Exiting with no more commands\n" +
-            "Script file execution complete.\n" +
-            "Please enter the command to run:";
+            "Script file execution complete.";
     assertEquals(expectedView, outputStream.toString().trim());
   }
 
@@ -113,7 +122,7 @@ public class ControllerImplTest {
                     + "\ngreen-component invalidImageName destImage"
                     + "\nblue-component invalidImageName destImage"
                     + "\nsepia invalidImageName destImage" + "\nexit"), view,
-            mockImgRepo);
+            mockImgRepo, mockFileHandlerProvider, false);
     controller.execute();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(
                     MockImgRepo.BLUR, "invalidImageName", "destImage") +
@@ -138,40 +147,30 @@ public class ControllerImplTest {
                     mockImgRepo.getLoggerMessageForOperation(
                             MockImgRepo.SEPIA, "invalidImageName", "destImage"),
             mockImgRepo.getLogger());
-    assertEquals("Please enter the command to run: \n"
+    assertEquals("Source Name invalid\n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
             + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
-            + "Source Name invalid\n"
-            + "Please enter the command to run: \n"
-            + "Source Name invalid\n"
-            + "Please enter the command to run:", outputStream.toString().trim());
+            + "Source Name invalid", outputStream.toString().trim());
   }
 
   @Test
   public void testInvalidImageForSave() {
+
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("save test/resources/testImage.ppm destImage"
-                    + "\nexit"), view,
-            mockImgRepo);
+                    + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.GET_IMAGE, "destImage"),
             mockImgRepo.getLogger());
+    assertEquals(mockFileHandler.getLogger(), "");
+    assertEquals(mockFileHandlerProvider.getLogger(), "");
     assertEquals("Please enter the command to run: \n"
             + "Image Repository failed\n"
             + "Please enter the command to run:", outputStream.toString().trim());
@@ -181,8 +180,7 @@ public class ControllerImplTest {
   public void testInvalidImageForSplit() {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("rgb-split invalid red green blue"
-                    + "\nexit"), view,
-            mockImgRepo);
+                    + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     mockImgRepo.getLogger();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(
@@ -197,8 +195,7 @@ public class ControllerImplTest {
   public void testInvalidImageForCombine() {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("rgb-combine invalid red green blue"
-                    + "\nexit"), view,
-            mockImgRepo);
+                    + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     mockImgRepo.getLogger();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(
@@ -213,8 +210,7 @@ public class ControllerImplTest {
   public void testInvalidImageForBrighten() {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("brighten 122 invalid destImage"
-                    + "\nexit"), view,
-            mockImgRepo);
+                    + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     mockImgRepo.getLogger();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "invalid", "destImage", 122),
@@ -229,8 +225,7 @@ public class ControllerImplTest {
   public void testInvalidFloatForBrighten() {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("brighten number invalidName.ppm destImage "
-                    + "\nexit"), view,
-            mockImgRepo);
+                    + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     mockImgRepo.getLogger();
     assertEquals("", mockImgRepo.getLogger());
@@ -245,7 +240,7 @@ public class ControllerImplTest {
     mockImgRepo.setFailureFlag(false);
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("rgb-split valid red green blue"
-                    + "\nrgb-combine valid red green blue\nexit"), view, mockImgRepo);
+                    + "\nrgb-combine valid red green blue\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.SPLIT_IMAGE, "valid", "[red, green, blue]") +
                     mockImgRepo.getLoggerMessageForOperation(
@@ -264,7 +259,7 @@ public class ControllerImplTest {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("brighten 122 valid destImage"
                     + "\nblur valid destImage" +
-                    "\nsharpen valid destImage\nexit"), view, mockImgRepo);
+                    "\nsharpen valid destImage\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "valid", "destImage", 122) +
             mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BLUR, "valid", "destImage") +
@@ -284,7 +279,7 @@ public class ControllerImplTest {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("\nintensity-component invalidName.ppm destImage"
                     + "\nvalue-component invalidName.ppm destImage"
-                    + "\nluma-component invalidName.ppm destImage\nexit"), view, mockImgRepo);
+                    + "\nluma-component invalidName.ppm destImage\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals("intensity gs called invalidName.ppm and destImage passed\n" +
                     "value gs called invalidName.ppm and destImage passed\n" +
@@ -306,7 +301,7 @@ public class ControllerImplTest {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("\nhorizontal-flip invalidName.ppm destImage"
                     + "\nvertical-flip invalidName.ppm destImage"
-                    + "\nsepia invalidName.ppm destImage" + "\nexit"), view, mockImgRepo);
+                    + "\nsepia invalidName.ppm destImage" + "\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals("horizontal flip called invalidName.ppm and destImage passed\n" +
             "vertical flip called invalidName.ppm and destImage passed\n" +
@@ -326,7 +321,7 @@ public class ControllerImplTest {
     ImageProcessingController controller = new ControllerImpl(
             new Scanner("\nred-component invalidName destImage"
                     + "\ngreen-component invalidName destImage"
-                    + "\nblue-component invalidName destImage\nexit"), view, mockImgRepo);
+                    + "\nblue-component invalidName destImage\nexit"), view, mockImgRepo, mockFileHandlerProvider, true);
     controller.execute();
     assertEquals(
             "red channel called invalidName and destImage passed\n" +
@@ -344,21 +339,33 @@ public class ControllerImplTest {
   }
 
   @Test
-  public void testValidImageLoadSave() {
+  public void testValidImageLoadSave() throws IOException {
     mockImgRepo.setFailureFlag(false);
+    mockFileHandler.setFailureFlag(false);
+    mockFileHandlerProvider.setFailureFlag(false);
+    String commandList = "load test/resources/testImage.ppm destImage"
+            + "\nsave test/resources/testImage.ppm destImage\nexit";
+    String expectedFileHandlerLog = "loadImage called test/resources/testImage.ppm passed\n" +
+            "saveImage called test/resources/testImage.ppm passed\n";
     ImageProcessingController controller = new ControllerImpl(
-            new Scanner("load test/resources/testImage.ppm destImage"
-                    + "\nsave test/resources/testImage.ppm destImage\nexit"), view, mockImgRepo);
+            new Scanner(commandList), view, mockImgRepo, mockFileHandlerProvider, true);
+
     controller.execute();
+
     assertEquals(mockImgRepo.getLoggerMessageForOperation(MockImgRepo.LOAD, "destImage") +
                     mockImgRepo.getLoggerMessageForOperation(MockImgRepo.GET_IMAGE, "destImage"),
             mockImgRepo.getLogger());
+
+    assertEquals(expectedFileHandlerLog, mockFileHandler.getLogger());
+
+    assertEquals(mockImgRepo.getLastLoadedFloat(),
+            mockFileHandler.loadImage("test/resources/testImage.ppm"));
+
     assertEquals("Please enter the command to run: \n" +
             "Loaded successfully.\n" +
             "Please enter the command to run: \n" +
             "Saved successfully.\n" +
             "Please enter the command to run:", outputStream.toString().trim());
   }
-
 
 }

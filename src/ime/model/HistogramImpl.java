@@ -68,7 +68,7 @@ public class HistogramImpl implements Histogram {
    */
   // y coordinate of peak
   @Override
-  public int getPeakValue(int channelIndex, int start,int end) throws IllegalArgumentException {
+  public int getPeakValue(int channelIndex, int start, int end) throws IllegalArgumentException {
     validateChannelIndex(channelIndex);
     validateStartAndEnd(start, end);
 
@@ -95,7 +95,7 @@ public class HistogramImpl implements Histogram {
    */
   // for the given channel the x coordinate of the peak
   @Override
-  public int getMostFrequentValue(int channelIndex, int start,int end) throws IllegalArgumentException {
+  public int getMostFrequentValue(int channelIndex, int start, int end) throws IllegalArgumentException {
     validateChannelIndex(channelIndex);
     validateStartAndEnd(start, end);
 
@@ -150,7 +150,7 @@ public class HistogramImpl implements Histogram {
   }
 
   private void validateStartAndEnd(int start, int end) {
-    if (start < 0 || end > 255) {
+    if (start < 0 || end > 255 || start > end) {
       throw new IllegalArgumentException("Invalid start / end value");
     }
   }

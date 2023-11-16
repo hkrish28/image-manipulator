@@ -14,4 +14,5 @@ public enum ColorChannel {
   ColorChannel(int[] rgbValues) {
     this.rgb = rgbValues;
   }
+  
 }
