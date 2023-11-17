@@ -6,9 +6,13 @@
 <h3>How to run</h3>
 <ul>
 <p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run, will prompt user to input any of the valid command for the operations on images.
-To run the example script provided in this way, once the program runner is running, input "run resources/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p>
+To run the example script provided in this way, once the program runner is running, input "run res/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p>
 <p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-f <i>filename</i>'. To run the example script provided this way,
-run the ProgramRunner class with '-f resources/script.txt' as command line argument.
+run the ProgramRunner class with '-f res/script.txt' as command line argument.
+<p>To run the program from the command line using the JAR file provided, run 
+<b>java -jar image-manipulator.jar -f script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
+Ensure that the images and results folders are present in res root along with the jar as the operations are performed
+using the images present in the folder, and saved into 'results' folder.
 </p></ul>
 
 <h3>Supported commands</h3>
