@@ -12,7 +12,7 @@ run the ProgramRunner class with '-f res/script.txt' as command line argument.
 <p>To run the program from the command line using the JAR file provided, run 
 <b>java -jar image-manipulator.jar -f script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
 Ensure that the images and results folders are present in res root along with the jar as the operations are performed
-using the images present in the folder, and saved into 'results' folder.
+using the images present in the 'images' folder, and saved into 'results' folder.
 </p></ul>
 
 <h3>Supported commands</h3>
