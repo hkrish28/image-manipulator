@@ -305,6 +305,12 @@ public class ImagePixelImpl implements Image {
     }
     float[] coefficients = compute(b, m, w);
     float[][][] resultPixels = new float[height][width][getChannelCount()];
+    adjustLevelsUsingCoefficients(b, w, resultPixels, coefficients);
+    return new ImagePixelImpl(resultPixels, imageType);
+  }
+
+  private void adjustLevelsUsingCoefficients(int b, int w, float[][][] resultPixels,
+                                             float[] coefficients) {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         float[] x = getPixelValues(i, j);
@@ -320,7 +326,6 @@ public class ImagePixelImpl implements Image {
         }
       }
     }
-    return new ImagePixelImpl(resultPixels, imageType);
   }
 
   private float[] compute(int b, int m, int w) {

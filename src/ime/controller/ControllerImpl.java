@@ -57,7 +57,7 @@ public class ControllerImpl implements ImageProcessingController {
     initializeKnownCommands();
   }
 
-  void initializeKnownCommands() {
+  private void initializeKnownCommands() {
     knownCommands = new HashMap<>();
     knownCommands.put(CommandEnum.blur, new Blur());
     knownCommands.put(CommandEnum.sharpen, new Sharpen());

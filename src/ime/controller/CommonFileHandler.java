@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
  **/
 public class CommonFileHandler implements FileHandler {
 
-  ImageHandler<BufferedImage> bufferedImageHandler;
+  private ImageHandler<BufferedImage> bufferedImageHandler;
 
   /**
    * constructor to initialise bufferedImageHandler class.
