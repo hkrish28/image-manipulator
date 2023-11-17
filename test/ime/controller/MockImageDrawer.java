@@ -17,7 +17,7 @@ public class MockImageDrawer implements ImageDrawer {
   }
 
   /**
-   * get image drawing
+   * get image drawing.
    *
    * @return float array.
    */

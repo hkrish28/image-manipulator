@@ -1,7 +1,8 @@
 package ime.controller.commands;
 
-import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
+
+import ime.model.ImageRepository;
 
 /**
  * This abstract class implements the Command interface and provides a common structure for all
@@ -68,19 +69,19 @@ public abstract class AbstractCommand implements Command {
   /* A helper that provides a generic message response for the command. */
   protected String messageSenderHelper(String[] tokens) {
     return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
-        + " & put in " + tokens[destIndex];
+            + " & put in " + tokens[destIndex];
   }
 
   /* Validate token count, proceed to extract tokens and invoke appropriate method from
   ImageRepository (if command supports preview operation and the input tokens has valid params
    for the same, invoke the preview method of ImageRepository.*/
   @Override
-  public String go(String[] tokens, ImageRepository imageRepository) {
+  public String proceed(String[] tokens, ImageRepository imageRepository) {
     if (validateTokenCount(tokens.length)) {
       return extractTokensAndInvokeMethod(tokens, imageRepository);
     } else if (splitSupport
-        && validateTokenCount(tokens.length - 2)
-        && tokens[tokensRequired].equals("split")) {
+            && validateTokenCount(tokens.length - 2)
+            && tokens[tokensRequired].equals("split")) {
       return extractTokensAndInvokePreview(tokens, imageRepository);
     } else {
       return "Invalid number of tokens passed for the given command";
@@ -96,7 +97,7 @@ public abstract class AbstractCommand implements Command {
     String destImageName = tokens[destIndex];
     int splitPercent = Integer.parseInt(tokens[tokens.length - 1]);
     imageRepository.preview(srcImageName, destImageName,
-        imageRepositoryMethodInvoker(tokens, imageRepository), splitPercent);
+            imageRepositoryMethodInvoker(tokens, imageRepository), splitPercent);
     return "Successfully Previewed";
   }
 
@@ -117,10 +118,10 @@ public abstract class AbstractCommand implements Command {
    * @param tokens          the tokens received for the command
    * @param imageRepository the imageRepository to be used for the method invocation
    * @return a BiConsumer that provides a function expecting two string which will call the
-   * appropriate method inside the imageRepository for the command.
+   *         appropriate method inside the imageRepository for the command.
    */
   protected BiConsumer<String, String> imageRepositoryMethodInvoker(
-      String[] tokens, ImageRepository imageRepository) {
+          String[] tokens, ImageRepository imageRepository) {
     return null;
   }
 }

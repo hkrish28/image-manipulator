@@ -25,7 +25,7 @@ public class ControllerImplTest {
   private final MockHistogram mockHistogram;
   private final MockImageDrawer mockImageDrawer;
   private OutputStream outputStream;
-  private PrintStream printStream;
+
   private View view;
 
   /**
@@ -49,8 +49,7 @@ public class ControllerImplTest {
   @Before
   public void setUp() {
     outputStream = new ByteArrayOutputStream();
-    printStream = new PrintStream(outputStream);
-    view = new ViewImpl(printStream);
+    view = new ViewImpl(new PrintStream(outputStream));
     mockImgRepo.setFailureFlag(true);
     mockFileHandlerProvider.setFailureFlag(false);
     mockImageDrawer.setFailureFlag(false);
@@ -371,7 +370,8 @@ public class ControllerImplTest {
     mockImgRepo.getLogger();
     assertEquals("", mockImgRepo.getLogger());
     assertEquals("Invalid number of tokens passed for the given command\n" +
-            "Invalid number of tokens passed for the given command", outputStream.toString().trim());
+                    "Invalid number of tokens passed for the given command",
+            outputStream.toString().trim());
   }
 
   @Test
@@ -385,7 +385,8 @@ public class ControllerImplTest {
     mockImgRepo.getLogger();
     assertEquals("", mockImgRepo.getLogger());
     assertEquals("Invalid number of tokens passed for the given command\n" +
-            "Invalid number of tokens passed for the given command", outputStream.toString().trim());
+                    "Invalid number of tokens passed for the given command",
+            outputStream.toString().trim());
   }
 
   @Test
@@ -474,24 +475,29 @@ public class ControllerImplTest {
                     "\nlevels-adjust 10 130 200 valid destImage" +
                     "\nhistogram valid destImage" +
                     "\ncolor-correct valid destImage" +
-                    "\nsharpen valid destImage" + "\nexit"), view, mockImgRepo, mockFileHandlerProvider,
+                    "\nsharpen valid destImage" + "\nexit"), view, mockImgRepo,
+            mockFileHandlerProvider,
             true);
     controller.execute();
     assertEquals(
-            mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "valid", "destImage",
-                    122) +
-                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BLUR, "valid", "destImage") +
-                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.COMPRESS, "valid", "destImage") +
+            mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BRIGHTEN_IMAGE, "valid",
+                    "destImage", 122) +
+                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.BLUR, "valid",
+                            "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.COMPRESS, "valid",
+                            "destImage") +
                     mockImgRepo.getLoggerMessageForOperation(MockImgRepo.LEVELS_ADJUST, "valid",
                             "destImage") +
-                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.HISTOGRAM, "valid", "destImage") +
+                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.HISTOGRAM, "valid",
+                            "destImage") +
                     mockImgRepo.getLoggerMessageForOperation(MockImgRepo.COLOR_CORRECT, "valid",
                             "destImage") +
-                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.SHARPEN, "valid", "destImage"),
+                    mockImgRepo.getLoggerMessageForOperation(MockImgRepo.SHARPEN, "valid",
+                            "destImage"),
             mockImgRepo.getLogger());
     assertEquals("Please enter the command to run: \n" +
-            "brighten operation completed successfully for valid & put in destImage with constant value: 122\n"
-            +
+            "brighten operation completed successfully for valid & put in destImage " +
+            "with constant value: 122\n" +
             "Please enter the command to run: \n" +
             "blur operation completed successfully for valid & put in destImage\n" +
             "Please enter the command to run: \n" +

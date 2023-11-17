@@ -418,11 +418,11 @@ public class ImageRepositoryTest {
     } catch (IllegalArgumentException e) {
       fail("Not supposed to fail");
     }
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.preview("ImageName", "previewedImage",
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.preview("ImageName", "previewedImage",
                     imageRepository::toValueGreyScale, -50));
-    assertThrows(IllegalArgumentException.class,
-            () -> imageRepository.preview("ImageName", "previewedImage",
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.preview("ImageName", "previewedImage",
                     imageRepository::toValueGreyScale, 150));
 
   }
@@ -455,10 +455,14 @@ public class ImageRepositoryTest {
       fail("Not supposed to fail");
     }
 
-    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", -20, 100, 200));
-    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 200, 300));
-    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 10, 200));
-    assertThrows(IllegalArgumentException.class, () -> imageRepository.levelsAdjust("ImageName", "AdjustedImage", 220, 130, 20));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.levelsAdjust("ImageName", "AdjustedImage", -20, 100, 200));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 200, 300));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.levelsAdjust("ImageName", "AdjustedImage", 20, 10, 200));
+    assertThrows(IllegalArgumentException.class, () ->
+            imageRepository.levelsAdjust("ImageName", "AdjustedImage", 220, 130, 20));
     assertTrue("levels adjusted image found when it should not be ",
             !imageRepository.isImagePresent("AdjustedImage"));
   }

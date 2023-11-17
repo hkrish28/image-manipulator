@@ -91,8 +91,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames) {
-//    methodCallLogger.append(
-//            "splitImage called " + srcImage + " and " + destImageNames + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(SPLIT_IMAGE, srcImage, destImageNames.toString()));
     if (fail) {
@@ -111,8 +109,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void combineImages(List<String> images, String imageDestName) {
-//    methodCallLogger.append(
-//            "combineImage called " + images + " and " + imageDestName + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(COMBINE_IMAGE, images.toString(), imageDestName));
     if (fail) {
@@ -132,8 +128,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant) {
-//    methodCallLogger.append(
-//            "brightenImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(BRIGHTEN_IMAGE, imageNameSrc, imageNameDest,
                     brightnessConstant));
@@ -152,8 +146,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void blurImage(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "blurImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(getLoggerMessageForOperation(BLUR, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
@@ -222,8 +214,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "intensity gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(INTENSITY, imageNameSrc, imageNameDest));
     if (fail) {
@@ -242,8 +232,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "luma gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(LUMA, imageNameSrc, imageNameDest));
     if (fail) {
@@ -262,8 +250,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest) {
-//    methodCallLogger.append(
-//            "value gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(VALUE, imageNameSrc, imageNameDest));
     if (fail) {
@@ -354,7 +340,6 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public boolean isImagePresent(String imageName) {
-//    methodCallLogger.append("isImagePresent called " + imageName + " passed\n");
     methodCallLogger.append(
             getLoggerMessageForOperation(IMAGE_PRESENT, imageName));
     return fail;

@@ -84,7 +84,7 @@ public class ControllerImpl implements ImageProcessingController {
 
   /**
    * the execute command method takes in the commands as tokens from the execute method and checks
-   * if its a valid command from the enum
+   * if its a valid command from the enum.
    *
    * @param commandTokens string commands passed.
    * @return boolean value of true or false to check if the command is valid or not.
@@ -103,7 +103,7 @@ public class ControllerImpl implements ImageProcessingController {
       }
 
       Command commandObject = knownCommands.get(commandKeyword);
-      String returnedMessage = commandObject.go(tokens, imgRepo);
+      String returnedMessage = commandObject.proceed(tokens, imgRepo);
       view.displayMessage(returnedMessage);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());

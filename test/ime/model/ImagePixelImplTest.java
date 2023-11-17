@@ -26,8 +26,10 @@ public class ImagePixelImplTest {
    */
   public ImagePixelImplTest() {
     // Create a test Pixel matrix
-    testPixels = new float[][][]{{{0, 0, 0}, {0, 10, 10}, {0, 20, 20}},
-            {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
+    testPixels = new float[][][]{
+            {{0, 0, 0}, {0, 10, 10}, {0, 20, 20}},
+            {{10, 0, 10}, {10, 10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}
+    };
     imageType = ImageType.RGB;
     image = new ImagePixelImpl(testPixels, imageType);
 
@@ -39,7 +41,8 @@ public class ImagePixelImplTest {
    */
   @Test
   public void testFloatConstructor() {
-    float[][][] testPixels = {{{0, 0, 0}, {0, 10, 10}, {0, 20}},
+    float[][][] testPixels = {
+            {{0, 0, 0}, {0, 10, 10}, {0, 20}},
             {{10, 0, 10}, {10, 20}, {10, 20, 30}}, {{20, 0, 20}, {20, 10, 30}, {20, 20, 40}}};
     assertThrows(IllegalArgumentException.class, () ->
             new ImagePixelImpl(testPixels, imageType));
@@ -596,13 +599,14 @@ public class ImagePixelImplTest {
   @Test
   public void testCompression() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
-    float[][][] expected = new float[][][]{{{4.5f, 4.5f, 4.5f}, {2.49f, 2.49f, 2.49f}},
+    float[][][] expected = new float[][][]{
+            {{4.5f, 4.5f, 4.5f}, {2.49f, 2.49f, 2.49f}},
             {{2.49f, 2.49f, 2.49f}, {4.5f, 4.5f, 4.5f}}};
     ImagePixelImpl image = new ImagePixelImpl(testPixels, ImageType.RGB);
 
     Image compressed = image.compress(50);
-    assertExpectedImage(testPixels, compressed,1);
-    assertExpectedImage(expected,compressed,0.1f);
+    assertExpectedImage(testPixels, compressed, 1);
+    assertExpectedImage(expected, compressed, 0.1f);
   }
 
   @Test
@@ -614,13 +618,13 @@ public class ImagePixelImplTest {
     assertThrows(IllegalArgumentException.class, () -> image.compress(110));
   }
 
-  private void assertExpectedImage(float[][][] expectedPixelValues, Image actualImage, float delta) {
-    assertEquals(expectedPixelValues.length, actualImage.getHeight());
-    assertEquals(expectedPixelValues[0].length, actualImage.getWidth());
+  private void assertExpectedImage(float[][][] expectedPixelValues, Image image, float delta) {
+    assertEquals(expectedPixelValues.length, image.getHeight());
+    assertEquals(expectedPixelValues[0].length, image.getWidth());
 
     for (int i = 0; i < expectedPixelValues.length; i++) {
       for (int j = 0; j < expectedPixelValues[0].length; j++) {
-        assertArrayEquals(expectedPixelValues[i][j], actualImage.getPixelValues(i, j), delta);
+        assertArrayEquals(expectedPixelValues[i][j], image.getPixelValues(i, j), delta);
       }
     }
   }
@@ -636,7 +640,8 @@ public class ImagePixelImplTest {
   public void testAppendValid() {
     float[][][] testPixels = new float[][][]{{{5, 5, 5}, {3, 3, 3}}, {{2, 2, 2}, {4, 4, 4}}};
     float[][][] testPixels2 = new float[][][]{{{0, 0, 0}, {0, 0, 0}}, {{0, 0, 0}, {0, 0, 0}}};
-    float[][][] expected = new float[][][]{{{5, 5, 5}, {3, 3, 3}, {0, 0, 0}, {0, 0, 0}},
+    float[][][] expected = new float[][][]{
+            {{5, 5, 5}, {3, 3, 3}, {0, 0, 0}, {0, 0, 0}},
             {{2, 2, 2}, {4, 4, 4}, {0, 0, 0}, {0, 0, 0}}};
     Image testImage = new ImagePixelImpl(testPixels, imageType);
     Image testImage2 = new ImagePixelImpl(testPixels2, imageType);
@@ -674,7 +679,7 @@ public class ImagePixelImplTest {
   }
 
   /**
-   * Test valid level adjustments
+   * Test valid level adjustments.
    */
   @Test
   public void testLevelAdjustValid() {
@@ -691,7 +696,7 @@ public class ImagePixelImplTest {
   }
 
   /**
-   * Test when invalid arguments are provided
+   * Test when invalid arguments are provided.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testLevelAdjustInvalidArguments() {
@@ -704,7 +709,7 @@ public class ImagePixelImplTest {
   }
 
   /**
-   * Test when adjusting with extreme values
+   * Test when adjusting with extreme values.
    */
   @Test
   public void testLevelAdjustExtremeValues() {

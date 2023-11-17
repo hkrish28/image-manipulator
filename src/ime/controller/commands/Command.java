@@ -16,5 +16,5 @@ public interface Command {
    * @param imageRepository The imageRepository to be used for the operation
    * @return status of the operation
    */
-  String go(String[] tokens, ImageRepository imageRepository);
+  String proceed(String[] tokens, ImageRepository imageRepository);
 }

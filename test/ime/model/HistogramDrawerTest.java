@@ -43,7 +43,8 @@ public class HistogramDrawerTest {
           assertArrayEquals(green, result[i][j], 0);
         } else if ((j == 0 && i < 128)) {
           assertArrayEquals(red, result[i][j], 0);
-        } else if ((j == 2 && i <= 128) || (i == 128 && j == 3) || (i > 128 && j == 1) || (i > 128 && j == 3)) {
+        } else if ((j == 2 && i <= 128) || (i == 128 && j == 3)
+                || (i > 128 && j == 1) || (i > 128 && j == 3)) {
           assertArrayEquals(blue, result[i][j], 0);
         } else if (i % 16 == 0 || j % 16 == 0) {
           assertArrayEquals(grey, result[i][j], 0);

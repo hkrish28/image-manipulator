@@ -20,8 +20,6 @@ L
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 a
 1src/ime/controller/ImageProcessingController.java,f/c/fc66cd21c50b3da1b43acf55cd82f1d810873f3f
-D
-resources/script.txt,b/6/b6737b02bad635c88020f70ac6b62f026a2667f9
 S
 #src/ime/controller/CommandEnum.java,8/d/8d57aeec69b3a972805881b28dec98ea7ed4be29
 J
@@ -56,8 +54,6 @@ V
 &src/ime/controller/PpmFileHandler.java,c/8/c8461c78b1cd7e88cf46486b7fdd419ec312186f
 H
 src/ime/model/Image.java,0/1/01a328a8d21d8bbb75267f25cf7870922394fd5a
-;
-script2.txt,c/b/cbc46de66880a3da162a244ea19fae52f77db73f
 V
 &src/ime/model/HistogramDrawerImpl.java,9/3/935c80baf1a9049f4138b3bd8d8c8519212fecb1
 X

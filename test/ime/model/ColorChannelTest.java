@@ -1,9 +1,12 @@
 package ime.model;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.util.Arrays;
-import org.junit.Test;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * to test color channel enum.
@@ -15,9 +18,9 @@ public class ColorChannelTest {
    */
   @Test
   public void testColorChannelSize() {
-    Arrays.asList(ColorChannel.values())
-        .stream()
-        .map(channel -> channel.rgb.length)
-        .forEach(size -> assertTrue("RGB array size is not 3", size == 3));
+
+    List<ColorChannel> filteredColorChannel = Arrays.asList(ColorChannel.values())
+            .stream().filter(channel -> channel.rgb.length != 3).collect(Collectors.toList());
+    assertEquals(0, filteredColorChannel.size());
   }
 }

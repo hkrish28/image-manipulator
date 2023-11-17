@@ -55,7 +55,10 @@ public class ImageDrawerImplTest {
    */
   @Test
   public void testDrawLine() {
-    int x1 = 10, y1 = 10, x2 = 90, y2 = 90;
+    int x1 = 10;
+    int y1 = 10;
+    int x2 = 90;
+    int y2 = 90;
     float[] color = new float[]{255, 255, 255};
     imageDrawer.drawLine(x1, y1, x2, y2);
 
@@ -70,7 +73,10 @@ public class ImageDrawerImplTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testDrawLineWithInvalidCoordinates() {
-    int x1 = -2, y1 = 10, x2 = 110, y2 = 90;
+    int x1 = -2;
+    int y1 = 10;
+    int x2 = 110;
+    int y2 = 90;
 
     imageDrawer.drawLine(x1, y1, x2, y2);
   }
@@ -80,7 +86,10 @@ public class ImageDrawerImplTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testDrawLineWithOutOfBoundCoordinate() {
-    int x1 = 267, y1 = 10, x2 = 110, y2 = 90;
+    int x1 = 267;
+    int y1 = 10;
+    int x2 = 110;
+    int y2 = 90;
     imageDrawer.drawLine(x1, y1, x2, y2);
   }
 
@@ -89,7 +98,10 @@ public class ImageDrawerImplTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testDrawLineWithOutOfBoundCoordinateY() {
-    int x1 = 267, y1 = 400, x2 = 110, y2 = 90;
+    int x1 = 267;
+    int y1 = 400;
+    int x2 = 110;
+    int y2 = 90;
     imageDrawer.drawLine(x1, y1, x2, y2);
   }
 
@@ -123,7 +135,8 @@ public class ImageDrawerImplTest {
    */
   @Test
   public void testSetUpCanvas() {
-    int width = 200, height = 150;
+    int height = 150;
+    int width = 200;
 
     imageDrawer.setUpCanvas(width, height);
 
