@@ -44,7 +44,7 @@ save results/bird-compress90.png bird-compress90
 histogram bird bird-compress90-hist
 save results/bird-compress90-hist.jpg bird-compress90-hist
 
-blur bird bird-level-split split 60
+blur bird bird-blur-split split 60
 save results/bird-blur-split.jpg bird-blur-split
 
 sepia bird bird-sepiasplit split 30
