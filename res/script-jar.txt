@@ -17,7 +17,7 @@ save results/bird-hist.jpg bird-hist
 color-correct bird-red-tint bird-corrected
 save results/bird-red-tint-corrected.jpg bird-corrected
 
-histogram bird-corrected bird-hist
+histogram bird-corrected bird-corrected-hist
 save results/bird-corrected-hist.jpg bird-corrected-hist
 
 levels-adjust 10 150 225 bird bird-level-adjust-1
