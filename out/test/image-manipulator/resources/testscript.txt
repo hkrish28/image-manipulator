@@ -1,1 +1,0 @@
-load images/test.ppm test

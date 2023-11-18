@@ -21,6 +21,11 @@ public enum CommandEnum {
   blue_component("blue-component"),
   rgb_combine("rgb-combine"),
   run("run"),
+  compress("compress"),
+  levels_adjust("levels-adjust"),
+
+  histogram("histogram"),
+  color_correct("color-correct"),
   exit("exit");
 
   private final String command;

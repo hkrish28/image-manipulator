@@ -28,7 +28,7 @@ public class RgbPixel implements Pixel {
   private static void validateChannelValue(float pixelValue) {
     if (pixelValue < 0 || pixelValue > 255) {
       throw new IllegalArgumentException("All channels in the pixel should have a value "
-              + "between 0 and 255");
+          + "between 0 and 255");
     }
   }
 
@@ -79,7 +79,7 @@ public class RgbPixel implements Pixel {
   @Override
   public Pixel transformPixel(float[][] transformCoefficients) throws IllegalArgumentException {
     if (transformCoefficients.length != COLOR_CHANNEL_COUNT
-            || transformCoefficients[0].length != COLOR_CHANNEL_COUNT) {
+        || transformCoefficients[0].length != COLOR_CHANNEL_COUNT) {
       throw new IllegalArgumentException("Invalid transformation matrix provided");
     }
     float[] result = new float[COLOR_CHANNEL_COUNT];

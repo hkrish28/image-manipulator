@@ -1,11 +1,11 @@
 package ime.model;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * class to test the RgbPixel class.
@@ -80,9 +80,9 @@ public class RgbPixelTest {
   @Test
   public void testTransformPixel() {
     float[][] transformCoefficients = {
-            {0.5f, 0.0f, 0.0f},
-            {0.0f, 0.5f, 0.0f},
-            {0.0f, 0.0f, 0.5f}
+        {0.5f, 0.0f, 0.0f},
+        {0.0f, 0.5f, 0.0f},
+        {0.0f, 0.0f, 0.5f}
     };
 
     Pixel transformedPixel = pixel.transformPixel(transformCoefficients);
@@ -99,9 +99,9 @@ public class RgbPixelTest {
   @Test
   public void testTransformPixelFailWhenTransformerIncompatible() {
     float[][] transformCoefficients = {
-            {0.5f, 0.0f},
-            {0.0f, 0.5f},
-            {0.0f, 0.0f}
+        {0.5f, 0.0f},
+        {0.0f, 0.5f},
+        {0.0f, 0.0f}
     };
 
     assertThrows(IllegalArgumentException.class, () -> pixel.transformPixel(transformCoefficients));
@@ -172,13 +172,13 @@ public class RgbPixelTest {
     float brightnessConstant = 30.0f;
     Pixel brightenedPixel = pixel.brighten(brightnessConstant);
 
-    assertArrayEquals(new float[]{130,180,230}, brightenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{130, 180, 230}, brightenedPixel.getChannelValues(), 0.01f);
     brightenedPixel = brightenedPixel.brighten(50);
-    assertArrayEquals(new float[]{180,230,255}, brightenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{180, 230, 255}, brightenedPixel.getChannelValues(), 0.01f);
     brightenedPixel = brightenedPixel.brighten(200);
-    assertArrayEquals(new float[]{255,255,255}, brightenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{255, 255, 255}, brightenedPixel.getChannelValues(), 0.01f);
     brightenedPixel = brightenedPixel.brighten(10);
-    assertArrayEquals(new float[]{255,255,255}, brightenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{255, 255, 255}, brightenedPixel.getChannelValues(), 0.01f);
   }
 
   /**
@@ -189,12 +189,12 @@ public class RgbPixelTest {
     float brightnessConstant = -30.0f;
     Pixel darkenedPixel = pixel.brighten(brightnessConstant);
 
-    assertArrayEquals(new float[]{70,120,170}, darkenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{70, 120, 170}, darkenedPixel.getChannelValues(), 0.01f);
     darkenedPixel = darkenedPixel.brighten(-100);
-    assertArrayEquals(new float[]{0,20,70}, darkenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{0, 20, 70}, darkenedPixel.getChannelValues(), 0.01f);
     darkenedPixel = darkenedPixel.brighten(-100);
-    assertArrayEquals(new float[]{0,0,0}, darkenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{0, 0, 0}, darkenedPixel.getChannelValues(), 0.01f);
     darkenedPixel = darkenedPixel.brighten(-10);
-    assertArrayEquals(new float[]{0,0,0}, darkenedPixel.getChannelValues(), 0.01f);
+    assertArrayEquals(new float[]{0, 0, 0}, darkenedPixel.getChannelValues(), 0.01f);
   }
 }

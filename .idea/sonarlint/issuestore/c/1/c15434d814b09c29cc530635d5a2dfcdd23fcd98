@@ -1,5 +1,15 @@
 
-~
-java:S5778¹"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(à…Üúıÿÿÿÿ
-~
-java:S5778Ñ"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(à…Üúıÿÿÿÿ
+S
+java:S5976/"6Replace these 3 tests with a single Parameterized one.(¬¢£‰8ºôØ¨½1
+S
+java:S5976N"6Replace these 3 tests with a single Parameterized one.(…·½ñ8š×¨½1
+…
+java:S5778¦"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(à…Üúıÿÿÿÿ8‘š×¨½1
+…
+java:S5778¾"bRefactor the code of the lambda to have only one invocation possibly throwing a runtime exception.(à…Üúıÿÿÿÿ8’š×¨½1
+q
+java:S5777è"NMove assertions into separate method or use assertThrows or try-catch instead.(ÒÎµÀüÿÿÿÿ8–š×¨½1
+q
+java:S5777‹"NMove assertions into separate method or use assertThrows or try-catch instead.(ÒÎµÀüÿÿÿÿ8–š×¨½1
+q
+java:S5777š"NMove assertions into separate method or use assertThrows or try-catch instead.(ÒÎµÀüÿÿÿÿ8–š×¨½1
