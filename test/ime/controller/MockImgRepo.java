@@ -1,7 +1,7 @@
 package ime.controller;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import ime.model.ImageRepository;
 
@@ -12,9 +12,34 @@ import ime.model.ImageRepository;
  */
 public class MockImgRepo implements ImageRepository {
 
+  public static final String LOAD = "loadImage";
+  public static final String GET_IMAGE = "getImage";
+  public static final String SPLIT_IMAGE = "splitImage";
+  public static final String COMBINE_IMAGE = "combine images";
+  public static final String BRIGHTEN_IMAGE = "brightenImage";
+  public static final String H_FLIP = "horizontal flip";
+  public static final String V_FLIP = "vertical flip";
+  public static final String SEPIA = "sepia";
+  public static final String LUMA = "luma gs";
+  public static final String VALUE = "value gs";
+  public static final String INTENSITY = "intensity gs";
+  public static final String BLUR = "blurImage";
+  public static final String RED_COMP = "red channel";
+  public static final String BLUE_COMP = "blue channel";
+  public static final String GREEN_COMP = "green channel";
+  public static final String SHARPEN = "sharpenImage";
+  public static final String IMAGE_PRESENT = "imagePresent";
+  public static final String COMPRESS = "compress";
+  public static final String LEVELS_ADJUST = "levels adjust";
+  public static final String COLOR_CORRECT = "color correct";
+  public static final String HISTOGRAM = "histogram";
 
-  StringBuilder methodCallLogger;
-  Boolean fail;
+  public static final String PREVIEW = "preview";
+
+  private StringBuilder methodCallLogger;
+  private Boolean fail;
+
+  private float[][][] lastLoadedFloat;
 
   /**
    * Creates a new instance of the MockImgRepo.
@@ -25,37 +50,34 @@ public class MockImgRepo implements ImageRepository {
   }
 
   /**
-   * Loads an image from the specified file and logs the method call.
+   * Loads a given image into the repository with the given name.
    *
-   * @param filePath  The path to the image file to load.
+   * @param image     The image to be loaded into the repository.
    * @param imageName The name to associate with the loaded image.
-   * @throws IOException If an error occurs during the loading process or if the MockImgRepo is set
-   *                     to fail.
    */
   @Override
-  public void loadImage(String filePath, String imageName) throws IOException {
-    methodCallLogger.append("loadImage called " + filePath + " and " + imageName + " passed\n");
+  public void loadImage(float[][][] image, String imageName) {
+    methodCallLogger.append(getLoggerMessageForOperation(LOAD, imageName));
     if (fail) {
-      throw new IOException("Image Repository failed");
+      throw new IllegalArgumentException("Image Repository failed");
     }
+    lastLoadedFloat = image;
   }
 
   /**
-   * Saves an image to the specified file and logs the method call.
+   * Retrieves the image tagged by the given name.
    *
-   * @param filePath  The path to the file where the image should be saved.
-   * @param imageName The name of the image to be saved.
-   * @throws IOException If an error occurs during the saving process or if the MockImgRepo is set
-   *                     to fail.
+   * @param imageName The name of the image to be retrieved.
    */
 
   @Override
-  public void saveImage(String filePath, String imageName)
-          throws IOException, IllegalArgumentException {
-    methodCallLogger.append("saveImage called " + filePath + " and " + imageName + " passed\n");
+  public float[][][] getImage(String imageName)
+          throws IllegalArgumentException {
+    methodCallLogger.append(getLoggerMessageForOperation(GET_IMAGE, imageName));
     if (fail) {
-      throw new IOException("Image Repository failed");
+      throw new IllegalArgumentException("Image Repository failed");
     }
+    return lastLoadedFloat;
   }
 
   /**
@@ -70,7 +92,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void splitImageIntoColorChannels(String srcImage, List<String> destImageNames) {
     methodCallLogger.append(
-            "splitImage called " + srcImage + " and " + destImageNames + " passed\n");
+            getLoggerMessageForOperation(SPLIT_IMAGE, srcImage, destImageNames.toString()));
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
@@ -88,7 +110,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void combineImages(List<String> images, String imageDestName) {
     methodCallLogger.append(
-            "combineImage called " + images + " and " + imageDestName + " passed\n");
+            getLoggerMessageForOperation(COMBINE_IMAGE, images.toString(), imageDestName));
     if (fail) {
       throw new IllegalArgumentException("Image Repository failed");
     }
@@ -107,7 +129,8 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void brightenImage(String imageNameSrc, String imageNameDest, float brightnessConstant) {
     methodCallLogger.append(
-            "brightenImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(BRIGHTEN_IMAGE, imageNameSrc, imageNameDest,
+                    brightnessConstant));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -123,8 +146,7 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public void blurImage(String imageNameSrc, String imageNameDest) {
-    methodCallLogger.append(
-            "blurImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+    methodCallLogger.append(getLoggerMessageForOperation(BLUR, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -141,7 +163,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void sharpenImage(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "sharpenImage called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(SHARPEN, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -158,7 +180,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void flipImageHorizontally(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "horizontal flip called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(H_FLIP, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -175,7 +197,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void flipImageVertically(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "vertical flip called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(V_FLIP, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -193,7 +215,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toIntensityGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "intensity gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(INTENSITY, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -211,7 +233,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toLumaGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "luma gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(LUMA, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -229,7 +251,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toValueGreyScale(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "value gs called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(VALUE, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -247,7 +269,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toSepiaImage(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "sepia called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(SEPIA, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -265,7 +287,7 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toRedChannelImage(String imageNameSrc, String imageNameDest) {
     methodCallLogger.append(
-            "red channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(RED_COMP, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -284,7 +306,7 @@ public class MockImgRepo implements ImageRepository {
   public void toGreenChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
     methodCallLogger.append(
-            "green channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(GREEN_COMP, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -302,8 +324,9 @@ public class MockImgRepo implements ImageRepository {
   @Override
   public void toBlueChannelImage(String imageNameSrc, String imageNameDest)
           throws IllegalArgumentException {
+
     methodCallLogger.append(
-            "blue channel called " + imageNameSrc + " and " + imageNameDest + " passed\n");
+            getLoggerMessageForOperation(BLUE_COMP, imageNameSrc, imageNameDest));
     if (fail) {
       throw new IllegalArgumentException("Source Name invalid");
     }
@@ -317,8 +340,57 @@ public class MockImgRepo implements ImageRepository {
    */
   @Override
   public boolean isImagePresent(String imageName) {
-    methodCallLogger.append("isImagePresent called " + imageName + " passed\n");
+    methodCallLogger.append(
+            getLoggerMessageForOperation(IMAGE_PRESENT, imageName));
     return fail;
+  }
+
+  @Override
+  public void compress(String imageNameSrc, String imageNameDest, int compressPercent)
+          throws IllegalArgumentException {
+    methodCallLogger.append(
+            getLoggerMessageForOperation(COMPRESS, imageNameSrc, imageNameDest));
+    if (fail) {
+      throw new IllegalArgumentException("compress failed");
+    }
+  }
+
+  @Override
+  public void preview(String imageNameSrc, String imageNameDest,
+                      BiConsumer<String, String> operation, int verticalSplit) {
+    methodCallLogger.append(
+            getLoggerMessageForOperation(PREVIEW, imageNameSrc, imageNameDest, verticalSplit));
+    operation.accept(imageNameSrc, imageNameDest);
+    if (fail) {
+      throw new IllegalArgumentException("preview failed");
+    }
+  }
+
+  @Override
+  public void levelsAdjust(String imageNameSrc, String destImage, int b, int m, int w) {
+    methodCallLogger.append(
+            getLoggerMessageForOperation(LEVELS_ADJUST, imageNameSrc, destImage));
+    if (fail) {
+      throw new IllegalArgumentException(LEVELS_ADJUST + " failed");
+    }
+  }
+
+  @Override
+  public void colorCorrect(String imageNameSrc, String imageNameDest) {
+    methodCallLogger.append(
+            getLoggerMessageForOperation(COLOR_CORRECT, imageNameSrc, imageNameDest));
+    if (fail) {
+      throw new IllegalArgumentException(COLOR_CORRECT + " failed");
+    }
+  }
+
+  @Override
+  public void toHistogram(String imageNameSrc, String imageNameDest, ImageDrawer imageDrawer) {
+    methodCallLogger.append(
+            getLoggerMessageForOperation(HISTOGRAM, imageNameSrc, imageNameDest));
+    if (fail) {
+      throw new IllegalArgumentException(HISTOGRAM + " failed");
+    }
   }
 
   /**
@@ -344,5 +416,22 @@ public class MockImgRepo implements ImageRepository {
    */
   public void setFailureFlag(Boolean failFlag) {
     this.fail = failFlag;
+  }
+
+  public String getLoggerMessageForOperation(String operation, String param1, String param2) {
+    return operation + " called " + param1 + " and " + param2 + " passed\n";
+  }
+
+  public String getLoggerMessageForOperation(String operation, String param1, String param2,
+                                             float param3) {
+    return operation + " called " + param3 + " and " + param1 + " and " + param2 + " passed\n";
+  }
+
+  public String getLoggerMessageForOperation(String operation, String param1) {
+    return operation + " called and " + param1 + " passed\n";
+  }
+
+  public float[][][] getLastLoadedFloat() {
+    return lastLoadedFloat;
   }
 }

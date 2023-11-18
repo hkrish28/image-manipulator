@@ -1,9 +1,0 @@
-
-L	java:S106("+Replace this use of System.out by a logger.(–•Ë¥ıÿÿÿÿ8ÿæïè¸1
-G	java:S106*"+Replace this use of System.out by a logger.(Šüø¶8ÿæïè¸1
-J
-java:S19050"(Remove this unnecessary cast to "float".(˜·ÑÁÿÿÿÿÿ8€çïè¸1
-E
-java:S19051"(Remove this unnecessary cast to "float".(ªŠÜ§8€çïè¸1
-E
-java:S19052"(Remove this unnecessary cast to "float".(¹âŞõ8€çïè¸1

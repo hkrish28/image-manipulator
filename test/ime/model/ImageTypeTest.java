@@ -1,22 +1,27 @@
 package ime.model;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * Tests for the {@link ImageType} enum.
  */
 public class ImageTypeTest {
 
-
+  /**
+   * test to generate pixel rgb.
+   */
   @Test
   public void testGeneratePixelRgb() {
     Pixel pixel = ImageType.RGB.generatePixel();
     assertTrue(pixel instanceof RgbPixel);
   }
 
+  /**
+   * test channel index.
+   */
   @Test
   public void testChannelIndexForRgb() {
     ImageType imageType = ImageType.RGB;

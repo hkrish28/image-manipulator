@@ -76,8 +76,9 @@ public interface Image {
    * @param row the row position of the pixel
    * @param col the column position of the pixel
    * @return the value of the pixel
+   * @throws IllegalArgumentException if the row or column lies outside the image
    */
-  float[] getPixelValues(int row, int col);
+  float[] getPixelValues(int row, int col) throws IllegalArgumentException;
 
   /**
    * Convert this image into its intensity greyscale and return the copy of it.
@@ -91,7 +92,7 @@ public interface Image {
    *
    * @return the greyscale image of its luma
    */
-  public Image getLumaImage();
+  Image getLumaImage();
 
   /**
    * Convert this image into its value greyscale and return the copy of it.
@@ -135,4 +136,53 @@ public interface Image {
    */
   Image getBlueComponent();
 
+  /**
+   * Return a compressed version of the image. Compression size depends on the compression
+   * percentage provided.
+   *
+   * @param compressPercent The percentage of compression
+   * @return compressed image
+   */
+  Image compress(int compressPercent);
+
+  /**
+   * Split the image vertically according to the split position given. If splitPercent is greater
+   * than 100 or lesser than 0, a copy of the same image will be returned.
+   *
+   * @param splitPercent the percentage of the split. 50 will split the image into 2 halves.
+   * @return images that have been split vertically at the position given
+   */
+  List<Image> splitVertically(int splitPercent);
+
+  /**
+   * Return an image that is the given image of the same height appended to the right of this
+   * image.
+   *
+   * @param image image to be appended to the right of this image
+   * @return appended version of the image
+   */
+  Image append(Image image);
+
+  /**
+   * This method can be used to get the image type of given image ( can be RGB).
+   *
+   * @return image type of the image
+   */
+  ImageType getImageType();
+
+  /**
+   * Adjusts the levels of the image using the provided black point (b), mid-point (m), and white
+   * point (w) values. The method applies a contrast adjustment by mapping pixel values within the
+   * specified range to the full 0-255 scale.
+   *
+   * @param b The black point, which is the lower limit of the input pixel values to map to 0. This
+   *          value should be lesser than {@param m}.
+   * @param m The mid-point, which is the middle point of the input pixel values to map to a value
+   *          in the 0-255 range. This value should be lesser than {@param w}.
+   * @param w The white point, which is the upper limit of the input pixel values to map to 255.
+   * @return An Image object with adjusted levels.
+   * @throws IllegalArgumentException If the provided values do not satisfy the condition (b < m)
+   *                                  and (m < w).
+   */
+  Image levelAdjust(int b, int m, int w) throws IllegalArgumentException;
 }

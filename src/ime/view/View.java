@@ -8,6 +8,7 @@ public interface View {
 
   /**
    * This method will display a message to the user.
+   *
    * @param message the message to be displayed.
    */
   void displayMessage(String message);
