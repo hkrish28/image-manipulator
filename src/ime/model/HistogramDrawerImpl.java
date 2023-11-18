@@ -62,7 +62,8 @@ public class HistogramDrawerImpl implements HistogramDrawer {
 
   /**
    * Visualizes a histogram as a graphical representation. the method computes the normalised value
-   * the start and the end of the pairs of pixels and draws the lines according to the values.
+   * the start and the end of the pairs of pixels and draws the lines according to the values. The
+   * drawing is made considering the y-axis grows downwards.
    *
    * @param histogram The histogram to visualize.
    * @return A 3D array of floating-point pixel values representing the visualized histogram.

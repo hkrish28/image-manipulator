@@ -1,7 +1,7 @@
 package ime.controller;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -28,8 +28,7 @@ public class ImageDrawerImpl implements ImageDrawer {
   /**
    * Gets the drawing content of the image as a 3D array of floating-point pixel values.
    *
-   * @return A 3D array of floating-point pixel values representing the drawing content of the
-   * image.
+   * @return A 3D array of floating-point pixel values representing the drawn content of image.
    */
   @Override
   public float[][][] getImageDrawing() {
@@ -76,7 +75,7 @@ public class ImageDrawerImpl implements ImageDrawer {
     validateCanvas();
     if (colorPalette.length != channelCount) {
       throw new IllegalArgumentException("Color Palette should contain three values corresponding" +
-          "to Red, Green, and Blue values.");
+              "to Red, Green, and Blue values.");
     }
     graphics.setColor(new Color(colorPalette[0], colorPalette[1], colorPalette[2]));
   }

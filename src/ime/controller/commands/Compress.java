@@ -1,7 +1,8 @@
 package ime.controller.commands;
 
-import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
+
+import ime.model.ImageRepository;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that compresses an
@@ -18,9 +19,14 @@ public class Compress extends AbstractCommand {
 
   @Override
   protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
-      ImageRepository imageRepository) {
-    int compressionPercentage = Integer.parseInt(tokens[1]);
-    return (src, dest) -> imageRepository.compress(src, dest, compressionPercentage);
+                                                                    ImageRepository imageRepository)
+          throws IllegalArgumentException {
+    try {
+      int compressionPercentage = Integer.parseInt(tokens[1]);
+      return (src, dest) -> imageRepository.compress(src, dest, compressionPercentage);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException("number expected following compress command");
+    }
   }
 
 }

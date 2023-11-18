@@ -28,7 +28,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test getChannelCount method
+   * Test getChannelCount method.
    */
   @Test
   public void testGetChannelCount() {
@@ -39,7 +39,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test getColorChannels method
+   * Test getColorChannels method.
    */
   @Test
   public void testGetColorChannels() {
@@ -51,7 +51,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test getPeakValue method when there is peak
+   * Test getPeakValue method when there is peak.
    */
   @Test
   public void testGetPeakValue() {
@@ -65,7 +65,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test getPeakValue with an invalid channel index
+   * Test getPeakValue with an invalid channel index.
    */
   @Test
   public void testGetPeakValueInvalidIndex() {
@@ -78,7 +78,7 @@ public class HistogramImplTest {
 
 
   /**
-   * Test getPeakValue with an invalid channel index
+   * Test getPeakValue with an invalid channel index.
    */
   @Test
   public void testGetPeakValueInvalidStart() {
@@ -90,7 +90,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test getPeakValue with an invalid channel index
+   * Test getPeakValue with an invalid channel index.
    */
   @Test
   public void testGetPeakValueInvalidEnd() {
@@ -102,7 +102,7 @@ public class HistogramImplTest {
   }
 
   /**
-   * Test when providing valid inputs
+   * Test when providing valid inputs.
    */
   @Test
   public void testGetMostFrequentValueValid() {

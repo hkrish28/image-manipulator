@@ -18,6 +18,10 @@ public class ProgramRunnerTest {
 
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
+  @Rule
+  public Timeout globalTimeout = Timeout.seconds(2); // 3 seconds max per method tested
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   /**
    * Setup method to initialize the objects.
@@ -31,11 +35,6 @@ public class ProgramRunnerTest {
   public void cleanUp() {
     System.setOut(originalOut);
   }
-  @Rule
-  public Timeout globalTimeout = Timeout.seconds(2); // 3 seconds max per method tested
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testMainWithNoArgs() {
@@ -44,6 +43,7 @@ public class ProgramRunnerTest {
     String[] args = {};
     ProgramRunner.main(args);
   }
+
   @Test
   public void testMainWithValidArgs() {
     String[] args = {"-f", "test/resources/emptyscript.txt"};
