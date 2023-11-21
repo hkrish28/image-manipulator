@@ -1,3 +1,4 @@
+import ime.view.Jview;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -10,6 +11,9 @@ import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
 import ime.view.View;
 import ime.view.ViewImpl;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This class contains the main method to be run to start the application.
@@ -24,10 +28,29 @@ public class ProgramRunner {
     if (!isValidInput(args)) {
       return;
     }
-    View view = new ViewImpl(System.out);
+    Jview.setDefaultLookAndFeelDecorated(false);
+    Jview frame = new Jview();
+
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setVisible(true);
+
+    try {
+      // Set cross-platform Java L&F (also called "Metal")
+      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());}
+    catch (UnsupportedLookAndFeelException e) {
+      // handle exception
+    } catch (ClassNotFoundException e) {
+      // handle exception
+    } catch (InstantiationException e) {
+      // handle exception
+    } catch (IllegalAccessException e) {
+      // handle exception
+    } catch (Exception e) {
+    }
+    /*View view = new ViewImpl(System.out);
     ImageRepository imageRepository = new ImageRepositoryImpl();
     FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
-    runController(args, view, imageRepository, fileHandlerProvider);
+    runController(args, view, imageRepository, fileHandlerProvider);*/
   }
 
   private static void runController(String[] args, View view, ImageRepository imageRepository,
