@@ -124,4 +124,9 @@ public abstract class AbstractCommand implements Command {
           String[] tokens, ImageRepository imageRepository) {
     return null;
   }
+
+  @Override
+  public String constructCommand(String[] tokens) {
+    return null;
+  }
 }
