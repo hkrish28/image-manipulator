@@ -6,6 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -25,6 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Jview extends JFrame implements ActionListener {
 
   private JPanel mainPanel;
+  List<Option> optionList = new ArrayList<>();
   private JTextField blurIntensityField;
   private JLabel radioDisplay;
   private ButtonGroup rGroup;
@@ -43,7 +47,8 @@ public class Jview extends JFrame implements ActionListener {
     //scroll bars around this main panel
     mainScrollPane = new JScrollPane(mainPanel);
     add(mainScrollPane);
-
+// intialise the options
+    initialiseOption();
     //dialog boxes
     JPanel dialogBoxesPanel = new JPanel();
     dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Dialog boxes"));
@@ -108,34 +113,47 @@ public class Jview extends JFrame implements ActionListener {
     radioPanel.setBorder(BorderFactory.createTitledBorder("Filter options "));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-
     String[] radioOptions = {"Visualize Red", "Visualize Green", "Visualize Blue",
         "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
         "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
 
     JRadioButton[] radioButtons = new JRadioButton[radioOptions.length];
-    ButtonGroup rGroup = new ButtonGroup();
+    this.rGroup = new ButtonGroup();
 
-    for (int i = 0; i < radioOptions.length; i++) {
-      radioButtons[i] = new JRadioButton(radioOptions[i]);
-      radioButtons[i].setActionCommand(radioOptions[i]);
+    for (int i = 0; i < optionList.size(); i++) {
+      radioButtons[i] = new JRadioButton(optionList.get(i).getName());
+      radioButtons[i].setActionCommand(optionList.get(i).getName());
       rGroup.add(radioButtons[i]);
       radioPanel.add(radioButtons[i]);
-
-      // Add a preview button for each option
-      JButton previewButton = new JButton("Preview");
-      previewButton.setActionCommand("Preview");
-      previewButton.addActionListener(this);
-      radioPanel.add(previewButton);
       radioButtons[i].addActionListener(this);
+      if (optionList.get(i).isPreviewable()) {
+        // Add a preview button for each option
+        JButton previewButton = new JButton("Preview");
+        previewButton.setActionCommand("Preview");
+        previewButton.addActionListener(this);
+        radioPanel.add(previewButton);
 
-
+      }
+      if (optionList.get(i).additionalInputs != null) {
+        for(int j=0; j< optionList.get(i).getAdditionalInputs().size(); j++){
+          JTextField inputField = new JTextField(optionList.get(i).getAdditionalInputs().get(j).getName());
+          radioPanel.add(inputField);
+        }
+      }
     }
-    //radioButtons[5].doClick();
     radioDisplay = new JLabel("choose an option");
     radioPanel.add(radioDisplay);
     mainPanel.add(radioPanel);
 
+  }
+
+  private void initialiseOption() {
+    List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
+        new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
+
+    optionList.add(new Option("Blur", true, null, "blurs the image"));
+    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
   }
 
   @Override
@@ -208,15 +226,17 @@ public class Jview extends JFrame implements ActionListener {
           JOptionPane.ERROR_MESSAGE);
     }
   }
-  private void bmwValues(){
+
+  private void bmwValues() {
     String inputValueb = JOptionPane.showInputDialog("Enter b value (integer):");
     String inputValuem = JOptionPane.showInputDialog("Enter m value (integer):");
     String inputValuew = JOptionPane.showInputDialog("Enter w value (integer):");
     try {
       int b = Integer.parseInt(inputValueb);
-      int m =  Integer.parseInt(inputValuem);
-      int w =  Integer.parseInt(inputValuew);
-      System.out.println("b value entered: " + b+"m value entered: "+m+"w value entered: "+ w );
+      int m = Integer.parseInt(inputValuem);
+      int w = Integer.parseInt(inputValuew);
+      System.out.println(
+          "b value entered: " + b + "m value entered: " + m + "w value entered: " + w);
 
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
@@ -254,7 +274,7 @@ public class Jview extends JFrame implements ActionListener {
     String inputValue = JOptionPane.showInputDialog("Enter preview percent (integer):");
     try {
       int previewPercent = Integer.parseInt(inputValue);
-      System.out.println("compress percent entered: " + previewPercent);
+      System.out.println("preview percent entered: " + previewPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
           JOptionPane.ERROR_MESSAGE);
