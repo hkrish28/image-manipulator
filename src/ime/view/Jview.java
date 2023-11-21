@@ -108,6 +108,7 @@ public class Jview extends JFrame implements ActionListener {
     radioPanel.setBorder(BorderFactory.createTitledBorder("Filter options "));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
+
     String[] radioOptions = {"Visualize Red", "Visualize Green", "Visualize Blue",
         "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
         "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
@@ -126,6 +127,7 @@ public class Jview extends JFrame implements ActionListener {
       previewButton.setActionCommand("Preview");
       previewButton.addActionListener(this);
       radioPanel.add(previewButton);
+      radioButtons[i].addActionListener(this);
 
 
     }
@@ -167,7 +169,7 @@ public class Jview extends JFrame implements ActionListener {
         radioDisplay.setText("Flip Horizontally was selected");
         break;
       case "Blur":
-        askForBlurIntensity();
+        radioDisplay.setText("Blur was selected");
         break;
       // radioDisplay.setText("Blur was selected");
       case "Sharpen":
@@ -180,12 +182,14 @@ public class Jview extends JFrame implements ActionListener {
         radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
+        askForCompressprecent();
         radioDisplay.setText("Compression was selected");
         break;
       case "Color Correct":
         radioDisplay.setText("Color Correct was selected");
         break;
       case "Levels Adjust":
+        bmwValues();
         radioDisplay.setText("Levels Adjust was selected");
         break;
       case "Preview":
@@ -194,15 +198,31 @@ public class Jview extends JFrame implements ActionListener {
     }
   }
 
-  private void askForBlurIntensity() {
-    String inputValue = JOptionPane.showInputDialog("Enter Blur Intensity (integer):");
+  private void askForCompressprecent() {
+    String inputValue = JOptionPane.showInputDialog("Enter compress percent (integer):");
     try {
       int blurIntensity = Integer.parseInt(inputValue);
-      System.out.println("Blur Intensity entered: " + blurIntensity);
+      System.out.println("compress percent entered: " + blurIntensity);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
           JOptionPane.ERROR_MESSAGE);
     }
+  }
+  private void bmwValues(){
+    String inputValueb = JOptionPane.showInputDialog("Enter b value (integer):");
+    String inputValuem = JOptionPane.showInputDialog("Enter m value (integer):");
+    String inputValuew = JOptionPane.showInputDialog("Enter w value (integer):");
+    try {
+      int b = Integer.parseInt(inputValueb);
+      int m =  Integer.parseInt(inputValuem);
+      int w =  Integer.parseInt(inputValuew);
+      System.out.println("b value entered: " + b+"m value entered: "+m+"w value entered: "+ w );
+
+    } catch (NumberFormatException e) {
+      JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
+          JOptionPane.ERROR_MESSAGE);
+    }
+
   }
 
 
@@ -231,6 +251,14 @@ public class Jview extends JFrame implements ActionListener {
   }
 
   private void previewAction(String selectedOption) {
+    String inputValue = JOptionPane.showInputDialog("Enter preview percent (integer):");
+    try {
+      int previewPercent = Integer.parseInt(inputValue);
+      System.out.println("compress percent entered: " + previewPercent);
+    } catch (NumberFormatException e) {
+      JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
+          JOptionPane.ERROR_MESSAGE);
+    }
     JOptionPane.showMessageDialog(this, "Previewing: " + selectedOption);
   }
 
