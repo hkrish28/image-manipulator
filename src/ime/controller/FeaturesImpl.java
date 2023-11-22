@@ -7,8 +7,11 @@ public class FeaturesImpl implements Features {
   private static final String preview = "previewImage";
   private GUIController controller;
 
+  private boolean isPreview;
+
   public FeaturesImpl(GUIController controller) {
     this.controller = controller;
+    isPreview = false;
   }
 
   private void invokeCommand(CommandEnum commandEnum) {
@@ -23,6 +26,7 @@ public class FeaturesImpl implements Features {
     controller.executeCommand(histogramCommand);
     controller.updateImage(activeImage);
     controller.updateHistogram(histogram);
+    isPreview = false;
   }
 
   @Override
@@ -103,11 +107,17 @@ public class FeaturesImpl implements Features {
             .constructPreviewCommand(new String[]{activeImage, preview}, previewPercent);
     controller.executeCommand(command);
     controller.updateImage(preview);
+    isPreview = true;
   }
 
   @Override
   public void toggle() {
-
+    if (isPreview) {
+      controller.updateImage(activeImage);
+    } else {
+      controller.updateImage(preview);
+    }
+    isPreview = !isPreview;
   }
 
 
