@@ -30,7 +30,7 @@ public abstract class AbstractController implements ImageProcessingController{
 
   private final FileHandlerProvider fileHandlerProvider;
   private final ImageRepository imgRepo;
-  protected static Map<CommandEnum, Command> knownCommands;
+  protected Map<CommandEnum, Command> knownCommands;
 
   public AbstractController(FileHandlerProvider fileHandlerProvider, ImageRepository imageRepository) {
     this.fileHandlerProvider = fileHandlerProvider;
@@ -63,7 +63,7 @@ public abstract class AbstractController implements ImageProcessingController{
     knownCommands.put(CommandEnum.levels_adjust, new LevelsAdjust());
   }
 
-  protected static boolean executeCommand(String commandTokens) {
+  protected boolean executeCommand(String commandTokens) {
     commandTokens = commandTokens.trim();
     if (commandTokens.startsWith("#") || commandTokens.isEmpty()) {
       return false;
@@ -85,7 +85,7 @@ public abstract class AbstractController implements ImageProcessingController{
     return false;
   }
 
-  private CommandEnum getCommandEnum(String commandStr) throws IllegalArgumentException {
+  private static CommandEnum getCommandEnum(String commandStr) throws IllegalArgumentException {
     for (CommandEnum cmd : CommandEnum.values()) {
       if (cmd.getRepresentation().equals(commandStr)) {
         return cmd;
