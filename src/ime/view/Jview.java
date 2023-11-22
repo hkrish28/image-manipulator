@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -141,19 +142,15 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   }
 
   private void initialiseOption() {
-//    List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
-//        new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
-//
-//    optionList.add(new Option("Blur", true, null, "blurs the image"));
-//    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
-//    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
+    List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
+            new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
 
-    optionList.add(new Option("Blur", true, "blurs the image"));
-    optionList.add(new Option("Levels Adjust", true, "b<m<w"));
-    optionList.add(new Option("Flip Horizontally", false, "flip"));
-    optionList.add(new Option("Visualize Blue", false, "visualize blue"));
-    optionList.add(new Option("Visualize Red", false, "visualize red"));
-    optionList.add(new Option("Visualize Green", false, "visualize green"));
+    optionList.add(new Option("Blur", true, null, "blurs the image"));
+    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
+    optionList.add(new Option("Visualize Blue", false, null, "visualize blue"));
+    optionList.add(new Option("Visualize Red", false, null, "visualize red"));
+    optionList.add(new Option("Visualize Green", false, null, "visualize green"));
 
   }
 
