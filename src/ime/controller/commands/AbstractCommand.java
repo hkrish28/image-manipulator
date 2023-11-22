@@ -1,7 +1,9 @@
 package ime.controller.commands;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 
 /**
@@ -15,6 +17,8 @@ public abstract class AbstractCommand implements Command {
   protected int srcIndex;
   protected int destIndex;
 
+  protected CommandEnum commandEnum;
+
   /**
    * Constructor for the AbstractCommand class that initializes the common fields for the commands
    * that extend this class. This sets the split support for the command to false, since nothing was
@@ -24,11 +28,12 @@ public abstract class AbstractCommand implements Command {
    * @param srcIndex       index of the source image name token for the operation
    * @param destIndex      index of the destination image name token for the operation
    */
-  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex) {
+  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, CommandEnum commandEnum) {
     this.tokensRequired = tokensRequired;
     splitSupport = false;
     this.srcIndex = srcIndex;
     this.destIndex = destIndex;
+    this.commandEnum = commandEnum;
   }
 
   /**
@@ -40,11 +45,12 @@ public abstract class AbstractCommand implements Command {
    * @param destIndex      index of the destination image name token for the operation
    * @param splitSupport   whether the command supports split(preview) operation
    */
-  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, boolean splitSupport) {
+  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, boolean splitSupport, CommandEnum commandEnum) {
     this.tokensRequired = tokensRequired;
     this.splitSupport = splitSupport;
     this.srcIndex = srcIndex;
     this.destIndex = destIndex;
+    this.commandEnum = commandEnum;
   }
 
   /**
@@ -54,11 +60,12 @@ public abstract class AbstractCommand implements Command {
    *
    * @param tokensRequired number of tokens that the command expects, including the command itself.
    */
-  protected AbstractCommand(int tokensRequired) {
+  protected AbstractCommand(int tokensRequired, CommandEnum commandEnum) {
     this.tokensRequired = tokensRequired;
     splitSupport = false;
     this.srcIndex = 1;
     this.destIndex = 2;
+    this.commandEnum = commandEnum;
   }
 
   /* Checks whether the given number of tokens matches to the tokensRequired for the command. */
@@ -118,10 +125,16 @@ public abstract class AbstractCommand implements Command {
    * @param tokens          the tokens received for the command
    * @param imageRepository the imageRepository to be used for the method invocation
    * @return a BiConsumer that provides a function expecting two string which will call the
-   *         appropriate method inside the imageRepository for the command.
+   * appropriate method inside the imageRepository for the command.
    */
   protected BiConsumer<String, String> imageRepositoryMethodInvoker(
           String[] tokens, ImageRepository imageRepository) {
     return null;
+  }
+
+  @Override
+  public String constructCommand(String[] tokens) {
+    String constructed = Arrays.stream(tokens).reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
+    return constructed;
   }
 }
