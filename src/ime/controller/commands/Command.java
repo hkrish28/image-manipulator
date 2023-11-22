@@ -17,4 +17,6 @@ public interface Command {
    * @return status of the operation
    */
   String proceed(String[] tokens, ImageRepository imageRepository);
+
+  String constructCommand(String[] tokens);
 }

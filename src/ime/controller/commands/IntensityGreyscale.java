@@ -1,7 +1,9 @@
 package ime.controller.commands;
 
-import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
+
+import ime.controller.CommandEnum;
+import ime.model.ImageRepository;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that converts an
@@ -10,12 +12,12 @@ import java.util.function.BiConsumer;
 public class IntensityGreyscale extends AbstractCommand {
 
   public IntensityGreyscale() {
-    super(3, 1, 2, true);
+    super(3, 1, 2, true, CommandEnum.intensity_component);
   }
 
   @Override
   protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
-      ImageRepository imageRepository) {
+                                                                    ImageRepository imageRepository) {
     return imageRepository::toIntensityGreyScale;
   }
 }

@@ -1,12 +1,14 @@
 package ime.controller.commands;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+
+import ime.controller.CommandEnum;
 import ime.controller.ControllerImpl;
 import ime.controller.FileHandlerProvider;
 import ime.model.ImageRepository;
 import ime.view.View;
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that runs a script
@@ -22,7 +24,7 @@ public class Run extends AbstractCommand {
    * new controller object.
    */
   public Run(View view, FileHandlerProvider fileHandlerProvider) {
-    super(2);
+    super(2, CommandEnum.run);
     this.view = view;
     this.fileHandlerProvider = fileHandlerProvider;
   }
@@ -32,7 +34,7 @@ public class Run extends AbstractCommand {
     try {
       File reader = new File(tokens[1]);
       new ControllerImpl(new Scanner(reader), view, imageRepository, fileHandlerProvider,
-          false).execute();
+              false).execute();
       return "Script file execution complete.";
     } catch (IOException e) {
       return "Invalid script location/file.";
