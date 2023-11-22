@@ -1,5 +1,6 @@
 package ime.view;
 
+import ime.controller.Features;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -27,8 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import ime.controller.Features;
-
 public class Jview extends JFrame implements ActionListener, GUIView {
 
   List<Option> optionList = new ArrayList<>();
@@ -48,7 +47,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   private JLabel mainImage;
   private JLabel histogramImage;
   private JPanel imagePanel;
-  private Map<String,JTextField[]> feildmap;
+  private Map<String, JTextField[]> feildmap;
 
   public Jview() {
     setTitle("Image processing");
@@ -86,13 +85,13 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     fileSaveButton.addActionListener(this);
     filesavePanel.add(fileSaveButton);
     // toggle button
-    JPanel applyfilterPanel = new JPanel();
-    applyfilterPanel.setLayout(new FlowLayout());
-    dialogBoxesPanel.add(applyfilterPanel);
-    JButton applyfilterButton = new JButton("Toggle");
-    applyfilterButton.setActionCommand("Toggle");
-    applyfilterButton.addActionListener(this);
-    applyfilterPanel.add(applyfilterButton);
+    JPanel togglePanel = new JPanel();
+    togglePanel.setLayout(new FlowLayout());
+    dialogBoxesPanel.add(togglePanel);
+    JButton toggleButton = new JButton("Toggle");
+    toggleButton.setActionCommand("Toggle");
+    toggleButton.addActionListener(this);
+    togglePanel.add(toggleButton);
 
 // showing an image
 //    JPanel imagePanel = new JPanel();
@@ -129,8 +128,8 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
     String[] radioOptions = {"Visualize Red", "Visualize Green", "Visualize Blue",
-            "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
-            "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
+        "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
+        "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
 
     JRadioButton[] radioButtons = new JRadioButton[radioOptions.length];
     this.rGroup = new ButtonGroup();
@@ -166,6 +165,14 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     radioDisplay = new JLabel("choose an option");
     radioPanel.add(radioDisplay);
     mainPanel.add(radioPanel);
+    // apply filter button
+    JPanel applyfilterPanel = new JPanel();
+    applyfilterPanel.setLayout(new FlowLayout());
+    radioPanel.add(applyfilterPanel);
+    JButton applyfilterButton = new JButton("Apply filter");
+    applyfilterButton.setActionCommand("Apply filter");
+    applyfilterButton.addActionListener(this);
+    applyfilterPanel.add(applyfilterButton);
 
   }
 
@@ -205,10 +212,10 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         applyFilterAction();
         break;
       case "toggle":
-
+        operation = () -> features.toggle();
         break;
       case "Visualize Red":
-        operation=()-> features.visualizeRed();
+        operation = () -> features.visualizeRed();
         radioDisplay.setText("visualise red 1 was selected");
         break;
       case "Visualize Green":
@@ -216,32 +223,32 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioDisplay.setText("visualise green 1 was selected");
         break;
       case "Visualize Blue":
-        features.visualizeBlue();
+        operation = () -> features.visualizeBlue();
         radioDisplay.setText("visualise blue 1 was selected");
         break;
       case "Flip Vertically":
-        features.applyVerticalFlip();
+        operation = () -> features.applyVerticalFlip();
         radioDisplay.setText("Flip Vertically was selected");
         break;
       case "Flip Horizontally":
-        features.applyHorizontalFlip();
+        operation = () -> features.applyHorizontalFlip();
         radioDisplay.setText("Flip Horizontally was selected");
         break;
       case "Blur":
         radioDisplay.setText("Blur was selected");
-        features.applyBlur();
+        operation = () -> features.applyBlur();
         break;
       // radioDisplay.setText("Blur was selected");
       case "Sharpen":
-        features.applySharpen();
+        operation = () -> features.applySharpen();
         radioDisplay.setText("Sharpen was selected");
         break;
       case "Convert to Greyscale":
-        features.applyLumaGreyScale();
+        operation = () -> features.applyLumaGreyScale();
         radioDisplay.setText("Convert to Greyscale was selected");
         break;
       case "Convert to Sepia":
-        features.applySepia();
+        operation = () -> features.applySepia();
         radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
@@ -254,26 +261,28 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioDisplay.setText("Compression was selected");
         break;
       case "Color Correct":
-        features.applyColorCorrection();
+        operation = () -> features.applyColorCorrection();
         radioDisplay.setText("Color Correct was selected");
         break;
       case "Levels Adjust":
-       // bmwValues();
+        bmwValues();
         radioDisplay.setText("Levels Adjust was selected");
         break;
       case "Preview":
-        previewAction(getSelectedRadioButtonText());
+        operation = () -> previewAction(getSelectedRadioButtonText());
         break;
     }
   }
+
   private void askForCompressprecent() {
+    String inputValue = JOptionPane.showInputDialog("Enter compress percent (integer):");
     try {
-      int compressPercent = Integer.parseInt(inputField.getText());
+      int compressPercent = Integer.parseInt(inputValue);
       //System.out.println("compress percent entered: " + compressPercent);
-      operation=()->features.applyCompression(compressPercent);
+      operation = () -> features.applyCompression(compressPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-              JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE);
       askForCompressprecent();
     }
   }
@@ -286,12 +295,10 @@ public class Jview extends JFrame implements ActionListener, GUIView {
       int b = Integer.parseInt(inputValueb);
       int m = Integer.parseInt(inputValuem);
       int w = Integer.parseInt(inputValuew);
-      System.out.println(
-              "b value entered: " + b + "m value entered: " + m + "w value entered: " + w);
-
+      operation = () -> features.applyLevelsAdjust(b, m, w);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-              JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE);
     }
 
   }
@@ -320,7 +327,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   }
 
   private void applyFilterAction() {
-operation.run();
+    operation.run();
   }
 
   private void previewAction(String selectedOption) {
@@ -330,7 +337,7 @@ operation.run();
       System.out.println("preview percent entered: " + previewPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-              JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE);
     }
     JOptionPane.showMessageDialog(this, "Previewing: " + selectedOption);
   }
