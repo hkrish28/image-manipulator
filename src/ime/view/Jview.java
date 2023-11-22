@@ -29,7 +29,8 @@ public class Jview extends JFrame implements ActionListener {
 
   private JPanel mainPanel;
   List<Option> optionList = new ArrayList<>();
-  private JTextField blurIntensityField;
+  private JTextField inputField;
+
   private JLabel radioDisplay;
   private ButtonGroup rGroup;
   private JLabel fileOpenDisplay;
@@ -76,8 +77,8 @@ public class Jview extends JFrame implements ActionListener {
     JPanel applyfilterPanel = new JPanel();
     applyfilterPanel.setLayout(new FlowLayout());
     dialogBoxesPanel.add(applyfilterPanel);
-    JButton applyfilterButton = new JButton("apply filter");
-    applyfilterButton.setActionCommand("apply filter");
+    JButton applyfilterButton = new JButton("Toggle");
+    applyfilterButton.setActionCommand("Toggle");
     applyfilterButton.addActionListener(this);
     applyfilterPanel.add(applyfilterButton);
 
@@ -135,12 +136,18 @@ public class Jview extends JFrame implements ActionListener {
 
       }
       if (optionList.get(i).additionalInputs != null) {
-        for(int j=0; j< optionList.get(i).getAdditionalInputs().size(); j++){
-          JTextField inputField = new JTextField(optionList.get(i).getAdditionalInputs().get(j).getName());
+        for (int j = 0; j < optionList.get(i).getAdditionalInputs().size(); j++) {
+          JTextField inputField = new JTextField(
+              optionList.get(i).getAdditionalInputs().get(j).getName());
+          inputField.setVisible(false);
+          inputField.setPreferredSize(new Dimension(100,50));
           radioPanel.add(inputField);
+
         }
       }
     }
+
+
     radioDisplay = new JLabel("choose an option");
     radioPanel.add(radioDisplay);
     mainPanel.add(radioPanel);
@@ -150,10 +157,21 @@ public class Jview extends JFrame implements ActionListener {
   private void initialiseOption() {
     List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
         new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
-
-    optionList.add(new Option("Blur", true, null, "blurs the image"));
-    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+    List<AdditionalInput> additional = Arrays.asList(
+        new AdditionalInput("compress percent", 0, 0, 100));
+    optionList.add(new Option("Visualize Red", false, null, "red visual"));
+    optionList.add(new Option("Visualize Green", false, null, "visualise green"));
+    optionList.add(new Option("Visualize Blue", false, null, "Visualize Blue"));
+    optionList.add(new Option("Flip Vertically", false, null, "Flip Vertically"));
     optionList.add(new Option("Flip Horizontally", false, null, "flip"));
+    optionList.add(new Option("Blur", true, null, "blurs the image"));
+    optionList.add(new Option("Sharpen", true, null, "Sharpening image"));
+    optionList.add(new Option("Convert to Greyscale", true, null, "Converting to Greyscale"));
+    optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia"));
+    optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia"));
+    optionList.add(new Option("Compression", true, additional, "compressing by compress percent"));
+    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+
   }
 
   @Override
@@ -200,6 +218,7 @@ public class Jview extends JFrame implements ActionListener {
         radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
+        inputField.setVisible(true);
         askForCompressprecent();
         radioDisplay.setText("Compression was selected");
         break;
@@ -207,7 +226,7 @@ public class Jview extends JFrame implements ActionListener {
         radioDisplay.setText("Color Correct was selected");
         break;
       case "Levels Adjust":
-        bmwValues();
+       // bmwValues();
         radioDisplay.setText("Levels Adjust was selected");
         break;
       case "Preview":
@@ -215,19 +234,18 @@ public class Jview extends JFrame implements ActionListener {
         break;
     }
   }
-
   private void askForCompressprecent() {
-    String inputValue = JOptionPane.showInputDialog("Enter compress percent (integer):");
+
     try {
-      int blurIntensity = Integer.parseInt(inputValue);
-      System.out.println("compress percent entered: " + blurIntensity);
+      int compressPercent = Integer.parseInt(inputField.getText());
+      System.out.println("compress percent entered: " + compressPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
           JOptionPane.ERROR_MESSAGE);
     }
   }
 
-  private void bmwValues() {
+ /* private void bmwValues() {
     String inputValueb = JOptionPane.showInputDialog("Enter b value (integer):");
     String inputValuem = JOptionPane.showInputDialog("Enter m value (integer):");
     String inputValuew = JOptionPane.showInputDialog("Enter w value (integer):");
@@ -243,7 +261,7 @@ public class Jview extends JFrame implements ActionListener {
           JOptionPane.ERROR_MESSAGE);
     }
 
-  }
+  }*/
 
 
   private void saveFileAction() {
