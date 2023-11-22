@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Option {
 
+  List<AdditionalInput> additionalInputs;
   private String name;
   private boolean previewable;
-    List<AdditionalInput> additionalInputs;
   private String comments;
 
   public Option(String name, boolean previewable, List<AdditionalInput> additionalInputs, String comments) {
@@ -25,7 +25,9 @@ public class Option {
     return previewable;
   }
 
+
   public List<AdditionalInput> getAdditionalInputs() {
+
     return additionalInputs;
   }
 
