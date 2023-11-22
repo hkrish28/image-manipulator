@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -32,6 +33,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
 
   List<Option> optionList = new ArrayList<>();
   private Features features;
+  private Runnable operation;
   private JPanel mainPanel;
   private JTextField blurIntensityField;
   private JTextField inputField;
@@ -46,6 +48,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   private JLabel mainImage;
   private JLabel histogramImage;
   private JPanel imagePanel;
+  private Map<String,JTextField[]> feildmap;
 
   public Jview() {
     setTitle("Image processing");
@@ -82,7 +85,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     fileSaveButton.setActionCommand("Save file");
     fileSaveButton.addActionListener(this);
     filesavePanel.add(fileSaveButton);
-    //apply filter button
+    // toggle button
     JPanel applyfilterPanel = new JPanel();
     applyfilterPanel.setLayout(new FlowLayout());
     dialogBoxesPanel.add(applyfilterPanel);
@@ -146,16 +149,19 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioPanel.add(previewButton);
 
       }
-      if (optionList.get(i).additionalInputs != null) {
-        for (int j = 0; j < optionList.get(i).getAdditionalInputs().size(); j++) {
-          JTextField inputField = new JTextField(
-              optionList.get(i).getAdditionalInputs().get(j).getName());
-          inputField.setVisible(false);
-          inputField.setPreferredSize(new Dimension(100,50));
-          radioPanel.add(inputField);
 
+      /*if (optionList.get(i).additionalInputs != null) {
+        JTextField jTextField[] = new JTextField[optionList.get(i).getAdditionalInputs().size()];
+        feildmap.put(optionList.get(i).getName(),jTextField);
+        for (int j = 0; j < optionList.get(i).getAdditionalInputs().size(); j++) {
+           jTextField[i] = new JTextField(
+              optionList.get(i).getAdditionalInputs().get(j).getName());
+
+          jTextField[i].setVisible(false);
+          jTextField[i].setPreferredSize(new Dimension(100,50));
+          radioPanel.add(inputField);
         }
-      }
+      }*/
     }
     radioDisplay = new JLabel("choose an option");
     radioPanel.add(radioDisplay);
@@ -180,8 +186,8 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia"));
     optionList.add(new Option("Compression", true, additional, "compressing by compress percent"));
     optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
-
   }
+
 
   @Override
   public void actionPerformed(ActionEvent e) {
@@ -198,8 +204,11 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         // Implement apply filter action
         applyFilterAction();
         break;
+      case "toggle":
+
+        break;
       case "Visualize Red":
-        features.visualizeRed();
+        operation=()-> features.visualizeRed();
         radioDisplay.setText("visualise red 1 was selected");
         break;
       case "Visualize Green":
@@ -236,8 +245,12 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
-        inputField.setVisible(true);
+        /*JTextField[] compressFeild = feildmap.get("Compression");
+        for (int i=0;i< compressFeild.length;i++){
+        compressFeild[i].setVisible(true);
+        }*/
         askForCompressprecent();
+        //operation=()->features.applyCompression(askForCompressprecent());
         radioDisplay.setText("Compression was selected");
         break;
       case "Color Correct":
@@ -254,17 +267,18 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     }
   }
   private void askForCompressprecent() {
-
     try {
       int compressPercent = Integer.parseInt(inputField.getText());
-      System.out.println("compress percent entered: " + compressPercent);
+      //System.out.println("compress percent entered: " + compressPercent);
+      operation=()->features.applyCompression(compressPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
               JOptionPane.ERROR_MESSAGE);
+      askForCompressprecent();
     }
   }
 
- /* private void bmwValues() {
+  private void bmwValues() {
     String inputValueb = JOptionPane.showInputDialog("Enter b value (integer):");
     String inputValuem = JOptionPane.showInputDialog("Enter m value (integer):");
     String inputValuew = JOptionPane.showInputDialog("Enter w value (integer):");
@@ -280,7 +294,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
               JOptionPane.ERROR_MESSAGE);
     }
 
-  }*/
+  }
 
 
   private void saveFileAction() {
@@ -306,7 +320,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   }
 
   private void applyFilterAction() {
-
+operation.run();
   }
 
   private void previewAction(String selectedOption) {

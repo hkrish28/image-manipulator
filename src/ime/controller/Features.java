@@ -31,4 +31,5 @@ public interface Features {
   void applyColorCorrection();
 
   void previewOperation(CommandEnum commandEnum, int previewPercent);
+  void toggle();
 }

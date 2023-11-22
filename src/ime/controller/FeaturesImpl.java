@@ -105,6 +105,11 @@ public class FeaturesImpl implements Features {
     controller.updateImage(preview);
   }
 
+  @Override
+  public void toggle() {
+
+  }
+
 
 }
 
