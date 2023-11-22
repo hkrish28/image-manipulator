@@ -1,10 +1,6 @@
 package ime.view;
 
-import ime.controller.Features;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,21 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import java.util.function.Consumer;
+
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import ime.controller.CommandEnum;
+import ime.controller.Features;
 
 public class Jview extends JFrame implements ActionListener, GUIView {
 
@@ -34,14 +22,9 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   private Features features;
   private Runnable operation;
   private JPanel mainPanel;
-  private JTextField blurIntensityField;
-  private JTextField inputField;
 
-  private JLabel radioDisplay;
   private ButtonGroup rGroup;
-  private JLabel fileOpenDisplay;
-  private JLabel applyfilterDisplay;
-  private JLabel fileSaveDisplay;
+
   private JScrollPane mainScrollPane;
 
   private JLabel mainImage;
@@ -94,7 +77,6 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     togglePanel.add(toggleButton);
 
 // showing an image
-//    JPanel imagePanel = new JPanel();
     imagePanel = new JPanel();
     //a border around the panel with a caption
     imagePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
@@ -102,7 +84,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     mainPanel.add(imagePanel);
     mainImage = new JLabel();
     JScrollPane imageScrollPane = new JScrollPane(mainImage);
-    imageScrollPane.setPreferredSize(new Dimension(256, 480));
+    imageScrollPane.setPreferredSize(new Dimension(256, 320));
     String image = "koala.jpg";
     ImageIcon imageIcon = new ImageIcon(image);
     imageIcon = new ImageIcon(image);
@@ -127,11 +109,8 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     radioPanel.setBorder(BorderFactory.createTitledBorder("Filter options "));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-    String[] radioOptions = {"Visualize Red", "Visualize Green", "Visualize Blue",
-        "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
-        "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
 
-    JRadioButton[] radioButtons = new JRadioButton[radioOptions.length];
+    JRadioButton[] radioButtons = new JRadioButton[optionList.size()];
     this.rGroup = new ButtonGroup();
 
     for (int i = 0; i < optionList.size(); i++) {
@@ -144,9 +123,10 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         // Add a preview button for each option
         JButton previewButton = new JButton("Preview");
         previewButton.setActionCommand("Preview");
-        previewButton.addActionListener(this);
+        int finalI = i;
+        previewButton.addActionListener(event ->
+                previewImage(previewPercent -> features.previewOperation(optionList.get(finalI).getCommandEnum(), previewPercent)));
         radioPanel.add(previewButton);
-
       }
 
       /*if (optionList.get(i).additionalInputs != null) {
@@ -162,8 +142,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         }
       }*/
     }
-    radioDisplay = new JLabel("choose an option");
-    radioPanel.add(radioDisplay);
+
     mainPanel.add(radioPanel);
     // apply filter button
     JPanel applyfilterPanel = new JPanel();
@@ -176,23 +155,26 @@ public class Jview extends JFrame implements ActionListener, GUIView {
 
   }
 
+  private void previewImage(Consumer<Integer> previewer) {
+    previewer.accept(previewAction());
+  }
+
   private void initialiseOption() {
     List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
-        new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
+            new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
     List<AdditionalInput> additional = Arrays.asList(
-        new AdditionalInput("compress percent", 0, 0, 100));
-    optionList.add(new Option("Visualize Red", false, null, "red visual"));
-    optionList.add(new Option("Visualize Green", false, null, "visualise green"));
-    optionList.add(new Option("Visualize Blue", false, null, "Visualize Blue"));
-    optionList.add(new Option("Flip Vertically", false, null, "Flip Vertically"));
-    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
-    optionList.add(new Option("Blur", true, null, "blurs the image"));
-    optionList.add(new Option("Sharpen", true, null, "Sharpening image"));
-    optionList.add(new Option("Convert to Greyscale", true, null, "Converting to Greyscale"));
-    optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia"));
-    optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia"));
-    optionList.add(new Option("Compression", true, additional, "compressing by compress percent"));
-    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+            new AdditionalInput("compress percent", 0, 0, 100));
+    optionList.add(new Option("Visualize Red", false, null, "red visual", CommandEnum.red_component));
+    optionList.add(new Option("Visualize Green", false, null, "visualise green", CommandEnum.green_component));
+    optionList.add(new Option("Visualize Blue", false, null, "Visualize Blue", CommandEnum.blue_component));
+    optionList.add(new Option("Flip Vertically", false, null, "Flip Vertically", CommandEnum.verticalFlip));
+    optionList.add(new Option("Flip Horizontally", false, null, "flip", CommandEnum.horizontalFlip));
+    optionList.add(new Option("Blur", true, null, "blurs the image", CommandEnum.blur));
+    optionList.add(new Option("Sharpen", true, null, "Sharpening image", CommandEnum.sharpen));
+    optionList.add(new Option("Convert to Greyscale", true, null, "Converting to Greyscale", CommandEnum.luma_component));
+    optionList.add(new Option("Convert to Sepia", true, null, "Converting to Sepia", CommandEnum.sepia));
+    optionList.add(new Option("Compression", true, additional, "compressing by compress percent", CommandEnum.compress));
+    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w", CommandEnum.levels_adjust));
   }
 
 
@@ -207,49 +189,39 @@ public class Jview extends JFrame implements ActionListener, GUIView {
       case "Save file":
         saveFileAction();
         break;
-      case "apply filter":
+      case "Apply filter":
         // Implement apply filter action
         applyFilterAction();
         break;
-      case "toggle":
-        operation = () -> features.toggle();
+      case "Toggle":
+        features.toggle();
         break;
       case "Visualize Red":
         operation = () -> features.visualizeRed();
-        radioDisplay.setText("visualise red 1 was selected");
         break;
       case "Visualize Green":
-        features.visualizeGreen();
-        radioDisplay.setText("visualise green 1 was selected");
+        operation = () -> features.visualizeGreen();
         break;
       case "Visualize Blue":
         operation = () -> features.visualizeBlue();
-        radioDisplay.setText("visualise blue 1 was selected");
         break;
       case "Flip Vertically":
         operation = () -> features.applyVerticalFlip();
-        radioDisplay.setText("Flip Vertically was selected");
         break;
       case "Flip Horizontally":
         operation = () -> features.applyHorizontalFlip();
-        radioDisplay.setText("Flip Horizontally was selected");
         break;
       case "Blur":
-        radioDisplay.setText("Blur was selected");
         operation = () -> features.applyBlur();
         break;
-      // radioDisplay.setText("Blur was selected");
       case "Sharpen":
         operation = () -> features.applySharpen();
-        radioDisplay.setText("Sharpen was selected");
         break;
       case "Convert to Greyscale":
         operation = () -> features.applyLumaGreyScale();
-        radioDisplay.setText("Convert to Greyscale was selected");
         break;
       case "Convert to Sepia":
         operation = () -> features.applySepia();
-        radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
         /*JTextField[] compressFeild = feildmap.get("Compression");
@@ -258,19 +230,16 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         }*/
         askForCompressprecent();
         //operation=()->features.applyCompression(askForCompressprecent());
-        radioDisplay.setText("Compression was selected");
         break;
       case "Color Correct":
         operation = () -> features.applyColorCorrection();
-        radioDisplay.setText("Color Correct was selected");
         break;
       case "Levels Adjust":
         bmwValues();
-        radioDisplay.setText("Levels Adjust was selected");
         break;
-      case "Preview":
-        operation = () -> previewAction(getSelectedRadioButtonText());
-        break;
+      default:
+        JOptionPane.showMessageDialog(this, "Invalid input.", "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -282,7 +251,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
       operation = () -> features.applyCompression(compressPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
       askForCompressprecent();
     }
   }
@@ -298,7 +267,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
       operation = () -> features.applyLevelsAdjust(b, m, w);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
     }
 
   }
@@ -321,7 +290,6 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     int retvalue = fchooser.showOpenDialog(Jview.this);
     if (retvalue == JFileChooser.APPROVE_OPTION) {
       File f = fchooser.getSelectedFile();
-//      fileOpenDisplay.setText(f.getAbsolutePath());
       features.loadImage(f.getAbsolutePath());
     }
   }
@@ -330,25 +298,20 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     operation.run();
   }
 
-  private void previewAction(String selectedOption) {
+  private int previewAction() {
     String inputValue = JOptionPane.showInputDialog("Enter preview percent (integer):");
     try {
       int previewPercent = Integer.parseInt(inputValue);
       System.out.println("preview percent entered: " + previewPercent);
+      return previewPercent;
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
+      return previewAction();
     }
-    JOptionPane.showMessageDialog(this, "Previewing: " + selectedOption);
+//    JOptionPane.showMessageDialog(this, "Previewing: " + selectedOption);
   }
 
-  private String getSelectedRadioButtonText() {
-    ButtonModel selectedButton = rGroup.getSelection();
-    if (selectedButton != null) {
-      return selectedButton.getActionCommand();
-    }
-    return null;
-  }
 
   @Override
   public void setFeatures(Features features) {
