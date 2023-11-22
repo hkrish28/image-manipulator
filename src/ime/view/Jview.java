@@ -43,12 +43,13 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   private JLabel fileSaveDisplay;
   private JScrollPane mainScrollPane;
 
-  private JLabel imageLabel;
+  private JLabel mainImage;
+  private JLabel histogramImage;
   private JPanel imagePanel;
 
   public Jview() {
     setTitle("Image processing");
-    setSize(400, 400);
+    setSize(800, 800);
 
     mainPanel = new JPanel();
     //for elements to be arranged vertically within this panel
@@ -97,13 +98,13 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     imagePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
     imagePanel.setLayout(new BorderLayout());
     mainPanel.add(imagePanel);
-    imageLabel = new JLabel();
-    JScrollPane imageScrollPane = new JScrollPane(imageLabel);
-    imageScrollPane.setPreferredSize(new Dimension(256, 256));
+    mainImage = new JLabel();
+    JScrollPane imageScrollPane = new JScrollPane(mainImage);
+    imageScrollPane.setPreferredSize(new Dimension(256, 480));
     String image = "koala.jpg";
     ImageIcon imageIcon = new ImageIcon(image);
     imageIcon = new ImageIcon(image);
-    imageLabel.setIcon(imageIcon);
+    mainImage.setIcon(imageIcon);
     imagePanel.add(imageScrollPane, BorderLayout.CENTER);
 
 // showing histogram
@@ -112,12 +113,12 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     imagePanelHistogram.setBorder(BorderFactory.createTitledBorder("Showing histogram"));
     imagePanelHistogram.setLayout(new BorderLayout());
     mainPanel.add(imagePanelHistogram);
-    JLabel imageLabelHistogram = new JLabel();
-    JScrollPane imageScrollPaneHistogram = new JScrollPane(imageLabelHistogram);
+    histogramImage = new JLabel();
+    JScrollPane imageScrollPaneHistogram = new JScrollPane(histogramImage);
     imageScrollPaneHistogram.setPreferredSize(new Dimension(256, 256));
     String imageHistogram = "koala.jpg";
     ImageIcon imageIconH = new ImageIcon(imageHistogram);
-    imageLabelHistogram.setIcon(imageIconH);
+    histogramImage.setIcon(imageIconH);
     imagePanelHistogram.add(imageScrollPaneHistogram, BorderLayout.CENTER);
     // radio buttons
     JPanel radioPanel = new JPanel();
@@ -210,9 +211,11 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioDisplay.setText("visualise blue 1 was selected");
         break;
       case "Flip Vertically":
+        features.applyVerticalFlip();
         radioDisplay.setText("Flip Vertically was selected");
         break;
       case "Flip Horizontally":
+        features.applyHorizontalFlip();
         radioDisplay.setText("Flip Horizontally was selected");
         break;
       case "Blur":
@@ -221,12 +224,15 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         break;
       // radioDisplay.setText("Blur was selected");
       case "Sharpen":
+        features.applySharpen();
         radioDisplay.setText("Sharpen was selected");
         break;
       case "Convert to Greyscale":
+        features.applyLumaGreyScale();
         radioDisplay.setText("Convert to Greyscale was selected");
         break;
       case "Convert to Sepia":
+        features.applySepia();
         radioDisplay.setText("Convert to Sepia was selected");
         break;
       case "Compression":
@@ -235,6 +241,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         radioDisplay.setText("Compression was selected");
         break;
       case "Color Correct":
+        features.applyColorCorrection();
         radioDisplay.setText("Color Correct was selected");
         break;
       case "Levels Adjust":
@@ -281,7 +288,8 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     int retvalue = fchooser.showSaveDialog(Jview.this);
     if (retvalue == JFileChooser.APPROVE_OPTION) {
       File f = fchooser.getSelectedFile();
-      fileSaveDisplay.setText(f.getAbsolutePath());
+      features.saveImage(f.getAbsolutePath());
+//      fileSaveDisplay.setText(f.getAbsolutePath());
     }
   }
 
@@ -329,6 +337,12 @@ public class Jview extends JFrame implements ActionListener, GUIView {
   @Override
   public void setImage(Image image) {
     ImageIcon imageIcon = new ImageIcon(image);
-    imageLabel.setIcon(imageIcon);
+    mainImage.setIcon(imageIcon);
+  }
+
+  @Override
+  public void setHistogram(Image image) {
+    ImageIcon imageIcon = new ImageIcon(image);
+    histogramImage.setIcon(imageIcon);
   }
 }

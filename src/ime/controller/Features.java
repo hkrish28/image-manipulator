@@ -29,4 +29,6 @@ public interface Features {
   void applyVerticalFlip();
 
   void applyColorCorrection();
+
+  void previewOperation(CommandEnum commandEnum, int previewPercent);
 }
