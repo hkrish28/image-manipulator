@@ -2,6 +2,7 @@ package ime.controller.commands;
 
 import java.util.function.BiConsumer;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 
 /**
@@ -11,7 +12,7 @@ import ime.model.ImageRepository;
 public class LevelsAdjust extends AbstractCommand {
 
   public LevelsAdjust() {
-    super(6, 4, 5, true);
+    super(6, 4, 5, true, CommandEnum.levels_adjust);
   }
 
   @Override

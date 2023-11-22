@@ -26,11 +26,11 @@ import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
 
-public abstract class AbstractController {
+public abstract class AbstractController implements ImageProcessingController{
 
   private final FileHandlerProvider fileHandlerProvider;
   private final ImageRepository imgRepo;
-  private Map<CommandEnum, Command> knownCommands;
+  protected static Map<CommandEnum, Command> knownCommands;
 
   public AbstractController(FileHandlerProvider fileHandlerProvider, ImageRepository imageRepository) {
     this.fileHandlerProvider = fileHandlerProvider;
@@ -63,7 +63,7 @@ public abstract class AbstractController {
     knownCommands.put(CommandEnum.levels_adjust, new LevelsAdjust());
   }
 
-  protected boolean executeCommand(String commandTokens) {
+  protected static boolean executeCommand(String commandTokens) {
     commandTokens = commandTokens.trim();
     if (commandTokens.startsWith("#") || commandTokens.isEmpty()) {
       return false;

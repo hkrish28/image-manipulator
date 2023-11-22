@@ -2,6 +2,7 @@ package ime.controller.commands;
 
 import java.util.function.BiConsumer;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 
 /**
@@ -14,7 +15,7 @@ public class Compress extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public Compress() {
-    super(4, 2, 3);
+    super(4, 2, 3, CommandEnum.compress);
   }
 
   @Override
