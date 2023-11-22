@@ -2,6 +2,9 @@ package ime.controller;
 
 public class FeaturesImpl implements Features {
 
+  private static final String activeImage = "guiImage";
+  private static final String histogram = "hist";
+  private static final String preview = "previewImage";
   private GUIController controller;
 
   public FeaturesImpl(GUIController controller) {
@@ -9,95 +12,99 @@ public class FeaturesImpl implements Features {
   }
 
   private void invokeCommand(CommandEnum commandEnum) {
-    invokeCommand(commandEnum, new String[]{"guiImage", "guiImage"});
+    invokeCommand(commandEnum, new String[]{activeImage, activeImage});
   }
 
   private void invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
+    String histogramCommand = controller.knownCommands.get(CommandEnum.histogram)
+            .constructCommand(new String[]{activeImage, histogram});
     controller.executeCommand(command);
+    controller.executeCommand(histogramCommand);
+    controller.updateImage(activeImage);
+    controller.updateHistogram(histogram);
   }
 
   @Override
   public void loadImage(String fileName) {
-    invokeCommand(CommandEnum.load, new String[]{fileName, "guiImage"});
-    controller.imageLoaded("guiImage");
+    invokeCommand(CommandEnum.load, new String[]{fileName, activeImage});
   }
 
   @Override
   public void saveImage(String fileName) {
-    invokeCommand(CommandEnum.save, new String[]{fileName, "guiImage"});
+    invokeCommand(CommandEnum.save, new String[]{fileName, activeImage});
   }
 
   @Override
   public void applyBlur() {
     invokeCommand(CommandEnum.blur);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applySharpen() {
     invokeCommand(CommandEnum.sharpen);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applySepia() {
     invokeCommand(CommandEnum.sepia);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyLumaGreyScale() {
     invokeCommand(CommandEnum.luma_component);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyLevelsAdjust(int b, int m, int w) {
     invokeCommand(CommandEnum.levels_adjust,
-            new String[]{String.valueOf(b), String.valueOf(m), String.valueOf(w), "guiImage"});
+            new String[]{String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage});
   }
 
   @Override
   public void applyCompression(int compressionFactor) {
     invokeCommand(CommandEnum.compress,
-            new String[]{String.valueOf(compressionFactor), "guiImage"});
+            new String[]{String.valueOf(compressionFactor), activeImage});
   }
 
   @Override
   public void visualizeRed() {
     invokeCommand(CommandEnum.red_component);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void visualizeGreen() {
     invokeCommand(CommandEnum.green_component);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void visualizeBlue() {
     invokeCommand(CommandEnum.blue_component);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyHorizontalFlip() {
     invokeCommand(CommandEnum.horizontalFlip);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyVerticalFlip() {
     invokeCommand(CommandEnum.verticalFlip);
-    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyColorCorrection() {
     invokeCommand(CommandEnum.color_correct);
-    controller.imageLoaded("guiImage");
   }
+
+  @Override
+  public void previewOperation(CommandEnum commandEnum, int previewPercent) {
+    String command = controller.knownCommands.get(commandEnum)
+            .constructPreviewCommand(new String[]{activeImage, preview}, previewPercent);
+    controller.executeCommand(command);
+    controller.updateImage(preview);
+  }
+
+
 }
 

@@ -134,7 +134,21 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public String constructCommand(String[] tokens) {
-    String constructed = Arrays.stream(tokens).reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
-    return constructed;
+    if (tokens.length != tokensRequired - 1) {
+      throw new IllegalArgumentException(new StringBuilder()
+              .append("Invalid number of tokens provided. ")
+              .append(commandEnum.getRepresentation()).append(" requires ")
+              .append(tokensRequired - 1).append(" tokens.").toString());
+    }
+    return Arrays.stream(tokens)
+            .reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
+  }
+
+  @Override
+  public String constructPreviewCommand(String[] tokens, int previewPercent) {
+    if (!splitSupport) {
+      throw new IllegalArgumentException("This operation can not be previewed.");
+    }
+    return constructCommand(tokens) + " split " + previewPercent;
   }
 }

@@ -19,4 +19,6 @@ public interface Command {
   String proceed(String[] tokens, ImageRepository imageRepository);
 
   String constructCommand(String[] tokens);
+
+  String constructPreviewCommand(String[] tokens, int previewPercent);
 }
