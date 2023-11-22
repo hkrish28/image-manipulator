@@ -117,6 +117,7 @@ public class FeaturesImpl implements Features {
     } else {
       controller.updateImage(preview);
     }
+    isPreview = !isPreview;
   }
 
 
