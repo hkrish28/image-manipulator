@@ -25,9 +25,9 @@ public class Option {
     return previewable;
   }
 
-//  public List<AdditionalInput> getAdditionalInputs() {
-//    return additionalInputs;
-//  }
+  public List<AdditionalInput> getAdditionalInputs() {
+    return additionalInputs;
+  }
 
   public String getComments() {
     return comments;
