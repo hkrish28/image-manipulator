@@ -26,7 +26,7 @@ import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
 
-public abstract class AbstractController implements ImageProcessingController{
+public abstract class AbstractController implements ImageProcessingController {
 
   private final FileHandlerProvider fileHandlerProvider;
   private final ImageRepository imgRepo;
@@ -36,6 +36,15 @@ public abstract class AbstractController implements ImageProcessingController{
     this.fileHandlerProvider = fileHandlerProvider;
     this.imgRepo = imageRepository;
     initializeKnownCommands();
+  }
+
+  private static CommandEnum getCommandEnum(String commandStr) throws IllegalArgumentException {
+    for (CommandEnum cmd : CommandEnum.values()) {
+      if (cmd.getRepresentation().equals(commandStr)) {
+        return cmd;
+      }
+    }
+    throw new IllegalArgumentException("Command not found"); // Command not found
   }
 
   private void initializeKnownCommands() {
@@ -85,13 +94,5 @@ public abstract class AbstractController implements ImageProcessingController{
     return false;
   }
 
-  private static CommandEnum getCommandEnum(String commandStr) throws IllegalArgumentException {
-    for (CommandEnum cmd : CommandEnum.values()) {
-      if (cmd.getRepresentation().equals(commandStr)) {
-        return cmd;
-      }
-    }
-    throw new IllegalArgumentException("Command not found"); // Command not found
-  }
 }
 

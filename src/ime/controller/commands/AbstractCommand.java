@@ -134,7 +134,7 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public String constructCommand(String[] tokens) {
-    String constructed = Arrays.stream(tokens).reduce("", (command, token) -> command + " " + token);
+    String constructed = Arrays.stream(tokens).reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
     return constructed;
   }
 }

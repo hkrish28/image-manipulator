@@ -1,3 +1,4 @@
+import ime.controller.GUIController;
 import ime.view.Jview;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +48,9 @@ public class ProgramRunner {
       // handle exception
     } catch (Exception e) {
     }
+    ImageRepository imageRepository = new ImageRepositoryImpl();
+    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
+    new GUIController(imageRepository, frame, fileHandlerProvider).execute();
     /*View view = new ViewImpl(System.out);
     ImageRepository imageRepository = new ImageRepositoryImpl();
     FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();

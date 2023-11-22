@@ -6,13 +6,13 @@ public class Option {
 
   private String name;
   private boolean previewable;
-  List<AdditionalInput> additionalInputs;
+//  List<AdditionalInput> additionalInputs;
   private String comments;
 
-  public Option(String name, boolean previewable, List<AdditionalInput> additionalInputs,String comments) {
+  public Option(String name, boolean previewable/*, List<AdditionalInput> additionalInputs*/,String comments) {
     this.name = name;
     this.previewable = previewable;
-    this.additionalInputs = additionalInputs;
+//    this.additionalInputs = additionalInputs;
     this.comments=comments;
 
   }
@@ -25,9 +25,9 @@ public class Option {
     return previewable;
   }
 
-  public List<AdditionalInput> getAdditionalInputs() {
-    return additionalInputs;
-  }
+//  public List<AdditionalInput> getAdditionalInputs() {
+//    return additionalInputs;
+//  }
 
   public String getComments() {
     return comments;

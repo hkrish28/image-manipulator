@@ -1,34 +1,22 @@
 package ime.view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Jview extends JFrame implements ActionListener {
+import ime.controller.Features;
 
-  private JPanel mainPanel;
+public class Jview extends JFrame implements ActionListener, GUIView {
+
   List<Option> optionList = new ArrayList<>();
+  private Features features;
+  private JPanel mainPanel;
   private JTextField blurIntensityField;
   private JLabel radioDisplay;
   private ButtonGroup rGroup;
@@ -36,6 +24,9 @@ public class Jview extends JFrame implements ActionListener {
   private JLabel applyfilterDisplay;
   private JLabel fileSaveDisplay;
   private JScrollPane mainScrollPane;
+
+  private JLabel imageLabel;
+  private JPanel imagePanel;
 
   public Jview() {
     setTitle("Image processing");
@@ -82,16 +73,18 @@ public class Jview extends JFrame implements ActionListener {
     applyfilterPanel.add(applyfilterButton);
 
 // showing an image
-    JPanel imagePanel = new JPanel();
+//    JPanel imagePanel = new JPanel();
+    imagePanel = new JPanel();
     //a border around the panel with a caption
     imagePanel.setBorder(BorderFactory.createTitledBorder("Showing an image"));
     imagePanel.setLayout(new BorderLayout());
     mainPanel.add(imagePanel);
-    JLabel imageLabel = new JLabel();
+    imageLabel = new JLabel();
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
     imageScrollPane.setPreferredSize(new Dimension(256, 256));
     String image = "koala.jpg";
     ImageIcon imageIcon = new ImageIcon(image);
+    imageIcon = new ImageIcon(image);
     imageLabel.setIcon(imageIcon);
     imagePanel.add(imageScrollPane, BorderLayout.CENTER);
 
@@ -114,8 +107,8 @@ public class Jview extends JFrame implements ActionListener {
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
     String[] radioOptions = {"Visualize Red", "Visualize Green", "Visualize Blue",
-        "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
-        "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
+            "Flip Vertically", "Flip Horizontally", "Blur", "Sharpen", "Convert to Greyscale",
+            "Convert to Sepia", "Compression", "Color Correct", "Levels Adjust"};
 
     JRadioButton[] radioButtons = new JRadioButton[radioOptions.length];
     this.rGroup = new ButtonGroup();
@@ -134,12 +127,12 @@ public class Jview extends JFrame implements ActionListener {
         radioPanel.add(previewButton);
 
       }
-      if (optionList.get(i).additionalInputs != null) {
-        for(int j=0; j< optionList.get(i).getAdditionalInputs().size(); j++){
-          JTextField inputField = new JTextField(optionList.get(i).getAdditionalInputs().get(j).getName());
-          radioPanel.add(inputField);
-        }
-      }
+//      if (optionList.get(i).additionalInputs != null) {
+//        for(int j=0; j< optionList.get(i).getAdditionalInputs().size(); j++){
+//          JTextField inputField = new JTextField(optionList.get(i).getAdditionalInputs().get(j).getName());
+//          radioPanel.add(inputField);
+//        }
+//      }
     }
     radioDisplay = new JLabel("choose an option");
     radioPanel.add(radioDisplay);
@@ -148,12 +141,20 @@ public class Jview extends JFrame implements ActionListener {
   }
 
   private void initialiseOption() {
-    List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
-        new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
+//    List<AdditionalInput> additionalInputs = Arrays.asList(new AdditionalInput("b", 0, 0, 255),
+//        new AdditionalInput("m", 128, 0, 255), new AdditionalInput("w", 255, 0, 255));
+//
+//    optionList.add(new Option("Blur", true, null, "blurs the image"));
+//    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
+//    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
 
-    optionList.add(new Option("Blur", true, null, "blurs the image"));
-    optionList.add(new Option("Levels Adjust", true, additionalInputs, "b<m<w"));
-    optionList.add(new Option("Flip Horizontally", false, null, "flip"));
+    optionList.add(new Option("Blur", true, "blurs the image"));
+    optionList.add(new Option("Levels Adjust", true, "b<m<w"));
+    optionList.add(new Option("Flip Horizontally", false, "flip"));
+    optionList.add(new Option("Visualize Blue", false, "visualize blue"));
+    optionList.add(new Option("Visualize Red", false, "visualize red"));
+    optionList.add(new Option("Visualize Green", false, "visualize green"));
+
   }
 
   @Override
@@ -172,12 +173,15 @@ public class Jview extends JFrame implements ActionListener {
         applyFilterAction();
         break;
       case "Visualize Red":
+        features.visualizeRed();
         radioDisplay.setText("visualise red 1 was selected");
         break;
       case "Visualize Green":
+        features.visualizeGreen();
         radioDisplay.setText("visualise green 1 was selected");
         break;
       case "Visualize Blue":
+        features.visualizeBlue();
         radioDisplay.setText("visualise blue 1 was selected");
         break;
       case "Flip Vertically":
@@ -188,6 +192,7 @@ public class Jview extends JFrame implements ActionListener {
         break;
       case "Blur":
         radioDisplay.setText("Blur was selected");
+        features.applyBlur();
         break;
       // radioDisplay.setText("Blur was selected");
       case "Sharpen":
@@ -223,7 +228,7 @@ public class Jview extends JFrame implements ActionListener {
       System.out.println("compress percent entered: " + blurIntensity);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -236,11 +241,11 @@ public class Jview extends JFrame implements ActionListener {
       int m = Integer.parseInt(inputValuem);
       int w = Integer.parseInt(inputValuew);
       System.out.println(
-          "b value entered: " + b + "m value entered: " + m + "w value entered: " + w);
+              "b value entered: " + b + "m value entered: " + m + "w value entered: " + w);
 
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
     }
 
   }
@@ -262,7 +267,8 @@ public class Jview extends JFrame implements ActionListener {
     int retvalue = fchooser.showOpenDialog(Jview.this);
     if (retvalue == JFileChooser.APPROVE_OPTION) {
       File f = fchooser.getSelectedFile();
-      fileOpenDisplay.setText(f.getAbsolutePath());
+//      fileOpenDisplay.setText(f.getAbsolutePath());
+      features.loadImage(f.getAbsolutePath());
     }
   }
 
@@ -277,7 +283,7 @@ public class Jview extends JFrame implements ActionListener {
       System.out.println("preview percent entered: " + previewPercent);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
     }
     JOptionPane.showMessageDialog(this, "Previewing: " + selectedOption);
   }
@@ -288,5 +294,16 @@ public class Jview extends JFrame implements ActionListener {
       return selectedButton.getActionCommand();
     }
     return null;
+  }
+
+  @Override
+  public void setFeatures(Features features) {
+    this.features = features;
+  }
+
+  @Override
+  public void setImage(Image image) {
+    ImageIcon imageIcon = new ImageIcon(image);
+    imageLabel.setIcon(imageIcon);
   }
 }

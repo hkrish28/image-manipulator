@@ -1,15 +1,13 @@
 package ime.controller;
 
-import java.util.Map;
-
-import ime.controller.commands.Command;
-
 public class FeaturesImpl implements Features {
 
-  private AbstractController controller;
-  public FeaturesImpl(AbstractController controller){
+  private GUIController controller;
+
+  public FeaturesImpl(GUIController controller) {
     this.controller = controller;
   }
+
   private void invokeCommand(CommandEnum commandEnum) {
     invokeCommand(commandEnum, new String[]{"guiImage", "guiImage"});
   }
@@ -22,6 +20,7 @@ public class FeaturesImpl implements Features {
   @Override
   public void loadImage(String fileName) {
     invokeCommand(CommandEnum.load, new String[]{fileName, "guiImage"});
+    controller.imageLoaded("guiImage");
   }
 
   @Override
@@ -32,21 +31,25 @@ public class FeaturesImpl implements Features {
   @Override
   public void applyBlur() {
     invokeCommand(CommandEnum.blur);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applySharpen() {
     invokeCommand(CommandEnum.sharpen);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applySepia() {
     invokeCommand(CommandEnum.sepia);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyLumaGreyScale() {
     invokeCommand(CommandEnum.luma_component);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
@@ -64,31 +67,37 @@ public class FeaturesImpl implements Features {
   @Override
   public void visualizeRed() {
     invokeCommand(CommandEnum.red_component);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void visualizeGreen() {
     invokeCommand(CommandEnum.green_component);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void visualizeBlue() {
     invokeCommand(CommandEnum.blue_component);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyHorizontalFlip() {
     invokeCommand(CommandEnum.horizontalFlip);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyVerticalFlip() {
     invokeCommand(CommandEnum.verticalFlip);
+    controller.imageLoaded("guiImage");
   }
 
   @Override
   public void applyColorCorrection() {
     invokeCommand(CommandEnum.color_correct);
+    controller.imageLoaded("guiImage");
   }
 }
 
