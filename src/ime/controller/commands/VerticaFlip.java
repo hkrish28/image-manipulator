@@ -15,7 +15,7 @@ public class VerticaFlip extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public VerticaFlip() {
-    super(3, 1, 2, CommandEnum.value_component);
+    super(3, 1, 2, CommandEnum.verticalFlip);
   }
 
   @Override

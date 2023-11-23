@@ -1,5 +1,9 @@
 package ime.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class FeaturesImpl implements Features {
 
   private static final String activeImage = "guiImage";
@@ -62,13 +66,13 @@ public class FeaturesImpl implements Features {
   @Override
   public void applyLevelsAdjust(int b, int m, int w) {
     invokeCommand(CommandEnum.levels_adjust,
-            new String[]{String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage});
+            new String[]{String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage, activeImage});
   }
 
   @Override
   public void applyCompression(int compressionFactor) {
     invokeCommand(CommandEnum.compress,
-            new String[]{String.valueOf(compressionFactor), activeImage});
+            new String[]{String.valueOf(compressionFactor), activeImage, activeImage});
   }
 
   @Override
@@ -102,9 +106,12 @@ public class FeaturesImpl implements Features {
   }
 
   @Override
-  public void previewOperation(CommandEnum commandEnum, int previewPercent) {
+  public void previewOperation(CommandEnum commandEnum, List<String> additionalInputs, int previewPercent) {
+
+    List<String> commandTokens = additionalInputs != null ? new ArrayList<>(additionalInputs) : new ArrayList<>();
+    commandTokens.addAll(Arrays.asList(activeImage, preview));
     String command = controller.knownCommands.get(commandEnum)
-            .constructPreviewCommand(new String[]{activeImage, preview}, previewPercent);
+            .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
     controller.executeCommand(command);
     controller.updateImage(preview);
     isPreview = true;

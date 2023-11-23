@@ -1,5 +1,7 @@
 package ime.controller;
 
+import java.util.List;
+
 public interface Features {
 
   void loadImage(String fileName);
@@ -30,6 +32,7 @@ public interface Features {
 
   void applyColorCorrection();
 
-  void previewOperation(CommandEnum commandEnum, int previewPercent);
+  void previewOperation(CommandEnum commandEnum, List<String> additionalInputs, int previewPercent);
+
   void toggle();
 }
