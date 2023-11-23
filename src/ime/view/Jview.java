@@ -49,22 +49,23 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     mainPanel.add(StartMenuPanel);
 
     //file open
-    JPanel fileopenPanel = new JPanel();
-    fileopenPanel.setLayout(new FlowLayout());
-    StartMenuPanel.add(fileopenPanel);
+    JPanel fileOpenPanel = new JPanel();
+    fileOpenPanel.setLayout(new FlowLayout());
+    StartMenuPanel.add(fileOpenPanel);
     JButton fileOpenButton = new JButton("Open a file");
     fileOpenButton.setActionCommand("Open file");
     fileOpenButton.addActionListener(this);
-    fileopenPanel.add(fileOpenButton);
+    fileOpenPanel.add(fileOpenButton);
+
 
     //file save
-    JPanel filesavePanel = new JPanel();
-    filesavePanel.setLayout(new FlowLayout());
-    StartMenuPanel.add(filesavePanel);
+    JPanel fileSavePanel = new JPanel();
+    fileSavePanel.setLayout(new FlowLayout());
+    StartMenuPanel.add(fileSavePanel);
     JButton fileSaveButton = new JButton("Save a file");
     fileSaveButton.setActionCommand("Save file");
     fileSaveButton.addActionListener(this);
-    filesavePanel.add(fileSaveButton);
+    fileSavePanel.add(fileSaveButton);
     // toggle button
     JPanel togglePanel = new JPanel();
     togglePanel.setLayout(new FlowLayout());
@@ -125,13 +126,13 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     mainPanel.add(radioPanel);
 
     // apply filter button
-    JPanel applyfilterPanel = new JPanel();
-    applyfilterPanel.setLayout(new FlowLayout());
-    radioPanel.add(applyfilterPanel);
-    JButton applyfilterButton = new JButton("Apply filter");
-    applyfilterButton.setActionCommand("Apply filter");
-    applyfilterButton.addActionListener(this);
-    applyfilterPanel.add(applyfilterButton);
+    JPanel applyFilterPanel = new JPanel();
+    applyFilterPanel.setLayout(new FlowLayout());
+    radioPanel.add(applyFilterPanel);
+    JButton applyFilterButton = new JButton("Apply filter");
+    applyFilterButton.setActionCommand("Apply filter");
+    applyFilterButton.addActionListener(this);
+    applyFilterPanel.add(applyFilterButton);
   }
 
   private void previewImage(Consumer<Integer> previewer) {
@@ -202,7 +203,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
         operation = () -> features.applySepia();
         break;
       case "Compression":
-        askForCompressprecent();
+        askForCompressPercent();
         break;
       case "Color Correct":
         operation = () -> features.applyColorCorrection();
@@ -216,7 +217,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     }
   }
 
-  private void askForCompressprecent() {
+  private void askForCompressPercent() {
     String inputValue = JOptionPane.showInputDialog("Enter compress percent (integer):");
     try {
       int compressPercent = Integer.parseInt(inputValue);
@@ -224,7 +225,7 @@ public class Jview extends JFrame implements ActionListener, GUIView {
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
               JOptionPane.ERROR_MESSAGE);
-      askForCompressprecent();
+      askForCompressPercent();
     }
   }
 
@@ -246,21 +247,21 @@ public class Jview extends JFrame implements ActionListener, GUIView {
 
 
   private void saveFileAction() {
-    final JFileChooser fchooser = new JFileChooser(".");
-    int retValue = fchooser.showSaveDialog(Jview.this);
+    final JFileChooser fileChooser = new JFileChooser(".");
+    int retValue = fileChooser.showSaveDialog(Jview.this);
     if (retValue == JFileChooser.APPROVE_OPTION) {
-      File f = fchooser.getSelectedFile();
+      File f = fileChooser.getSelectedFile();
       features.saveImage(f.getAbsolutePath());
     }
   }
 
   private void openFileAction() {
-    final JFileChooser fchooser = new JFileChooser(".");
+    final JFileChooser fileChooser = new JFileChooser(".");
     FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG, GIF, PNG, PPM Images", "jpg", "gif","png","ppm");
-    fchooser.setFileFilter(filter);
-    int retValue = fchooser.showOpenDialog(Jview.this);
+    fileChooser.setFileFilter(filter);
+    int retValue = fileChooser.showOpenDialog(Jview.this);
     if (retValue == JFileChooser.APPROVE_OPTION) {
-      File f = fchooser.getSelectedFile();
+      File f = fileChooser.getSelectedFile();
       features.loadImage(f.getAbsolutePath());
     }
   }
