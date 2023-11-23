@@ -247,8 +247,8 @@ public class Jview extends JFrame implements ActionListener, GUIView {
 
   private void saveFileAction() {
     final JFileChooser fchooser = new JFileChooser(".");
-    int retvalue = fchooser.showSaveDialog(Jview.this);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
+    int retValue = fchooser.showSaveDialog(Jview.this);
+    if (retValue == JFileChooser.APPROVE_OPTION) {
       File f = fchooser.getSelectedFile();
       features.saveImage(f.getAbsolutePath());
     }
