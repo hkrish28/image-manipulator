@@ -1,14 +1,23 @@
 package ime.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FeaturesImpl implements Features {
 
   private static final String activeImage = "guiImage";
   private static final String histogram = "hist";
   private static final String preview = "previewImage";
+
+  private List<String> tokens;
+
+  private CommandEnum chosenCommand;
   private GUIController controller;
 
   private boolean isPreview;
@@ -17,10 +26,10 @@ public class FeaturesImpl implements Features {
     this.controller = controller;
     isPreview = false;
   }
-
-  private void invokeCommand(CommandEnum commandEnum) {
-    invokeCommand(commandEnum, new String[]{activeImage, activeImage});
-  }
+//
+//  private void invokeCommand(CommandEnum commandEnum) {
+//    invokeCommand(commandEnum, new String[]{activeImage, activeImage});
+//  }
 
   private void invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
@@ -34,88 +43,43 @@ public class FeaturesImpl implements Features {
   }
 
   @Override
-  public void loadImage(String fileName) {
+  public void loadImage() {
+    String fileName = openFileAction();
     invokeCommand(CommandEnum.load, new String[]{fileName, activeImage});
   }
 
+  private String openFileAction() {
+    final JFileChooser fchooser = new JFileChooser(".");
+    List<String> supportedFormats = Arrays.stream(FileFormatEnum.values())
+            .map(FileFormatEnum::name).collect(Collectors.toList());
+    FileNameExtensionFilter filter
+            = new FileNameExtensionFilter("Supported : " + supportedFormats,
+            supportedFormats.toArray(new String[0]));
+    fchooser.setFileFilter(filter);
+    int retvalue = fchooser.showOpenDialog(null);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      return f.getAbsolutePath();
+    }
+    return null;
+  }
+
   @Override
-  public void saveImage(String fileName) {
+  public void saveImage() {
+    String fileName = saveFileAction();
     invokeCommand(CommandEnum.save, new String[]{fileName, activeImage});
   }
 
-  @Override
-  public void applyBlur() {
-    invokeCommand(CommandEnum.blur);
+  private String saveFileAction() {
+    final JFileChooser fchooser = new JFileChooser(".");
+    int retvalue = fchooser.showSaveDialog(null);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      return f.getAbsolutePath();
+    }
+    return null;
   }
 
-  @Override
-  public void applySharpen() {
-    invokeCommand(CommandEnum.sharpen);
-  }
-
-  @Override
-  public void applySepia() {
-    invokeCommand(CommandEnum.sepia);
-  }
-
-  @Override
-  public void applyLumaGreyScale() {
-    invokeCommand(CommandEnum.luma_component);
-  }
-
-  @Override
-  public void applyLevelsAdjust(int b, int m, int w) {
-    invokeCommand(CommandEnum.levels_adjust,
-            new String[]{String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage, activeImage});
-  }
-
-  @Override
-  public void applyCompression(int compressionFactor) {
-    invokeCommand(CommandEnum.compress,
-            new String[]{String.valueOf(compressionFactor), activeImage, activeImage});
-  }
-
-  @Override
-  public void visualizeRed() {
-    invokeCommand(CommandEnum.red_component);
-  }
-
-  @Override
-  public void visualizeGreen() {
-    invokeCommand(CommandEnum.green_component);
-  }
-
-  @Override
-  public void visualizeBlue() {
-    invokeCommand(CommandEnum.blue_component);
-  }
-
-  @Override
-  public void applyHorizontalFlip() {
-    invokeCommand(CommandEnum.horizontalFlip);
-  }
-
-  @Override
-  public void applyVerticalFlip() {
-    invokeCommand(CommandEnum.verticalFlip);
-  }
-
-  @Override
-  public void applyColorCorrection() {
-    invokeCommand(CommandEnum.color_correct);
-  }
-
-  @Override
-  public void previewOperation(CommandEnum commandEnum, List<String> additionalInputs, int previewPercent) {
-
-    List<String> commandTokens = additionalInputs != null ? new ArrayList<>(additionalInputs) : new ArrayList<>();
-    commandTokens.addAll(Arrays.asList(activeImage, preview));
-    String command = controller.knownCommands.get(commandEnum)
-            .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
-    controller.executeCommand(command);
-    controller.updateImage(preview);
-    isPreview = true;
-  }
 
   @Override
   public void toggle() {
@@ -125,6 +89,108 @@ public class FeaturesImpl implements Features {
       controller.updateImage(preview);
     }
     isPreview = !isPreview;
+  }
+
+  @Override
+  public void chooseHorizontalFlip() {
+    setCommandTokens(CommandEnum.horizontalFlip);
+    controller.setupOperation(true, false);
+  }
+
+  @Override
+  public void chooseVerticalFlip() {
+    setCommandTokens(CommandEnum.verticalFlip);
+    controller.setupOperation(true, false);
+  }
+
+  @Override
+  public void chooseColorCorrect() {
+    setCommandTokens(CommandEnum.color_correct);
+    controller.setupOperation(true, true);
+  }
+
+  @Override
+  public void chooseVisualizeRed() {
+    setCommandTokens(CommandEnum.red_component);
+  }
+
+  @Override
+  public void chooseVisualizeGreen() {
+    setCommandTokens(CommandEnum.green_component);
+    controller.setupOperation(true, false);
+  }
+
+  @Override
+  public void chooseVisualizeBlue() {
+    setCommandTokens(CommandEnum.blue_component);
+    controller.setupOperation(true, false);
+  }
+
+  @Override
+  public void chooseCompression() {
+    int compressPercent = controller.getInput("Input compress percentage between 0 - 100");
+    setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
+    controller.setupOperation(true, false);
+  }
+
+  @Override
+  public void chooseSepia() {
+    setCommandTokens(CommandEnum.sepia);
+    controller.setupOperation(true, true);
+  }
+
+  @Override
+  public void chooseLumaGreyscale() {
+    setCommandTokens(CommandEnum.luma_component);
+    controller.setupOperation(true, true);
+  }
+
+  @Override
+  public void chooseLevelsAdjust() {
+    int b = controller.getInput("Enter black point value");
+    int m = controller.getInput("Enter mid point value");
+    int w = controller.getInput("Enter white point value");
+
+    setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+    controller.setupOperation(true, true);
+  }
+
+  @Override
+  public void chooseBlur() {
+    setCommandTokens(CommandEnum.blur);
+    controller.setupOperation(true, true);
+  }
+
+  private void setCommandTokens(CommandEnum commandEnum, List<String> tokens) {
+    chosenCommand = commandEnum;
+    this.tokens = tokens;
+  }
+
+  private void setCommandTokens(CommandEnum commandEnum) {
+    chosenCommand = commandEnum;
+    tokens = Arrays.asList(activeImage);
+  }
+
+  @Override
+  public void applyChosenOperation() {
+    List<String> commandTokens = new ArrayList<>(tokens);
+    commandTokens.add(activeImage);
+    invokeCommand(chosenCommand, commandTokens.toArray(new String[0]));
+    controller.setToggle(false);
+  }
+
+  @Override
+  public void previewChosenOperation() {
+    List<String> commandTokens = new ArrayList<>(tokens);
+    commandTokens.add(preview);
+    int previewPercent = controller.getInput("Input Preview Percentage");
+    String command = controller.knownCommands.get(chosenCommand)
+            .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
+    controller.executeCommand(command);
+    controller.updateImage(preview);
+    isPreview = true;
+    controller.setToggle(true);
+    controller.setupOperation(true, false);
   }
 
 

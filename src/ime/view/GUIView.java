@@ -1,17 +1,20 @@
 package ime.view;
 
-import java.awt.*;
-import java.util.List;
+import java.awt.Image;
 
 import ime.controller.Features;
 
-public interface GUIView {
+public interface GUIView extends View {
   void setFeatures(Features features);
-
-  void setOptions(List<Option> optionList);
 
   void setImage(Image image);
 
   void setHistogram(Image image);
+
+  void enablePreview(boolean show);
+  void enableApply(boolean show);
+  void enableToggle(boolean show);
+
+  int getInput(String message);
 
 }

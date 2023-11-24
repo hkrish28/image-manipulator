@@ -134,7 +134,7 @@ public abstract class AbstractCommand implements Command {
 
   @Override
   public String constructCommand(String[] tokens) {
-    if (tokens.length != tokensRequired - 1) {
+    if (tokens.length != tokensRequired - 1 ) {
       throw new IllegalArgumentException(new StringBuilder()
               .append("Invalid number of tokens provided. ")
               .append(commandEnum.getRepresentation()).append(" requires ")
