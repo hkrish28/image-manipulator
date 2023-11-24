@@ -19,22 +19,26 @@ import ime.controller.commands.Load;
 import ime.controller.commands.LumaGreyscale;
 import ime.controller.commands.RedComponent;
 import ime.controller.commands.RgbSplit;
+import ime.controller.commands.Run;
 import ime.controller.commands.Save;
 import ime.controller.commands.Sepia;
 import ime.controller.commands.Sharpen;
 import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
+import ime.view.View;
 
 public abstract class AbstractController implements ImageProcessingController {
 
   private final FileHandlerProvider fileHandlerProvider;
   private final ImageRepository imgRepo;
   protected Map<CommandEnum, Command> knownCommands;
+  private View view;
 
-  public AbstractController(FileHandlerProvider fileHandlerProvider, ImageRepository imageRepository) {
+  public AbstractController(FileHandlerProvider fileHandlerProvider, ImageRepository imageRepository, View view) {
     this.fileHandlerProvider = fileHandlerProvider;
     this.imgRepo = imageRepository;
+    this.view = view;
     initializeKnownCommands();
   }
 
@@ -65,7 +69,7 @@ public abstract class AbstractController implements ImageProcessingController {
     knownCommands.put(CommandEnum.red_component, new RedComponent());
     knownCommands.put(CommandEnum.green_component, new GreenComponent());
     knownCommands.put(CommandEnum.blue_component, new BlueComponent());
-//    knownCommands.put(CommandEnum.run, new Run(view, fileHandlerProvider));
+    knownCommands.put(CommandEnum.run, new Run(view, fileHandlerProvider));
     knownCommands.put(CommandEnum.compress, new Compress());
     knownCommands.put(CommandEnum.histogram, new Histogram());
     knownCommands.put(CommandEnum.color_correct, new ColorCorrect());
@@ -87,9 +91,9 @@ public abstract class AbstractController implements ImageProcessingController {
 
       Command commandObject = knownCommands.get(commandKeyword);
       String returnedMessage = commandObject.proceed(tokens, imgRepo);
-//        view.displayMessage(returnedMessage);
+      view.displayMessage(returnedMessage);
     } catch (IllegalArgumentException e) {
-//        view.displayMessage(e.getMessage());
+      view.displayMessage(e.getMessage());
     }
     return false;
   }

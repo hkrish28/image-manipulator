@@ -8,7 +8,7 @@ import javax.swing.*;
 import ime.controller.Features;
 
 
-public class Jview extends JFrame implements GUIView {
+public class JFrameView extends JFrame implements GUIView {
 
   private Features features;
   private JPanel mainPanel;
@@ -18,7 +18,7 @@ public class Jview extends JFrame implements GUIView {
   private JPanel previewPanel;
   private JPanel togglePanel;
 
-  public Jview() {
+  public JFrameView() {
 
     this.setDefaultLookAndFeelDecorated(false);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

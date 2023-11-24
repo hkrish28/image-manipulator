@@ -1,5 +1,5 @@
 import ime.controller.GUIController;
-import ime.view.Jview;
+import ime.view.JFrameView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -11,10 +11,6 @@ import ime.controller.ImageProcessingController;
 import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
 import ime.view.View;
-import ime.view.ViewImpl;
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This class contains the main method to be run to start the application.
@@ -29,7 +25,7 @@ public class ProgramRunner {
     if (!isValidInput(args)) {
       return;
     }
-    Jview frame = new Jview();
+    JFrameView frame = new JFrameView();
 
     ImageRepository imageRepository = new ImageRepositoryImpl();
     FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();

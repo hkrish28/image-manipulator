@@ -15,7 +15,7 @@ public class GUIController extends AbstractController {
 //  private List<Option> optionList;
 
   public GUIController(ImageRepository imageRepository, GUIView view, FileHandlerProvider fileHandlerProvider) {
-    super(fileHandlerProvider, imageRepository);
+    super(fileHandlerProvider, imageRepository, view);
     this.view = view;
     this.imgRepo = imageRepository;
 //    initialiseOptions();
