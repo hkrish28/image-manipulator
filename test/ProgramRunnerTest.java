@@ -37,16 +37,16 @@ public class ProgramRunnerTest {
   }
 
   @Test
-  public void testMainWithNoArgs() {
+  public void testMainWithTextArg() {
     //Since the controller waits for input, the program never ends.
     thrown.expect(TestTimedOutException.class);
-    String[] args = {};
+    String[] args = {"-text"};
     ProgramRunner.main(args);
   }
 
   @Test
   public void testMainWithValidArgs() {
-    String[] args = {"-f", "test/resources/emptyscript.txt"};
+    String[] args = {"-file", "test/resources/emptyscript.txt"};
     ProgramRunner.main(args);
 
     String expectedOutput = "Exiting with no more commands\n";
@@ -58,14 +58,14 @@ public class ProgramRunnerTest {
     String[] args = {"invalidScript.txt"};
     ProgramRunner.main(args);
 
-    String expectedOutput = "Invalid arguments provided to the Program Runner. " +
-            "Either pass no arguments or provide '-f filename'\n";
+    String expectedOutput = "Invalid arguments provided to the Program Runner. Either pass " +
+            "no arguments or provide '-file filename' or '-text\n";
     assertTrue(outContent.toString().contains(expectedOutput));
   }
 
   @Test
   public void testMainWithInvalidFile() {
-    String[] args = {"-f", "invalidScript.txt"};
+    String[] args = {"-file", "invalidScript.txt"};
     ProgramRunner.main(args);
 
     String expectedOutput = "Invalid file provided. Exiting.\n";

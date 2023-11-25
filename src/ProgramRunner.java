@@ -34,7 +34,6 @@ public class ProgramRunner {
     } else {
       View view = new ViewImpl(System.out);
       ImageRepository imageRepository = new ImageRepositoryImpl();
-//    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
       runController(args, view, imageRepository, fileHandlerProvider);
     }
 
