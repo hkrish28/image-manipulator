@@ -26,10 +26,6 @@ public class FeaturesImpl implements Features {
     this.controller = controller;
     isPreview = false;
   }
-//
-//  private void invokeCommand(CommandEnum commandEnum) {
-//    invokeCommand(commandEnum, new String[]{activeImage, activeImage});
-//  }
 
   private void invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
@@ -128,7 +124,7 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void chooseCompression() {
-    int compressPercent = controller.getInput("Input compress percentage between 0 - 100");
+    int compressPercent = getValueWithConstraint("compression factor", 0, 100);
     setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
     controller.setupOperation(true, false);
   }
@@ -147,12 +143,24 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void chooseLevelsAdjust() {
-    int b = controller.getInput("Enter black point value");
-    int m = controller.getInput("Enter mid point value");
-    int w = controller.getInput("Enter white point value");
+    int b;
+    int m;
+    int w;
+    b = getValueWithConstraint("black point", 0, 253);
+    m = getValueWithConstraint("mid point", b + 1, 254);
+    w = getValueWithConstraint("white point", m + 1, 255);
 
-    setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+    setCommandTokens(CommandEnum.levels_adjust, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
     controller.setupOperation(true, true);
+  }
+
+  private int getValueWithConstraint(String message, int min, int max) {
+    int val = controller.getInput("Enter value between " + min + " - " + max + " for " + message);
+    while (val < min || val > max) {
+      controller.sendDisplayMessage("Invalid value. Please try again");
+      val = controller.getInput("Enter value between " + min + " - " + max + " for " + message);
+    }
+    return val;
   }
 
   @Override
@@ -183,7 +191,7 @@ public class FeaturesImpl implements Features {
   public void previewChosenOperation() {
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(preview);
-    int previewPercent = controller.getInput("Input Preview Percentage");
+    int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
     String command = controller.knownCommands.get(chosenCommand)
             .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
     controller.executeCommand(command);
@@ -192,7 +200,6 @@ public class FeaturesImpl implements Features {
     controller.setToggle(true);
     controller.setupOperation(true, false);
   }
-
 
 }
 

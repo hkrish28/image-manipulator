@@ -8,6 +8,7 @@ import javax.swing.*;
 import ime.controller.Features;
 
 
+
 public class JFrameView extends JFrame implements GUIView {
 
   private Features features;
@@ -20,8 +21,8 @@ public class JFrameView extends JFrame implements GUIView {
 
   public JFrameView() {
 
-    this.setDefaultLookAndFeelDecorated(false);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultLookAndFeelDecorated(false);
+    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     this.setVisible(true);
 
     setTitle("Image processing");
@@ -107,7 +108,7 @@ public class JFrameView extends JFrame implements GUIView {
     JScrollPane imageScrollPane = new JScrollPane(mainImage);
     imageScrollPane.setPreferredSize(new Dimension(320, 256));
 
-// showing histogram
+    // showing histogram
     JPanel imagePanelHistogram = new JPanel();
     //a border around the panel with a caption
     imagePanelHistogram.setBorder(BorderFactory.createTitledBorder("Showing histogram"));

@@ -76,6 +76,13 @@ public abstract class AbstractController implements ImageProcessingController {
     knownCommands.put(CommandEnum.levels_adjust, new LevelsAdjust());
   }
 
+  /**
+   * the execute command method takes in the commands as tokens and checks
+   * if it's a valid command from the enum.
+   *
+   * @param commandTokens string commands passed.
+   * @return boolean value of true or false to check if the command is valid or not.
+   */
   protected boolean executeCommand(String commandTokens) {
     commandTokens = commandTokens.trim();
     if (commandTokens.startsWith("#") || commandTokens.isEmpty()) {

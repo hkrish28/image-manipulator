@@ -1,5 +1,3 @@
-import ime.controller.GUIController;
-import ime.view.JFrameView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -7,10 +5,13 @@ import java.util.Scanner;
 import ime.controller.ControllerImpl;
 import ime.controller.FileHandlerProvider;
 import ime.controller.FileHandlerProviderImpl;
+import ime.controller.GUIController;
 import ime.controller.ImageProcessingController;
 import ime.model.ImageRepository;
 import ime.model.ImageRepositoryImpl;
+import ime.view.JFrameView;
 import ime.view.View;
+import ime.view.ViewImpl;
 
 /**
  * This class contains the main method to be run to start the application.
@@ -25,15 +26,18 @@ public class ProgramRunner {
     if (!isValidInput(args)) {
       return;
     }
-    JFrameView frame = new JFrameView();
+    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
+    if (args.length == 0) {
+      JFrameView frame = new JFrameView();
+      ImageRepository imageRepository = new ImageRepositoryImpl();
+      new GUIController(imageRepository, frame, fileHandlerProvider).execute();
+    } else {
+      View view = new ViewImpl(System.out);
+      ImageRepository imageRepository = new ImageRepositoryImpl();
+//    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
+      runController(args, view, imageRepository, fileHandlerProvider);
+    }
 
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
-    new GUIController(imageRepository, frame, fileHandlerProvider).execute();
-    /*View view = new ViewImpl(System.out);
-    ImageRepository imageRepository = new ImageRepositoryImpl();
-    FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
-    runController(args, view, imageRepository, fileHandlerProvider);*/
   }
 
   private static void runController(String[] args, View view, ImageRepository imageRepository,
@@ -50,18 +54,19 @@ public class ProgramRunner {
   }
 
   private static boolean isValidInput(String[] args) {
-    if ((args.length == 2 && args[0].equals("-f") || (args.length == 0))) {
+    if ((args.length == 2 && args[0].equals("-file") || (args.length == 0)
+            || (args.length == 1 && args[0].equals("-text")))) {
       return true;
     } else {
       System.out.println("Invalid arguments provided to the Program Runner. Either pass " +
-              "no arguments or provide '-f filename'");
+              "no arguments or provide '-file filename' or '-text");
       return false;
     }
   }
 
   private static Scanner getControllerInput(String[] args) throws FileNotFoundException {
     Scanner controllerInput;
-    if (args.length == 0) {
+    if (args.length == 1) {
       controllerInput = new Scanner(System.in);
     } else {
       controllerInput = new Scanner(new File(args[1]));
