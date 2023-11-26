@@ -1,9 +1,10 @@
 package ime.controller;
 
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
+import ime.controller.commands.Command;
 import ime.model.ImageRepository;
 import ime.view.GUIView;
 
@@ -53,5 +54,18 @@ public class GUIController extends AbstractController {
 
   public void sendDisplayMessage(String message) {
     view.displayMessage(message);
+  }
+
+  protected boolean getConfirmation(String message){
+    return view.getConfirmation(message);
+  }
+
+  @Override
+  protected void runCommandObject(Command command, String[] tokens) {
+    try {
+      command.proceed(tokens, imgRepo);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
   }
 }

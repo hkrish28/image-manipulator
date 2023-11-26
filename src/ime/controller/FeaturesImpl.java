@@ -15,6 +15,7 @@ public class FeaturesImpl implements Features {
   private static final String histogram = "hist";
   private static final String preview = "previewImage";
 
+  private boolean unsavedImagePrompt;
   private List<String> tokens;
 
   private CommandEnum chosenCommand;
@@ -25,6 +26,7 @@ public class FeaturesImpl implements Features {
   public FeaturesImpl(GUIController controller) {
     this.controller = controller;
     isPreview = false;
+    unsavedImagePrompt = false;
   }
 
   private void invokeCommand(CommandEnum commandEnum, String[] tokens) {
@@ -40,6 +42,12 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void loadImage() {
+    if (unsavedImagePrompt) {
+      if (!controller.getConfirmation(
+              "Current image is unsaved. Do you want to overwrite the image?")) {
+        return;
+      }
+    }
     String fileName = openFileAction();
     invokeCommand(CommandEnum.load, new String[]{fileName, activeImage});
   }
@@ -64,6 +72,7 @@ public class FeaturesImpl implements Features {
   public void saveImage() {
     String fileName = saveFileAction();
     invokeCommand(CommandEnum.save, new String[]{fileName, activeImage});
+    unsavedImagePrompt = false;
   }
 
   private String saveFileAction() {
@@ -185,6 +194,7 @@ public class FeaturesImpl implements Features {
     commandTokens.add(activeImage);
     invokeCommand(chosenCommand, commandTokens.toArray(new String[0]));
     controller.setToggle(false);
+    unsavedImagePrompt = true;
   }
 
   @Override

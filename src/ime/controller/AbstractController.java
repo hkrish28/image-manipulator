@@ -97,13 +97,21 @@ public abstract class AbstractController implements ImageProcessingController {
       }
 
       Command commandObject = knownCommands.get(commandKeyword);
-      String returnedMessage = commandObject.proceed(tokens, imgRepo);
-      view.displayMessage(returnedMessage);
+      runCommandObject(commandObject, tokens);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
     }
     return false;
   }
 
+
+  protected void runCommandObject(Command command, String[] tokens) {
+    try {
+      String returnedMessage = command.proceed(tokens, imgRepo);
+      view.displayMessage(returnedMessage);
+    } catch (IllegalArgumentException e) {
+      view.displayMessage(e.getMessage());
+    }
+  }
 }
 

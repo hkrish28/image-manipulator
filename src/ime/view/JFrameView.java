@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import ime.controller.Features;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 
 public class JFrameView extends JFrame implements GUIView {
@@ -167,6 +168,13 @@ public class JFrameView extends JFrame implements GUIView {
               JOptionPane.ERROR_MESSAGE);
       return getInput(message);
     }
+  }
+
+  @Override
+  public boolean getConfirmation(String message) {
+    int confirmation =
+            JOptionPane.showConfirmDialog(this, message, "Overwrite changes", YES_NO_OPTION);
+    return confirmation == JOptionPane.YES_OPTION;
   }
 
   @Override

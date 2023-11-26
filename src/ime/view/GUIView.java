@@ -17,4 +17,6 @@ public interface GUIView extends View {
 
   int getInput(String message);
 
+  boolean getConfirmation(String message);
+
 }
