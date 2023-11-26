@@ -10,6 +10,10 @@ import ime.controller.Features;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 
+/**
+ * This class implements {@link GUIView} and utilizes the Java Swing library to perform and display
+ * operations on images.
+ */
 public class JFrameView extends JFrame implements GUIView {
 
   private Features features;
@@ -20,6 +24,9 @@ public class JFrameView extends JFrame implements GUIView {
   private JPanel previewPanel;
   private JPanel togglePanel;
 
+  /**
+   * Constructor initializing the JFrame and setting up the UI components.
+   */
   public JFrameView() {
 
     setDefaultLookAndFeelDecorated(false);
@@ -110,10 +117,6 @@ public class JFrameView extends JFrame implements GUIView {
     imageScrollPane.setPreferredSize(new Dimension(320, 256));
 
     // showing histogram
-    JPanel imagePanelHistogram = new JPanel();
-    //a border around the panel with a caption
-    imagePanelHistogram.setBorder(BorderFactory.createTitledBorder("Showing histogram"));
-    imagePanelHistogram.setLayout(new BorderLayout());
 
     histogramImage = new JLabel();
     JScrollPane imageScrollPaneHistogram = new JScrollPane(histogramImage);
