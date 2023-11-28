@@ -1,6 +1,5 @@
 package ime.controller;
 
-import java.util.List;
 
 public interface Features {
 

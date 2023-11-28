@@ -1,13 +1,8 @@
 package ime.controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FeaturesImpl implements Features {
 
@@ -29,62 +24,49 @@ public class FeaturesImpl implements Features {
     unsavedImagePrompt = false;
   }
 
-  private void invokeCommand(CommandEnum commandEnum, String[] tokens) {
+  private boolean invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
     String histogramCommand = controller.knownCommands.get(CommandEnum.histogram)
             .constructCommand(new String[]{activeImage, histogram});
-    controller.executeCommand(command);
-    controller.executeCommand(histogramCommand);
-    controller.updateImage(activeImage);
-    controller.updateHistogram(histogram);
-    isPreview = false;
+    boolean commandSuccess = controller.executeCommand(command);
+    if (commandSuccess) {
+      controller.executeCommand(histogramCommand);
+      controller.updateImage(activeImage);
+      controller.updateHistogram(histogram);
+      isPreview = false;
+    }
+    return commandSuccess;
   }
 
   @Override
   public void loadImage() {
+    controller.setupOperation(false, false);
     if (unsavedImagePrompt) {
       if (!controller.getConfirmation(
               "Current image is unsaved. Do you want to overwrite the image?")) {
         return;
       }
     }
-    String fileName = openFileAction();
-    invokeCommand(CommandEnum.load, new String[]{fileName, activeImage});
-  }
-
-  private String openFileAction() {
-    final JFileChooser fchooser = new JFileChooser(".");
-    List<String> supportedFormats = Arrays.stream(FileFormatEnum.values())
-            .map(FileFormatEnum::name).collect(Collectors.toList());
-    FileNameExtensionFilter filter
-            = new FileNameExtensionFilter("Supported : " + supportedFormats,
-            supportedFormats.toArray(new String[0]));
-    fchooser.setFileFilter(filter);
-    int retvalue = fchooser.showOpenDialog(null);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
-      File f = fchooser.getSelectedFile();
-      return f.getAbsolutePath();
+    String filePath = controller.openFileAction();
+    if (filePath != null) {
+      boolean loadSuccess = invokeCommand(CommandEnum.load, new String[]{filePath, activeImage});
+      if (loadSuccess) {
+        unsavedImagePrompt = false;
+      }
     }
-    return null;
   }
 
   @Override
   public void saveImage() {
-    String fileName = saveFileAction();
-    invokeCommand(CommandEnum.save, new String[]{fileName, activeImage});
-    unsavedImagePrompt = false;
-  }
-
-  private String saveFileAction() {
-    final JFileChooser fchooser = new JFileChooser(".");
-    int retvalue = fchooser.showSaveDialog(null);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
-      File f = fchooser.getSelectedFile();
-      return f.getAbsolutePath();
+    controller.setupOperation(false, false);
+    String fileName = controller.saveFileAction();
+    if (fileName != null) {
+      boolean saveSuccess = invokeCommand(CommandEnum.save, new String[]{fileName, activeImage});
+      if (saveSuccess) {
+        unsavedImagePrompt = false;
+      }
     }
-    return null;
   }
-
 
   @Override
   public void toggle() {
@@ -133,9 +115,13 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void chooseCompression() {
-    int compressPercent = getValueWithConstraint("compression factor", 0, 100);
-    setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
-    controller.setupOperation(true, false);
+    try {
+      int compressPercent = getValueWithConstraint("compression factor", 0, 100);
+      setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
+      controller.setupOperation(true, false);
+    } catch (IllegalStateException e){
+      controller.setupOperation(false, false);
+    }
   }
 
   @Override
@@ -155,12 +141,15 @@ public class FeaturesImpl implements Features {
     int b;
     int m;
     int w;
-    b = getValueWithConstraint("black point", 0, 253);
-    m = getValueWithConstraint("mid point", b + 1, 254);
-    w = getValueWithConstraint("white point", m + 1, 255);
-
-    setCommandTokens(CommandEnum.levels_adjust, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
-    controller.setupOperation(true, true);
+    try {
+      b = getValueWithConstraint("black point", 0, 253);
+      m = getValueWithConstraint("mid point", b + 1, 254);
+      w = getValueWithConstraint("white point", m + 1, 255);
+      setCommandTokens(CommandEnum.levels_adjust, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+      controller.setupOperation(true, true);
+    } catch (IllegalStateException e) {
+      controller.setupOperation(false, false);
+    }
   }
 
   private int getValueWithConstraint(String message, int min, int max) {
@@ -192,23 +181,30 @@ public class FeaturesImpl implements Features {
   public void applyChosenOperation() {
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(activeImage);
-    invokeCommand(chosenCommand, commandTokens.toArray(new String[0]));
-    controller.setToggle(false);
-    unsavedImagePrompt = true;
+    boolean applySuccess = invokeCommand(chosenCommand, commandTokens.toArray(new String[0]));
+    if (applySuccess) {
+      controller.setToggle(false);
+      unsavedImagePrompt = true;
+    }
   }
 
   @Override
   public void previewChosenOperation() {
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(preview);
-    int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
-    String command = controller.knownCommands.get(chosenCommand)
-            .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
-    controller.executeCommand(command);
-    controller.updateImage(preview);
-    isPreview = true;
-    controller.setToggle(true);
-    controller.setupOperation(true, false);
+    try{
+      int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
+      String command = controller.knownCommands.get(chosenCommand)
+              .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
+      controller.executeCommand(command);
+      controller.updateImage(preview);
+      isPreview = true;
+      controller.setToggle(true);
+      controller.setupOperation(true, false);
+    } catch (IllegalStateException e){
+      //preview failed since user cancelled operation. Do nothing here.
+    }
+
   }
 
 }

@@ -2,8 +2,11 @@ package ime.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ime.controller.Features;
 
@@ -31,12 +34,13 @@ public class JFrameView extends JFrame implements GUIView {
 
     setDefaultLookAndFeelDecorated(false);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    this.setVisible(true);
 
     setTitle("Image processing");
     setSize(800, 800);
 
     setUpContents();
+
+    this.setVisible(true);
 
   }
 
@@ -49,7 +53,7 @@ public class JFrameView extends JFrame implements GUIView {
     add(mainScrollPane);
 
     addImagePane();
-
+//    addButtonToPanel("Load Image", mainPanel, event -> features.loadImage());
     addTogglePanel();
 
     addOptions();
@@ -166,6 +170,9 @@ public class JFrameView extends JFrame implements GUIView {
   @Override
   public int getInput(String message) {
     String input = JOptionPane.showInputDialog(message);
+    if(input == null){
+      throw new IllegalStateException("Cancelled operation");
+    }
     try {
       return Integer.parseInt(input);
     } catch (NumberFormatException e) {
@@ -180,6 +187,32 @@ public class JFrameView extends JFrame implements GUIView {
     int confirmation =
             JOptionPane.showConfirmDialog(this, message, "Overwrite changes", YES_NO_OPTION);
     return confirmation == JOptionPane.YES_OPTION;
+  }
+
+  @Override
+  public String getFilePathToLoad(List<String> supportedFormats) {
+    final JFileChooser fchooser = new JFileChooser(".");
+    FileNameExtensionFilter filter
+            = new FileNameExtensionFilter("Supported : " + supportedFormats,
+            supportedFormats.toArray(new String[0]));
+    fchooser.setFileFilter(filter);
+    int retvalue = fchooser.showOpenDialog(null);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      return f.getAbsolutePath();
+    }
+    return null;
+  }
+
+  @Override
+  public String getFilePathToSave() {
+    final JFileChooser fchooser = new JFileChooser(".");
+    int retvalue = fchooser.showSaveDialog(null);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      return f.getAbsolutePath();
+    }
+    return null;
   }
 
   @Override
