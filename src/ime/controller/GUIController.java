@@ -37,9 +37,13 @@ public class GUIController extends AbstractController {
   }
 
   private void updateViewImage(String imageName, Consumer<Image> viewMethod) {
-    float[][][] image = imgRepo.getImage(imageName);
-    BufferedImage bufferedImage = new BufferedImageHandler().convertIntoImage(image);
-    viewMethod.accept(bufferedImage);
+    try {
+      float[][][] image = imgRepo.getImage(imageName);
+      BufferedImage bufferedImage = new BufferedImageHandler().convertIntoImage(image);
+      viewMethod.accept(bufferedImage);
+    } catch (IllegalArgumentException e){
+      view.displayMessage(e.getMessage());
+    }
   }
 
 
