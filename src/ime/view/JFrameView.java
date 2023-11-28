@@ -74,6 +74,8 @@ public class JFrameView extends JFrame implements GUIView {
     addButtonToPanel("Visualize Green", optionsPanel, event -> features.chooseVisualizeGreen());
     addButtonToPanel("Visualize Blue", optionsPanel, event -> features.chooseVisualizeBlue());
     addButtonToPanel("Sepia", optionsPanel, event -> features.chooseSepia());
+    addButtonToPanel("Color Correct", optionsPanel, event -> features.chooseColorCorrect());
+    addButtonToPanel("Luma Greyscale", optionsPanel, event -> features.chooseColorCorrect());
   }
 
   private void addButtonToPanel(String name, JPanel panel, ActionListener listener) {
