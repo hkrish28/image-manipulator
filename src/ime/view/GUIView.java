@@ -1,6 +1,7 @@
 package ime.view;
 
 import java.awt.Image;
+import java.util.List;
 
 import ime.controller.Features;
 
@@ -53,8 +54,9 @@ public interface GUIView extends View {
    * Prompt the user to input an integer value, providing the given message for context.
    * @param message message to be displayed
    * @return user input
+   * @throws IllegalStateException when user cancels operation
    */
-  int getInput(String message);
+  int getInput(String message) throws IllegalStateException;
 
   /**
    * Prompt the user for confirmation providing the given message for context.
@@ -62,5 +64,9 @@ public interface GUIView extends View {
    * @return true if user confirmed, else false
    */
   boolean getConfirmation(String message);
+
+  String getFilePathToLoad(List<String> supportedFormats);
+
+  String getFilePathToSave();
 
 }

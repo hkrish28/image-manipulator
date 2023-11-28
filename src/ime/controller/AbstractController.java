@@ -86,7 +86,7 @@ public abstract class AbstractController implements ImageProcessingController {
   protected boolean executeCommand(String commandTokens) {
     commandTokens = commandTokens.trim();
     if (commandTokens.startsWith("#") || commandTokens.isEmpty()) {
-      return false;
+      return emptyCommandStatus();
     }
 
     String[] tokens = commandTokens.split(" ");
@@ -100,18 +100,27 @@ public abstract class AbstractController implements ImageProcessingController {
       runCommandObject(commandObject, tokens);
     } catch (IllegalArgumentException e) {
       view.displayMessage(e.getMessage());
+      return returnValueError();
     }
+    return returnValueNoError();
+  }
+
+  protected boolean returnValueError() {
+    return false;
+  }
+
+  protected boolean returnValueNoError() {
+    return false;
+  }
+
+  private static boolean emptyCommandStatus() {
     return false;
   }
 
 
   protected void runCommandObject(Command command, String[] tokens) {
-    try {
       String returnedMessage = command.proceed(tokens, imgRepo);
       view.displayMessage(returnedMessage);
-    } catch (IllegalArgumentException e) {
-      view.displayMessage(e.getMessage());
-    }
   }
 }
 

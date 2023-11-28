@@ -1,8 +1,12 @@
 package ime.controller;
 
-import java.awt.*;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import ime.controller.commands.Command;
 import ime.model.ImageRepository;
@@ -39,33 +43,46 @@ public class GUIController extends AbstractController {
   }
 
 
-  public int getInput(String inputPreviewPercentage) {
+  protected int getInput(String inputPreviewPercentage) {
     return view.getInput(inputPreviewPercentage);
   }
 
-  public void setupOperation(boolean apply, boolean preview) {
+  protected void setupOperation(boolean apply, boolean preview) {
     view.enableApply(apply);
     view.enablePreview(preview);
   }
 
-  public void setToggle(boolean show) {
+  protected void setToggle(boolean show) {
     view.enableToggle(show);
   }
 
-  public void sendDisplayMessage(String message) {
+  protected void sendDisplayMessage(String message) {
     view.displayMessage(message);
   }
 
-  protected boolean getConfirmation(String message){
+  protected boolean getConfirmation(String message) {
     return view.getConfirmation(message);
   }
 
   @Override
   protected void runCommandObject(Command command, String[] tokens) {
-    try {
       command.proceed(tokens, imgRepo);
-    } catch (IllegalArgumentException e) {
-      view.displayMessage(e.getMessage());
-    }
   }
+
+  protected String openFileAction() {
+    List<String> supportedFormats = Arrays.stream(FileFormatEnum.values())
+            .map(FileFormatEnum::name).collect(Collectors.toList());
+    return view.getFilePathToLoad(supportedFormats);
+  }
+
+  protected String saveFileAction() {
+    return view.getFilePathToSave();
+  }
+
+  /* GUI controller returns true when the command executes without no error. */
+  @Override
+  protected boolean returnValueNoError() {
+    return true;
+  }
+
 }
