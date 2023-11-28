@@ -1,7 +1,7 @@
 package ime.controller;
 
 
-import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
@@ -43,20 +43,20 @@ public class GUIController extends AbstractController {
   }
 
 
-  public int getInput(String inputPreviewPercentage) {
+  protected int getInput(String inputPreviewPercentage) {
     return view.getInput(inputPreviewPercentage);
   }
 
-  public void setupOperation(boolean apply, boolean preview) {
+  protected void setupOperation(boolean apply, boolean preview) {
     view.enableApply(apply);
     view.enablePreview(preview);
   }
 
-  public void setToggle(boolean show) {
+  protected void setToggle(boolean show) {
     view.enableToggle(show);
   }
 
-  public void sendDisplayMessage(String message) {
+  protected void sendDisplayMessage(String message) {
     view.displayMessage(message);
   }
 
@@ -69,13 +69,13 @@ public class GUIController extends AbstractController {
       command.proceed(tokens, imgRepo);
   }
 
-  public String openFileAction() {
+  protected String openFileAction() {
     List<String> supportedFormats = Arrays.stream(FileFormatEnum.values())
             .map(FileFormatEnum::name).collect(Collectors.toList());
     return view.getFilePathToLoad(supportedFormats);
   }
 
-  public String saveFileAction() {
+  protected String saveFileAction() {
     return view.getFilePathToSave();
   }
 
