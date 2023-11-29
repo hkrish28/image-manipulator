@@ -15,18 +15,19 @@ using the images present in the 'images' folder, and saved into 'results' folder
 
 <h3>Performing Operations on the GUI</h3>
 <li>Click on the load button and select an image (choosing any file that are not supported will display an error message).</li>
-<li>Click on the save button to save the active image (trying to save an image without even loading one will display an error message).</li>
+<li>Click on the save button to save the active image (trying to save an image without even loading one will display an error message - so will trying to save an
+in an image format not supported. Use only jpg,png or ppm formats to save ).</li>
 <li>To perform any operation, say 'Visualize Red', on the active image, click on the 'Visualize Red' button and then click on the 'Apply Filter' to see the applied operation. The histogram image will also get updated upon clicking the Apply Filter button.
 <p>The same thing can be done for applying all other operations supported in the GUI which currently are: Visualize Red, Visualize Green, Visualize Blue, Blur, Compress, Color Correct, Sharpen, Luma Greyscale, Sepia, Flip Horizontally and Flip Vertically.</p></li>
 <li>Some operations support preview operation. For example, upon clicking the blur button, a preview button appears, which can be 
 used to quickly see what the image will look like after applying the operation. When the preview button is clicked, an input dialog pops up prompting for an integer input (which will retry until a valid integer between 0-100 is entered or the dialog box is cancelled).
 After inputting a value for the preview operation, it can be noticed that the visible image has now changed to a partially operated image that depends on the input provided to the dialog box.
-There then appears a toggle button which can be used to toggle between the split view image and the original image. To modify where the split occurs, simply select the preview button and input the preview percent accordingly.
-<p>The operations that support this preview operation are: Blur, Sharpen, Levels Adjust, Color Correct, Luma Greyscale, Sepia</p></li>
+There then appears a toggle button which can be used to toggle between the split view image and the original image. To modify where the split occurs, simply select the preview button again and input the preview percent accordingly.
+<p>The operations that support the preview operation are: Blur, Sharpen, Levels Adjust, Color Correct, Luma Greyscale, Sepia</p></li>
 <li>Compression operation requires to know by how much should the image be compressed, and so in addition to all that has been briefed above, an input box comes up
 prompting the user to enter a valid compression percentage.
 <p>Levels Adjust similarly requires the b, m , and w values to fit a curve that will be used for adjusting the 
-levels of the image. Three input dialog boxes comes up specifying the input constraints, which will keep coming up until a valid integer is given(or if the user cancels the operation by clicking on the Cancel button of the input dialog.</p>
+levels of the image. Three input dialog boxes comes up specifying the input constraints, which will keep coming up until a valid integer is given(or if the user cancels the operation by clicking on the Cancel button of the input dialog).</p>
 </li>
 
 <h3>Supported commands (For script and CLI)</h3>
