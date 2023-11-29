@@ -168,6 +168,12 @@ public class FeaturesImpl implements Features {
     controller.setupOperation(true, true);
   }
 
+  @Override
+  public void chooseSharpen() {
+    setCommandTokens(CommandEnum.sharpen);
+    controller.setupOperation(true, true);
+  }
+
   private void setCommandTokens(CommandEnum commandEnum, List<String> tokens) {
     chosenCommand = commandEnum;
     this.tokens = tokens;

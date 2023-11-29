@@ -20,6 +20,7 @@ public interface Features {
   void chooseLumaGreyscale();
   void chooseLevelsAdjust();
   void chooseBlur();
+  void chooseSharpen();
   void applyChosenOperation();
   void previewChosenOperation();
 }

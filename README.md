@@ -449,51 +449,26 @@ between the frequencies of adjacent pixel values for each color channel of the h
 <ul>
 <h3><i>Changes made:</i></h3>
 <br>
-<b>Controller now implements Command Design Pattern removing the switch case pattern</b>
-<ul>Considering how the controller class is expected to grow for each added feature/command, the 
-decision was taken to implement Command Design pattern and moving the logic for each of the command
-into small classes of their own. By making use of a Map that maps a command to the appropriate
-command object that performs the action that the helper method previously used to, the updates to 
-the controller for additional command has been minimized (currently, a single line to add the 
-command to map - which could also be moved out of the controller if need be).</ul>
+<b>Introduced Abstract Controller</b>
+<ul>A new GUI controller has been brought in to be able to orchestrate the running of the program 
+making use of a GUI View. The common methods between this controller and the previously created ControllerImpl
+has been abstracted out to an abstract class - AbstractController.</ul>
 
-<b>Moved FileHandler and related classes(FileFormatEnum, FileHandlerProvider and the implementations of the interfaces) to controller package</b>
-<ul>Considering all I/O could be kept in controller for a better design and to keep model clear of any and all such operations relating to file system, the decision was taken to move the package to controller package. 
-<p>Since FileHandler is no longer part of the model, the saveImage method now accepts image in the form of float[][][] instead of Image, to remove the coupling between model and FileHandler and also
-to make it more generic in nature.</p></ul>
-<b>Updates to existing ImageRepository interface methods</b>
-<ul>Since FileHandler was moved out to controller, ImageRepository no longer takes in fileName for 
-loading or saving, rather, the loadImage method now takes in image in the form of float[][][] and 
-the name for the image to be loaded. For the same reason, saveImage has now been updated to getImage
-which takes in the imageName to be retrieved and returns the image in the form of float[][][]. 
-The section where load and save happens in the controller has changed accordingly and 
-utilizes FileHandler(now in controller package) to perform the File System operations before/after
-making the method calls(loadImage and getImage) to ImageRepository.</ul>
+<b>ProgramRunner arguments changes</b>
+<ul>ProgramRunner without any arguments will now run the GUI version of the program as opposed to taking user inputs from the CLI. 
+<p>To run the program using CLI, now ProgramRunner expects the argument -text. ProgramRunner now accepts '-file filePath' (instead of -f fiePath) to execute a file and stop execution </p></ul>
+<b>Extra methods in the Command Interface</b>
+<ul>The Command Interface now contains two additional methods that can be used to construct the 
+command string, one with split and the other without the split.  </ul>
 
-<b>Added a private helper to perform the greyscale functions inside ImagePixelImpl</b>
-<ul>Since the implementation of methods for obtaining Luma, Value and Intensity greyscale images 
-differed only by one line of code, a private helper that took in a Function object was introduced
-to remove duplicity of code.</ul>
 
-<b>Changing access modifiers to the most narrow scope that is possible.</b>
-<ul>To perform adequate data hiding, changes were made across fields in the project to ensure that
-they were given the most narrow scope</ul>
-
-<b>ImageType now makes use of unmodifiable list to store the list of ColorChannel enum object to denote the order of color channels in the image type.
-<ul>This is to ensure that the values cannot be modified from outside the class and for it to remain unmodfiable.</ul>
-
-<b></b>
-<ul></ul>
 <h3><i>Features added:</i></h3>
-<b>Support for new command : Histogram</b>
-<ul>This command will allow users to create a histogram for an image which would be represented as an image as well(as line graph that connects adjacent pixel values frequencies for each of the red, green and blue color channels). An ImageDrawer interface was introduced in the controller package which has currently been implemented in ImageDrawerImpl reusing the BufferedImage class and its related methods to provide the drawing capabilities. For the histogram creation, controller passes an ImageDrawer object to the model to give it the capability of drawing on an image as it wishes. This ensures that the model is in no way coupled to the awt package that provides the BufferedImage class but is only dependent on an Interface defined in the application.</ul>
-<b>Support for new commands : Color Correction, Levels Adjust </b>
-<ul>The addition of the histogram capability brought about these other related features. The command color-correct will allow users to perform color correction on a given image and the command levels-adjust will allow users to adjust the levels of an image given the black, mid, and white values. </ul>
-<b>Support for new command : Compression </b>
-<ul>This command allows users to compress a given image and provide a compression percentage that determines how much the given image should be compressed. Values between 0 and 100 can be provided, with 0 doing no compression and 100 compressing the image into nothing but a black image of the given image's height and width. The compression utilizes Haar transform algorithm.</ul>
-<b>Support for adding optional parameters to preview the output of a command </b>
-<ul>Some operations(command) can be previewed now by splitting the image into 2 parts that contains the image after the given operation on the left part and the original image on the right part. Commands that support these features will take in the parameter 'split x' where x is a number between 0 to 100 which determines where the splitting occurs (value of 50 will split the image into 2 halves, other numbers will slide the vertical splitter accordingly).
-<p>The commands that currently support this feature are blur, luma-component, value-component, intensity-component, sepia, color-correct, levels-adjust, and sharpen. Any of these commands can be substituted in place of 'command' in the below usage description. The number parameters are only for the commands that require them such as levels-adjust that takes 3 numbers as parameters. </ul>
-<p><i>Usage: command [number params if any] src-image dest-image</i>
+<b>GUI view for the program</b>
+<ul>The view provides a simple interface for users to operate on a single image at a time, providing the following features:
+Load and Save images(PNG,JPG,PPM formats), Visualize Red/Green/Blue components, Sepia, Blur, Sharpen, Level-Correct, Levels Adjust, Luma Greyscale,
+Compression, Flip Horizontally, Flip Vertically while providing the capability to preview an operation by providing 
+a split-view option for operations that support the same (check USEME file to know all operations that support split view).
+The UI also provides the histogram of the image currently being worked upon.
 </ul>
+
 
