@@ -14,7 +14,8 @@ using the images present in the 'images' folder, and saved into 'results' folder
 </p></ul>
 
 <h3>Performing Operations on the GUI</h3>
-<li>Click on the load button and select an image (choosing any file that are not supported will display an error message).</li>
+<li>Click on the load button and select an image (choosing any file that are not supported will display an error message).
+Go into images folder within the res folder(where the jar is present) for example images. </li>
 <li>Click on the save button to save the active image (trying to save an image without even loading one will display an error message - so will trying to save an
 in an image format not supported. Use only jpg,png or ppm formats to save ).</li>
 <li>To perform any operation, say 'Visualize Red', on the active image, click on the 'Visualize Red' button and then click on the 'Apply Filter' to see the applied operation. The histogram image will also get updated upon clicking the Apply Filter button.
