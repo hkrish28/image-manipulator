@@ -439,7 +439,7 @@ public class FeaturesImplTest {
   }
 
 
-  private void applyHelper(Runnable operation, boolean previewSupport, String name) {
+  private void assertApplyOperation(Runnable operation, boolean previewSupport, String name) {
     features.loadImage();
     operation.run();
     String expected =
@@ -474,7 +474,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseApplyHFlip() {
-    applyHelper(() -> features.chooseHorizontalFlip(), false, "horizontal flip");
+    assertApplyOperation(() -> features.chooseHorizontalFlip(), false, "horizontal flip");
   }
 
   /**
@@ -482,7 +482,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseApplyVFlip() {
-    applyHelper(() -> features.chooseVerticalFlip(), false, "vertical flip");
+    assertApplyOperation(() -> features.chooseVerticalFlip(), false, "vertical flip");
   }
 
   /**
@@ -490,7 +490,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseApplyBlur() {
-    applyHelper(() -> features.chooseBlur(), true, "blurImage");
+    assertApplyOperation(() -> features.chooseBlur(), true, "blurImage");
   }
 
   /**
@@ -498,7 +498,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseApplySepia() {
-    applyHelper(() -> features.chooseSepia(), true, "sepia");
+    assertApplyOperation(() -> features.chooseSepia(), true, "sepia");
   }
 
   /**
@@ -506,7 +506,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseVisualizeRedApply() {
-    applyHelper(() -> features.chooseVisualizeRed(), false, "red channel");
+    assertApplyOperation(() -> features.chooseVisualizeRed(), false, "red channel");
   }
 
   /**
@@ -514,7 +514,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseVisualizeBlueApply() {
-    applyHelper(() -> features.chooseVisualizeBlue(), false, "blue channel");
+    assertApplyOperation(() -> features.chooseVisualizeBlue(), false, "blue channel");
   }
 
   /**
@@ -522,7 +522,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseVisualizeGreenApply() {
-    applyHelper(() -> features.chooseVisualizeGreen(), false, "green channel");
+    assertApplyOperation(() -> features.chooseVisualizeGreen(), false, "green channel");
   }
 
   /**
@@ -530,7 +530,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseCompressionApply() {
-    applyHelper(() -> features.chooseCompression(), false, "compress");
+    assertApplyOperation(() -> features.chooseCompression(), false, "compress");
   }
 
   /**
@@ -538,7 +538,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseLumaGreyscaleApply() {
-    applyHelper(() -> features.chooseLumaGreyscale(), true, "luma gs");
+    assertApplyOperation(() -> features.chooseLumaGreyscale(), true, "luma gs");
   }
 
   /**
@@ -546,10 +546,10 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseApplyLevelsAdjust() {
-    applyHelper(() -> features.chooseLevelsAdjust(), true, "levels adjust");
+    assertApplyOperation(() -> features.chooseLevelsAdjust(), true, "levels adjust");
   }
 
-  private void testPreview(Runnable operation, String operationName, boolean previewSupport) {
+  private void assertPreviewWorks(Runnable operation, String operationName, boolean previewSupport) {
     String unsupportedCommand = "preview has been disabled\n"
             + "input is received Enter value between 0 - 100 for preview percentage\n"
             + "message displayed This operation can not be previewed.\n";
@@ -560,11 +560,11 @@ public class FeaturesImplTest {
             + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n";
 
     expected += previewSupport ? supportedCommand : unsupportedCommand;
-    testPreview(operation, expected, operationName, previewSupport);
+    assertPreviewWorks(operation, expected, operationName, previewSupport);
   }
 
-  private void testPreview(Runnable operation, String expectedString, String operationName,
-                           boolean previewSupport) {
+  private void assertPreviewWorks(Runnable operation, String expectedString, String operationName,
+                                  boolean previewSupport) {
     features.loadImage();
     operation.run();
     features.previewChosenOperation();
@@ -583,40 +583,40 @@ public class FeaturesImplTest {
 
   @Test
   public void testPreviewBlur() {
-    testPreview(() -> features.chooseBlur(), "blurImage", true);
+    assertPreviewWorks(() -> features.chooseBlur(), "blurImage", true);
   }
 
   //shouldnt throw exception when operation that is not previewable is previewed.
   @Test
   public void testPreviewHFlip() {
 
-    testPreview(() -> features.chooseHorizontalFlip(), "horizontal flip", false);
+    assertPreviewWorks(() -> features.chooseHorizontalFlip(), "horizontal flip", false);
   }
 
   @Test
   public void testPreviewVFlip() {
 
-    testPreview(() -> features.chooseVerticalFlip(), "vertical flip", false);
+    assertPreviewWorks(() -> features.chooseVerticalFlip(), "vertical flip", false);
   }
 
   @Test
   public void testPreviewVisualiseRed() {
-    testPreview(() -> features.chooseVisualizeRed(), "visualize red", false);
+    assertPreviewWorks(() -> features.chooseVisualizeRed(), "visualize red", false);
   }
 
   @Test
   public void testPreviewVisualiseBlue() {
-    testPreview(() -> features.chooseVisualizeBlue(), "blue channel", false);
+    assertPreviewWorks(() -> features.chooseVisualizeBlue(), "blue channel", false);
   }
 
   @Test
   public void testPreviewVisualiseGreen() {
-    testPreview(() -> features.chooseVisualizeGreen(), "green channel", false);
+    assertPreviewWorks(() -> features.chooseVisualizeGreen(), "green channel", false);
   }
 
   @Test
   public void testPreviewSepia() {
-    testPreview(() -> features.chooseSepia(), "sepia", true);
+    assertPreviewWorks(() -> features.chooseSepia(), "sepia", true);
   }
 
   @Test
@@ -627,12 +627,12 @@ public class FeaturesImplTest {
             + "Apply has been enabled\n" + "preview has been disabled\n"
             + "input is received Enter value between 0 - 100 for preview percentage\n"
             + "message displayed This operation can not be previewed.\n";
-    testPreview(() -> features.chooseCompression(), expected, "compression", false);
+    assertPreviewWorks(() -> features.chooseCompression(), expected, "compression", false);
   }
 
   @Test
   public void testPreviewGreyScale() {
-    testPreview(() -> features.chooseLumaGreyscale(), "luma gs", true);
+    assertPreviewWorks(() -> features.chooseLumaGreyscale(), "luma gs", true);
   }
 
   @Test
