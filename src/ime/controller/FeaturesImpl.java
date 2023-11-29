@@ -18,6 +18,13 @@ public class FeaturesImpl implements Features {
 
   private boolean isPreview;
 
+  /**
+   * This class makes use of the concrete class gui controller instead of interface because this
+   * implementation of features is dependent on gui controller. this class was introduced only to
+   * prevent the view from being able to get the controller interface's public methods.
+   *
+   * @param controller gui controller.
+   */
   public FeaturesImpl(GUIController controller) {
     this.controller = controller;
     isPreview = false;

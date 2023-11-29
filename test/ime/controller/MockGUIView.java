@@ -1,6 +1,7 @@
 package ime.controller;
 
 import ime.view.GUIView;
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class MockGUIView implements GUIView {
   private StringBuilder methodCallLogger;
   private int inputValue;
   private Boolean fail;
+  private Boolean IOFail;
 
   /**
    * Initializes the MockGUIView with an empty method call log and default values.
@@ -21,6 +23,11 @@ public class MockGUIView implements GUIView {
     this.methodCallLogger = new StringBuilder();
     this.fail = false;
     this.inputValue = 0;
+    this.IOFail = false;
+  }
+
+  public void setIOFail(Boolean show) {
+    IOFail= show;
   }
 
   /**
@@ -113,7 +120,7 @@ public class MockGUIView implements GUIView {
   public int getInput(String message) {
     methodCallLogger.append("input is received" + " " + message + "\n");
     if (fail) {
-      throw new IllegalStateException("histogram drawer failed");
+      throw new IllegalStateException("user cancels operation\n");
     }
     return inputValue++;
   }
@@ -126,10 +133,13 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public boolean getConfirmation(String message) {
-    methodCallLogger.append("confirmation received" + " " + message);
-    return false;
+    if (fail) {
+      methodCallLogger.append("user canceled" + " " + message+"\n");
+      return false;
+    }
+    methodCallLogger.append("confirmation received"+" "+message+"\n");
+    return true;
   }
-
   /**
    * Records the success of loading a file in the method call log.
    *
@@ -138,9 +148,14 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public String getFilePathToLoad(List<String> supportedFormats) {
+    if (IOFail){
+    methodCallLogger.append("load unsuccessful\n");
+    return "Invalid.txt";
+    }
     methodCallLogger.append("load success\n");
-    return null;
+    return "valid.jpg";
   }
+
 
   /**
    * Records the success of saving a file in the method call log.
@@ -149,8 +164,12 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public String getFilePathToSave() {
+    if (IOFail){
+    methodCallLogger.append("save unsuccessful\n");
+    return "Invalid.txt";
+    }
     methodCallLogger.append("save success\n");
-    return null;
+    return "valid.jpg";
   }
 
   /**
@@ -160,8 +179,11 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public void displayMessage(String message) {
-    methodCallLogger.append("message displayed" + " " + message);
+    methodCallLogger.append("message displayed" + " " + message+"\n");
+  }
 
+  public void setFail(Boolean fail) {
+    this.fail = fail;
   }
 
   /**
