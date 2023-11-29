@@ -7,7 +7,7 @@ To run the example script provided in this way, once the program runner is runni
 Running the JAR file as <b>java -jar image-manipulator.jar -text</b>  at res/ folder will bring up the CLI for command input as well.</p>
 <p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-file <i>filename</i>'. To run the example script provided this way,
 run the ProgramRunner class with '-file res/script.txt' as command line argument.
-<p>To run the program from the command line using the JAR file provided, run 
+<p>To run the program making use of a given script file using the JAR file provided, run 
 <b>java -jar image-manipulator.jar -file script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
 Ensure that the images and results folders are present in res root along with the jar as the operations are performed
 using the images present in the 'images' folder, and saved into 'results' folder.

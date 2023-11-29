@@ -44,6 +44,12 @@ public class ProgramRunnerTest {
     ProgramRunner.main(args);
   }
 
+  @Test(expected = Test.None.class)
+  public void testMainWithNoArg() {
+    String[] args = {};
+    ProgramRunner.main(args);
+  }
+
   @Test
   public void testMainWithValidArgs() {
     String[] args = {"-file", "test/resources/emptyscript.txt"};
