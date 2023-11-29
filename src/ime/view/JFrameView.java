@@ -63,7 +63,7 @@ public class JFrameView extends JFrame implements GUIView {
 
   private void addOptions() {
     JPanel optionsPanel = new JPanel();
-    optionsPanel.setBorder(BorderFactory.createTitledBorder("Filter options "));
+    optionsPanel.setBorder(BorderFactory.createTitledBorder("Image Operations"));
     optionsPanel.setLayout(new GridLayout(0, 4));
     mainPanel.add(optionsPanel);
     addButtonToPanel("Load Image", optionsPanel, event -> features.loadImage());

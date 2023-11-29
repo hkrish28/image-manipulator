@@ -5,12 +5,15 @@
 
 <h3>How to run</h3>
 <ul>
-<p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run, will prompt user to input any of the valid command for the operations on images.
-To run the example script provided in this way, once the program runner is running, input "run res/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p>
-<p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-f <i>filename</i>'. To run the example script provided this way,
-run the ProgramRunner class with '-f res/script.txt' as command line argument.
+<p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run,
+will bring up the GUI which the user can use to load and perform operations on images. Running the JAR file as <b>java -jar image-manipulator.jar</b>  at res/ folder will bring up the UI as well.</p>
+<p>When passed '-text' as arguments, ProgramRunner will run the program and the user will be prompted to input any of the valid command for the operations on images.
+To run the example script provided in this way, once the program runner is running, input "run res/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.
+Running the JAR file as <b>java -jar image-manipulator.jar -text</b>  at res/ folder will bring up the CLI for command input as well.</p>
+<p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-file <i>filename</i>'. To run the example script provided this way,
+run the ProgramRunner class with '-file res/script.txt' as command line argument.
 <p>To run the program from the command line using the JAR file provided, run 
-<b>java -jar image-manipulator.jar -f script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
+<b>java -jar image-manipulator.jar -file script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
 Ensure that the images and results folders are present in res root along with the jar as the operations are performed
 using the images present in the 'images' folder, and saved into 'results' folder.
 </p></ul>
@@ -103,10 +106,39 @@ part.
 </p></ul>
 <br>
 
+<h4>AbstractController</h4>
+<i>Abstract Class</i>
+<ul>
+<p>This abstract class abstracts the common methods that the implementations of the ImageProcessingController interfaces contains. 
+</p></ul>
+<br>
+
+<h4>GUIController</h4>
+<i>Class</i>
+<ul>
+<p>This concrete implementation of the controller interface supports a list of commands that can be inputted via a GUIView class. This controller provides the view with the set of callback functions(via an object of Features) that the view
+can utilize for its functioning.
+</p></ul>
+<br>
+
 <h4>ControllerImpl</h4>
 <i>Class</i>
 <ul>
 <p>This concrete implementation of the controller interface supports a list of commands that can be inputted by the user. The user can either run commands from the console or can alterntively embed them in a script file and run the script file using the controller.
+</p></ul>
+<br>
+
+<h4>Features</h4>
+<i>Interface</i>
+<ul>
+<p>This interface provides the methods that can be passed to a GUIView object to be used as a set of callback functions which nicely integrates with the model and the view.
+</p></ul>
+<br>
+
+<h4>FeaturesImpl</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the Features class and composes of the GUIController to be able to link between the model as well as the view and to provide the integrated functionalities.
 </p></ul>
 <br>
 
@@ -338,6 +370,23 @@ command classes that will extend it.
 <p>This implementation of view is a simple view that only displays messages prompting users to enter input and for displaying the status of the operation.</p></ul>
 <br>
 
+<h4>GUIView</h4>
+<i>Interface</i>
+<ul>
+<p>This interface extends the View interface and provides extra methods that gives some features over the GUI components that
+the implementations of the interface leverages to provide the UI features.
+</p></ul>
+<br>
+
+<h4>JFrameView</h4>
+<i>Class</i>
+<ul>
+<p>This class implements the JFrameView interface using the Swing library within the JDK and utilizes the Features object 
+for its action listeners/callbacks.
+</p></ul>
+<br>
+
+
 <h3><u>Model Classes</u></h3>
 
 <h4>ImageRepository</h4>
@@ -466,7 +515,7 @@ command string, one with split and the other without the split.  </ul>
 <b>GUI view for the program</b>
 <ul>The view provides a simple interface for users to operate on a single image at a time, providing the following features:
 Load and Save images(PNG,JPG,PPM formats), Visualize Red/Green/Blue components, Sepia, Blur, Sharpen, Level-Correct, Levels Adjust, Luma Greyscale,
-Compression, Flip Horizontally, Flip Vertically while providing the capability to preview an operation by providing 
+Compression, Flip Horizontally,  Flip Vertically while providing the capability to preview an operation by providing 
 a split-view option for operations that support the same (check USEME file to know all operations that support split view).
 The UI also provides the histogram of the image currently being worked upon.
 </ul>

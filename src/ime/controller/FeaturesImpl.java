@@ -211,7 +211,6 @@ public class FeaturesImpl implements Features {
       controller.updateImage(preview);
       isPreview = true;
       controller.setToggle(true);
-      controller.setupOperation(true, false);
     } catch (IllegalStateException e){
       //preview failed since user cancelled operation. Do nothing here.
     } catch (IllegalArgumentException e){
