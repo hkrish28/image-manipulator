@@ -91,7 +91,7 @@ public abstract class AbstractCommand implements Command {
             && tokens[tokensRequired].equals("split")) {
       return extractTokensAndInvokePreview(tokens, imageRepository);
     } else {
-      return "Invalid number of tokens passed for the given command";
+      throw new IllegalArgumentException("Invalid number of tokens passed for the given command");
     }
 
   }
