@@ -201,8 +201,17 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void previewChosenOperation() {
+    if(chosenCommand == null){
+      controller.sendDisplayMessage("Operation not chosen");
+      return;
+    }
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(preview);
+    previewOperation(commandTokens);
+
+  }
+
+  private void previewOperation(List<String> commandTokens) {
     try{
       int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
       String command = controller.knownCommands.get(chosenCommand)
@@ -216,7 +225,6 @@ public class FeaturesImpl implements Features {
     } catch (IllegalArgumentException e){
       controller.sendDisplayMessage(e.getMessage()); //When operation can't be previewed
     }
-
   }
 
 }
