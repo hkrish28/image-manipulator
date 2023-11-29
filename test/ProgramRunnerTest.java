@@ -1,3 +1,7 @@
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -5,11 +9,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Timeout;
 import org.junit.runners.model.TestTimedOutException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test for the ProgramRunner class.
@@ -58,8 +57,8 @@ public class ProgramRunnerTest {
     String[] args = {"invalidScript.txt"};
     ProgramRunner.main(args);
 
-    String expectedOutput = "Invalid arguments provided to the Program Runner. Either pass " +
-            "no arguments or provide '-file filename' or '-text\n";
+    String expectedOutput = "Invalid arguments provided to the Program Runner. Either pass "
+        + "no arguments or provide '-file filename' or '-text\n";
     assertTrue(outContent.toString().contains(expectedOutput));
   }
 

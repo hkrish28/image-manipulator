@@ -1,8 +1,5 @@
 package ime.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ime.controller.commands.BlueComponent;
 import ime.controller.commands.Blur;
 import ime.controller.commands.Brighten;
@@ -27,7 +24,14 @@ import ime.controller.commands.ValueGreyscale;
 import ime.controller.commands.VerticaFlip;
 import ime.model.ImageRepository;
 import ime.view.View;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * The AbstractController class is an abstract implementation of the ImageProcessingController
+ * interface, providing a foundation for image processing controllers. It defines a set of known
+ * commands and their corresponding command objects to perform various image processing operations.
+ **/
 public abstract class AbstractController implements ImageProcessingController {
 
   private final FileHandlerProvider fileHandlerProvider;
@@ -35,7 +39,15 @@ public abstract class AbstractController implements ImageProcessingController {
   protected Map<CommandEnum, Command> knownCommands;
   private View view;
 
-  public AbstractController(FileHandlerProvider fileHandlerProvider, ImageRepository imageRepository, View view) {
+  /**
+   * constructor for the controller that initialises the objects.
+   *
+   * @param fileHandlerProvider file handler provider object.
+   * @param imageRepository     image repository object.
+   * @param view                view object.
+   */
+  public AbstractController(FileHandlerProvider fileHandlerProvider,
+      ImageRepository imageRepository, View view) {
     this.fileHandlerProvider = fileHandlerProvider;
     this.imgRepo = imageRepository;
     this.view = view;
@@ -51,6 +63,9 @@ public abstract class AbstractController implements ImageProcessingController {
     throw new IllegalArgumentException("Command not found"); // Command not found
   }
 
+  /**
+   * Initializes the mapping of command enums to their corresponding command objects.
+   */
   private void initializeKnownCommands() {
     knownCommands = new HashMap<>();
     knownCommands.put(CommandEnum.blur, new Blur());
@@ -77,8 +92,8 @@ public abstract class AbstractController implements ImageProcessingController {
   }
 
   /**
-   * the execute command method takes in the commands as tokens and checks
-   * if it's a valid command from the enum.
+   * the execute command method takes in the commands as tokens and checks if it's a valid command
+   * from the enum.
    *
    * @param commandTokens string commands passed.
    * @return boolean value of true or false to check if the command is valid or not.
@@ -105,22 +120,42 @@ public abstract class AbstractController implements ImageProcessingController {
     return returnValueNoError();
   }
 
+  /**
+   * Handles the case where the command execution returns an error.
+   *
+   * @return False to indicate an error condition.
+   */
   protected boolean returnValueError() {
     return false;
   }
 
+  /**
+   * Handles the case where the command execution is successful.
+   *
+   * @return False to indicate a successful execution.
+   */
   protected boolean returnValueNoError() {
     return false;
   }
 
+  /**
+   * Handles the case where the command tokens are empty.
+   *
+   * @return False to indicate an empty command.
+   */
   private static boolean emptyCommandStatus() {
     return false;
   }
 
-
+  /**
+   * Runs the provided command object with the given tokens and updates the view with the result.
+   *
+   * @param command The command object to be executed.
+   * @param tokens  The tokens representing the command arguments.
+   */
   protected void runCommandObject(Command command, String[] tokens) {
-      String returnedMessage = command.proceed(tokens, imgRepo);
-      view.displayMessage(returnedMessage);
+    String returnedMessage = command.proceed(tokens, imgRepo);
+    view.displayMessage(returnedMessage);
   }
 }
 

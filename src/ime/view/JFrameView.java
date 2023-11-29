@@ -65,7 +65,6 @@ public class JFrameView extends JFrame implements GUIView {
     add(mainScrollPane);
 
     addImagePane();
-//    addButtonToPanel("Load Image", mainPanel, event -> features.loadImage());
     addTogglePanel();
 
     addOptions();
@@ -134,9 +133,6 @@ public class JFrameView extends JFrame implements GUIView {
     mainImage = new JLabel();
     JScrollPane imageScrollPane = new JScrollPane(mainImage);
     imageScrollPane.setPreferredSize(new Dimension(320, 256));
-
-    // showing histogram
-
     histogramImage = new JLabel();
     JScrollPane imageScrollPaneHistogram = new JScrollPane(histogramImage);
     imageScrollPaneHistogram.setPreferredSize(new Dimension(256, 256));
@@ -198,16 +194,15 @@ public class JFrameView extends JFrame implements GUIView {
 
   @Override
   public boolean getConfirmation(String message) {
-    int confirmation =
-        JOptionPane.showConfirmDialog(this, message, "Overwrite changes", YES_NO_OPTION);
+    int confirmation = JOptionPane.showConfirmDialog(this, message, "Overwrite changes",
+        YES_NO_OPTION);
     return confirmation == JOptionPane.YES_OPTION;
   }
 
   @Override
   public String getFilePathToLoad(List<String> supportedFormats) {
     final JFileChooser fchooser = new JFileChooser(".");
-    FileNameExtensionFilter filter
-        = new FileNameExtensionFilter("Supported : " + supportedFormats,
+    FileNameExtensionFilter filter = new FileNameExtensionFilter("Supported : " + supportedFormats,
         supportedFormats.toArray(new String[0]));
     fchooser.setFileFilter(filter);
     int retvalue = fchooser.showOpenDialog(null);
