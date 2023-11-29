@@ -27,7 +27,7 @@ public class FeaturesImpl implements Features {
   private boolean invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
     String histogramCommand = controller.knownCommands.get(CommandEnum.histogram)
-            .constructCommand(new String[]{activeImage, histogram});
+        .constructCommand(new String[]{activeImage, histogram});
     boolean commandSuccess = controller.executeCommand(command);
     if (commandSuccess) {
       controller.executeCommand(histogramCommand);
@@ -43,7 +43,7 @@ public class FeaturesImpl implements Features {
     controller.setupOperation(false, false);
     if (unsavedImagePrompt) {
       if (!controller.getConfirmation(
-              "Current image is unsaved. Do you want to overwrite the image?")) {
+          "Current image is unsaved. Do you want to overwrite the image?")) {
         return;
       }
     }
@@ -118,9 +118,10 @@ public class FeaturesImpl implements Features {
   public void chooseCompression() {
     try {
       int compressPercent = getValueWithConstraint("compression factor", 0, 100);
-      setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
+      setCommandTokens(CommandEnum.compress,
+          Arrays.asList(String.valueOf(compressPercent), activeImage));
       controller.setupOperation(true, false);
-    } catch (IllegalStateException e){
+    } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
     }
   }
@@ -146,7 +147,8 @@ public class FeaturesImpl implements Features {
       b = getValueWithConstraint("black point", 0, 253);
       m = getValueWithConstraint("mid point", b + 1, 254);
       w = getValueWithConstraint("white point", m + 1, 255);
-      setCommandTokens(CommandEnum.levels_adjust, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+      setCommandTokens(CommandEnum.levels_adjust,
+          Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
       controller.setupOperation(true, true);
     } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
@@ -186,7 +188,7 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void applyChosenOperation() {
-    if(chosenCommand == null){
+    if (chosenCommand == null) {
       controller.sendDisplayMessage("Operation not chosen");
       return;
     }
@@ -203,17 +205,17 @@ public class FeaturesImpl implements Features {
   public void previewChosenOperation() {
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(preview);
-    try{
+    try {
       int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
       String command = controller.knownCommands.get(chosenCommand)
-              .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
+          .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
       controller.executeCommand(command);
       controller.updateImage(preview);
       isPreview = true;
       controller.setToggle(true);
-    } catch (IllegalStateException e){
+    } catch (IllegalStateException e) {
       //preview failed since user cancelled operation. Do nothing here.
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       controller.sendDisplayMessage(e.getMessage()); //When operation can't be previewed
     }
 
