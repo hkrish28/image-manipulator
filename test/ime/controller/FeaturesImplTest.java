@@ -11,15 +11,15 @@ public class FeaturesImplTest {
   private GUIController guiController;
 
   private MockGUIView mockGUIView;
-  private MockImgRepo imgRepo;
+  private MockImgRepo mockImgRepo;
   private FileHandlerProvider fileHandlerProvider;
 
   @Before
   public void setup() {
     mockGUIView = new MockGUIView();
-    imgRepo = new MockImgRepo();
+    mockImgRepo = new MockImgRepo();
     fileHandlerProvider = new FileHandlerProviderImpl();
-    guiController = new GUIController(imgRepo, mockGUIView, fileHandlerProvider);
+    guiController = new GUIController(mockImgRepo, mockGUIView, fileHandlerProvider);
     features = new FeaturesImpl(guiController);
     //List<String> commandTokens = new ArrayList<>(tokens);
   }
@@ -27,11 +27,11 @@ public class FeaturesImplTest {
   // invoking toggle when image is not there.
   @Test
   public void testToggle() {
-    imgRepo.setFailureFlag(true);
+    mockImgRepo.setFailureFlag(true);
     features.toggle();
     String expected = "message displayed" + " " + "Image Repository failed";
     assertEquals(expected, mockGUIView.getLogger());
-    assertEquals("getImage called and previewImage passed\n", imgRepo.getLogger());
+    assertEquals("getImage called and previewImage passed\n", mockImgRepo.getLogger());
   }
 
   /**
@@ -39,9 +39,9 @@ public class FeaturesImplTest {
    */
   @Test
   public void testLoad() {
-    imgRepo.setFailureFlag(true);
+    mockImgRepo.setFailureFlag(true);
     features.loadImage();
-    assertEquals("", imgRepo.getLogger());
+    assertEquals("", mockImgRepo.getLogger());
   }
 
   /**
@@ -49,9 +49,9 @@ public class FeaturesImplTest {
    */
   @Test
   public void testSave() {
-    imgRepo.setFailureFlag(true);
+    mockImgRepo.setFailureFlag(true);
     features.saveImage();
-    assertEquals("", imgRepo.getLogger());
+    assertEquals("", mockImgRepo.getLogger());
   }
 
   /**
@@ -60,7 +60,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseHorizontalFlip() {
     features.chooseHorizontalFlip();
-    assertHelper();
+    assertHelper(false);
   }
 
   /**
@@ -69,7 +69,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseVerticalFlip() {
     features.chooseVerticalFlip();
-    assertHelper();
+    assertHelper(false);
   }
 
   /**
@@ -78,7 +78,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseColorCorrect() {
     features.chooseColorCorrect();
-    assertHelper();
+    assertHelper(true);
   }
 
   /**
@@ -87,8 +87,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseVisualizeRed() {
     features.chooseVisualizeRed();
-    String expected = "";
-    assertEquals(expected, mockGUIView.getLogger());
+    assertHelper(false);
   }
 
   /**
@@ -97,7 +96,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseVisualizeGreen() {
     features.chooseVisualizeGreen();
-    assertHelper();
+    assertHelper(false);
   }
 
   /**
@@ -106,7 +105,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseVisualizeBlue() {
     features.chooseVisualizeBlue();
-    assertHelper();
+    assertHelper(false);
   }
 
   /**
@@ -127,7 +126,7 @@ public class FeaturesImplTest {
   @Test
   public void testchooseSepia() {
     features.chooseSepia();
-    assertHelper();
+    assertHelper(true);
   }
 
   /**
@@ -136,7 +135,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseLumaGreyscale() {
     features.chooseLumaGreyscale();
-    assertHelper();
+    assertHelper(true);
   }
 
   /**
@@ -151,7 +150,7 @@ public class FeaturesImplTest {
         + "Apply has been enabled\n"
         + "preview has been enabled\n";
     assertEquals(expected, mockGUIView.getLogger());
-    assertEquals("", imgRepo.getLogger());
+    assertEquals("", mockImgRepo.getLogger());
   }
 
   /**
@@ -163,15 +162,15 @@ public class FeaturesImplTest {
     String expected = "Apply has been enabled\n"
         + "preview has been enabled\n";
     assertEquals(expected, mockGUIView.getLogger());
-    assertEquals("", imgRepo.getLogger());
+    assertEquals("", mockImgRepo.getLogger());
   }
 
-  private void assertHelper() {
-    imgRepo.setFailureFlag(true);
-    String expected = "Apply has been enabled\n"
-        + "preview has been disabled\n";
+  private void assertHelper(boolean previewSupport) {
+    mockImgRepo.setFailureFlag(true);
+    String expected = "Apply has been enabled\npreview has been ";
+    expected+= previewSupport? "enabled\n" : "disabled\n";
     assertEquals(expected, mockGUIView.getLogger());
-    assertEquals("", imgRepo.getLogger());
+    assertEquals("", mockImgRepo.getLogger());
   }
 
   /**
@@ -203,9 +202,8 @@ public class FeaturesImplTest {
    */
   @Test
   public void testApplyChosenValue() {
-    //List<String> commandTokens = new ArrayList<>(tokens);
     features.applyChosenOperation();
-    String expected = "operation not chosen";
+    String expected = "message displayed Operation not chosen";
     assertEquals(expected, mockGUIView.getLogger());
   }
 
@@ -237,7 +235,7 @@ public class FeaturesImplTest {
     assertEquals(name + " called guiImage and guiImage passed\n"
         + "histogram called guiImage and hist passed\n"
         + "getImage called and guiImage passed\n"
-        + "getImage called and hist passed\n", imgRepo.getLogger());
+        + "getImage called and hist passed\n", mockImgRepo.getLogger());
   }
 
   /**
@@ -277,7 +275,7 @@ public class FeaturesImplTest {
    */
   @Test
   public void testChooseVisualizeRedApply() {
-    ApplyHelper(() -> features.chooseVisualizeRed(), false, "red");
+    ApplyHelper(() -> features.chooseVisualizeRed(), false, "red channel");
   }
 
   /**
@@ -320,84 +318,90 @@ public class FeaturesImplTest {
     ApplyHelper(() -> features.chooseLevelsAdjust(), true, "levels adjust");
   }
 
-  private void testPreview(Runnable operation) {
-
+  private void testPreview(Runnable operation, String operationName, boolean previewSupport) {
+      String unsupportedCommand = "preview has been disabled\n" +
+        "input is received Enter value between 0 - 100 for preview percentage\n" +
+        "message displayed This operation can not be previewed.";
+      String supportedCommand =   "preview has been enabled\n"
+              + "input is received Enter value between 0 - 100 for preview percentage\n"
+              + "image has been set\n"
+              + "toggle has been enabled\n"
+              + "Apply has been enabled\n"
+              + "preview has been disabled\n";
     String expected = "Apply has been disabled\n"
         + "preview has been disabled\n"
         + "load success\n"
-        + "Apply has been enabled\n"
-        + "preview has been enabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
-        + "image has been set\n"
-        + "toggle has been enabled\n"
-        + "Apply has been enabled\n"
-        + "preview has been disabled\n";
-    testPreview(operation, expected);
+        + "Apply has been enabled\n";
+
+    expected+= previewSupport? supportedCommand: unsupportedCommand;
+    testPreview(operation, expected, operationName, previewSupport);
   }
 
-  private void testPreview(Runnable operation, String expectedString) {
+  private void testPreview(Runnable operation, String expectedString, String operationName, boolean previewSupport) {
     features.loadImage();
     operation.run();
     features.previewChosenOperation();
     assertEquals(expectedString, mockGUIView.getLogger());
-    assertEquals("", imgRepo.getLogger());
+    String expectedImgRepoLogger = previewSupport?"preview called 0.0 and guiImage and previewImage passed\n" +
+            operationName + " called guiImage and previewImage passed\n" +
+            "getImage called and previewImage passed\n" : "";
+    assertEquals(expectedImgRepoLogger, mockImgRepo.getLogger());
   }
 
   @Test
   public void testPreviewBlur() {
-    testPreview(() -> features.chooseBlur());
+    testPreview(() -> features.chooseBlur(), "blurImage", true);
   }
 
   //shouldnt throw exception when operation that is not previewable is previewed.
   @Test
   public void testPreviewHFlip() {
 
-    testPreview(() -> features.chooseHorizontalFlip());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    testPreview(() -> features.chooseHorizontalFlip(),"horizontal flip", false);
   }
 
   @Test
   public void testPreviewVFlip() {
 
-    testPreview(() -> features.chooseVerticalFlip());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    testPreview(() -> features.chooseVerticalFlip(), "vertical flip", false);
   }
 
   @Test
   public void testPreviewVisualiseRed() {
-
-    testPreview(() -> features.chooseVisualizeRed());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    testPreview(() -> features.chooseVisualizeRed(),"visualize red", false);
   }
 
   @Test
   public void testPreviewVisualiseBlue() {
-
-    testPreview(() -> features.chooseVisualizeBlue());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    testPreview(() -> features.chooseVisualizeBlue(), "blue channel", false);
   }
 
   @Test
   public void testPreviewVisualiseGreen() {
-
-    testPreview(() -> features.chooseVisualizeGreen());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    testPreview(() -> features.chooseVisualizeGreen(), "green channel",false);
   }
 
   @Test
   public void testPreviewSepia() {
-    testPreview(() -> features.chooseSepia());
+    testPreview(() -> features.chooseSepia(), "sepia", true);
   }
 
   @Test
   public void testPreviewCompression() {
-    testPreview(() -> features.chooseCompression());
-    assertEquals("message displayed This operation can not be previewed.", mockGUIView.getLogger());
+    String expected = "Apply has been disabled\n" +
+            "preview has been disabled\n" +
+            "load success\n" +
+            "input is received Enter value between 0 - 100 for compression factor\n" +
+            "Apply has been enabled\n" +
+            "preview has been disabled\n" +
+            "input is received Enter value between 0 - 100 for preview percentage\n" +
+            "message displayed This operation can not be previewed.";
+    testPreview(() -> features.chooseCompression(), expected, "compression", false);
   }
 
   @Test
   public void testPreviewGreyScale() {
-    testPreview(() -> features.chooseLumaGreyscale());
+    testPreview(() -> features.chooseLumaGreyscale(),"luma gs", true);
   }
 
   @Test
@@ -415,7 +419,14 @@ public class FeaturesImplTest {
         + "toggle has been enabled\n"
         + "Apply has been enabled\n"
         + "preview has been disabled\n";
-    testPreview(() -> features.chooseLevelsAdjust(), expected);
+    String expectedImageRepoLogger = "preview called 3.0 and guiImage and previewImage passed\n" +
+            "levels adjust called guiImage and previewImage passed\n" +
+            "getImage called and previewImage passed\n";
+    features.loadImage();
+    features.chooseLevelsAdjust();
+    features.previewChosenOperation();
+    assertEquals(expected, mockGUIView.getLogger());
+    assertEquals(expectedImageRepoLogger, mockImgRepo.getLogger());
   }
 
 }

@@ -63,7 +63,7 @@ public class JFrameView extends JFrame implements GUIView {
 
   private void addOptions() {
     JPanel optionsPanel = new JPanel();
-    optionsPanel.setBorder(BorderFactory.createTitledBorder("Filter options "));
+    optionsPanel.setBorder(BorderFactory.createTitledBorder("Image Operations"));
     optionsPanel.setLayout(new GridLayout(0, 4));
     mainPanel.add(optionsPanel);
     addButtonToPanel("Load Image", optionsPanel, event -> features.loadImage());
@@ -73,6 +73,7 @@ public class JFrameView extends JFrame implements GUIView {
     addButtonToPanel("Flip Vertical", optionsPanel, event -> features.chooseVerticalFlip());
     addButtonToPanel("Levels Adjust", optionsPanel, event -> features.chooseLevelsAdjust());
     addButtonToPanel("Blur", optionsPanel, event -> features.chooseBlur());
+    addButtonToPanel("Sharpen", optionsPanel, event -> features.chooseSharpen());
     addButtonToPanel("Compression", optionsPanel, event -> features.chooseCompression());
     addButtonToPanel("Visualize Red", optionsPanel, event -> features.chooseVisualizeRed());
     addButtonToPanel("Visualize Green", optionsPanel, event -> features.chooseVisualizeGreen());

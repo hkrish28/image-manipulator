@@ -1,16 +1,35 @@
 <h3>How to run the program</h3>
 <ul>
-<p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run, will prompt user to input any of the valid command for the operations on images.
-To run the example script provided in this way, once the program runner is running, input "run res/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.</p>
-<p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-f <i>filename</i>'. To run the example script provided this way,
-run the ProgramRunner class with '-f res/script.txt' as command line argument.
+<p>The program is run using the ProgramRunner class. This class can be run without any arguments which once run,
+will bring up the GUI which the user can use to load and perform operations on images. Running the JAR file as <b>java -jar image-manipulator.jar</b>  at res/ folder will bring up the UI as well.</p>
+<p>When passed '-text' as arguments, ProgramRunner will run the program and the user will be prompted to input any of the valid command for the operations on images.
+To run the example script provided in this way, once the program runner is running, input "run res/script.txt" in the command line and after the execution of the script, type "exit" to stop the program.
+Running the JAR file as <b>java -jar image-manipulator.jar -text</b>  at res/ folder will bring up the CLI for command input as well.</p>
+<p>The class can also be provided a command line argument specifying the script file that contains the commands to be run. For that use the command line arguments '-file <i>filename</i>'. To run the example script provided this way,
+run the ProgramRunner class with '-file res/script.txt' as command line argument.
 <p>To run the program from the command line using the JAR file provided, run 
-<b>java -jar image-manipulator.jar -f script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
+<b>java -jar image-manipulator.jar -file script-jar.txt</b> after <i>cd</i>-ing into the res/ folder in the project.
 Ensure that the images and results folders are present in res root along with the jar as the operations are performed
 using the images present in the 'images' folder, and saved into 'results' folder.
 </p></ul>
 
-<h3>Supported commands</h3>
+<h3>Performing Operations on the GUI</h3>
+<li>Click on the load button and select an image (choosing any file that are not supported will display an error message).</li>
+<li>Click on the save button to save the active image (trying to save an image without even loading one will display an error message).</li>
+<li>To perform any operation, say 'Visualize Red', on the active image, click on the 'Visualize Red' button and then click on the 'Apply Filter' to see the applied operation. The histogram image will also get updated upon clicking the Apply Filter button.
+<p>The same thing can be done for applying all other operations supported in the GUI which currently are: Visualize Red, Visualize Green, Visualize Blue, Blur, Compress, Color Correct, Sharpen, Luma Greyscale, Sepia, Flip Horizontally and Flip Vertically.</p></li>
+<li>Some operations support preview operation. For example, upon clicking the blur button, a preview button appears, which can be 
+used to quickly see what the image will look like after applying the operation. When the preview button is clicked, an input dialog pops up prompting for an integer input (which will retry until a valid integer between 0-100 is entered or the dialog box is cancelled).
+After inputting a value for the preview operation, it can be noticed that the visible image has now changed to a partially operated image that depends on the input provided to the dialog box.
+There then appears a toggle button which can be used to toggle between the split view image and the original image. To modify where the split occurs, simply select the preview button and input the preview percent accordingly.
+<p>The operations that support this preview operation are: Blur, Sharpen, Levels Adjust, Color Correct, Luma Greyscale, Sepia</p></li>
+<li>Compression operation requires to know by how much should the image be compressed, and so in addition to all that has been briefed above, an input box comes up
+prompting the user to enter a valid compression percentage.
+<p>Levels Adjust similarly requires the b, m , and w values to fit a curve that will be used for adjusting the 
+levels of the image. Three input dialog boxes comes up specifying the input constraints, which will keep coming up until a valid integer is given(or if the user cancels the operation by clicking on the Cancel button of the input dialog.</p>
+</li>
+
+<h3>Supported commands (For script and CLI)</h3>
 
 <ul>
 <b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name.

@@ -99,6 +99,7 @@ public class FeaturesImpl implements Features {
   @Override
   public void chooseVisualizeRed() {
     setCommandTokens(CommandEnum.red_component);
+    controller.setupOperation(true, false);
   }
 
   @Override
@@ -167,6 +168,12 @@ public class FeaturesImpl implements Features {
     controller.setupOperation(true, true);
   }
 
+  @Override
+  public void chooseSharpen() {
+    setCommandTokens(CommandEnum.sharpen);
+    controller.setupOperation(true, true);
+  }
+
   private void setCommandTokens(CommandEnum commandEnum, List<String> tokens) {
     chosenCommand = commandEnum;
     this.tokens = tokens;
@@ -179,6 +186,10 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void applyChosenOperation() {
+    if(chosenCommand == null){
+      controller.sendDisplayMessage("Operation not chosen");
+      return;
+    }
     List<String> commandTokens = new ArrayList<>(tokens);
     commandTokens.add(activeImage);
     boolean applySuccess = invokeCommand(chosenCommand, commandTokens.toArray(new String[0]));
@@ -200,9 +211,10 @@ public class FeaturesImpl implements Features {
       controller.updateImage(preview);
       isPreview = true;
       controller.setToggle(true);
-      controller.setupOperation(true, false);
     } catch (IllegalStateException e){
       //preview failed since user cancelled operation. Do nothing here.
+    } catch (IllegalArgumentException e){
+      controller.sendDisplayMessage(e.getMessage()); //When operation can't be previewed
     }
 
   }
