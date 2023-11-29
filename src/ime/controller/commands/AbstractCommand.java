@@ -1,10 +1,9 @@
 package ime.controller.commands;
 
-import java.util.Arrays;
-import java.util.function.BiConsumer;
-
 import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
+import java.util.Arrays;
+import java.util.function.BiConsumer;
 
 /**
  * This abstract class implements the Command interface and provides a common structure for all
@@ -28,7 +27,8 @@ public abstract class AbstractCommand implements Command {
    * @param srcIndex       index of the source image name token for the operation
    * @param destIndex      index of the destination image name token for the operation
    */
-  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, CommandEnum commandEnum) {
+  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex,
+      CommandEnum commandEnum) {
     this.tokensRequired = tokensRequired;
     splitSupport = false;
     this.srcIndex = srcIndex;
@@ -45,7 +45,8 @@ public abstract class AbstractCommand implements Command {
    * @param destIndex      index of the destination image name token for the operation
    * @param splitSupport   whether the command supports split(preview) operation
    */
-  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, boolean splitSupport, CommandEnum commandEnum) {
+  protected AbstractCommand(int tokensRequired, int srcIndex, int destIndex, boolean splitSupport,
+      CommandEnum commandEnum) {
     this.tokensRequired = tokensRequired;
     this.splitSupport = splitSupport;
     this.srcIndex = srcIndex;
@@ -75,8 +76,8 @@ public abstract class AbstractCommand implements Command {
 
   /* A helper that provides a generic message response for the command. */
   protected String messageSenderHelper(String[] tokens) {
-    return tokens[0] + " operation completed successfully for " + tokens[srcIndex]
-            + " & put in " + tokens[destIndex];
+    return tokens[0] + " operation completed successfully for " + tokens[srcIndex] + " & put in "
+        + tokens[destIndex];
   }
 
   /* Validate token count, proceed to extract tokens and invoke appropriate method from
@@ -86,9 +87,8 @@ public abstract class AbstractCommand implements Command {
   public String proceed(String[] tokens, ImageRepository imageRepository) {
     if (validateTokenCount(tokens.length)) {
       return extractTokensAndInvokeMethod(tokens, imageRepository);
-    } else if (splitSupport
-            && validateTokenCount(tokens.length - 2)
-            && tokens[tokensRequired].equals("split")) {
+    } else if (splitSupport && validateTokenCount(tokens.length - 2)
+        && tokens[tokensRequired].equals("split")) {
       return extractTokensAndInvokePreview(tokens, imageRepository);
     } else {
       throw new IllegalArgumentException("Invalid number of tokens passed for the given command");
@@ -96,20 +96,24 @@ public abstract class AbstractCommand implements Command {
 
   }
 
-  /* Extract tokens, get the split percentage and invoke the preview method for the set of src and
+  /**
+   * Extract tokens, get the split percentage and invoke the preview method for the set of src and
    * dest image names. Pass along with it, the operation within the imageRepository that has to be
-   * invoked for the given split percentage. */
+   * invoked for the given split percentage.
+   **/
   protected String extractTokensAndInvokePreview(String[] tokens, ImageRepository imageRepository) {
     String srcImageName = tokens[srcIndex];
     String destImageName = tokens[destIndex];
     int splitPercent = Integer.parseInt(tokens[tokens.length - 1]);
     imageRepository.preview(srcImageName, destImageName,
-            imageRepositoryMethodInvoker(tokens, imageRepository), splitPercent);
+        imageRepositoryMethodInvoker(tokens, imageRepository), splitPercent);
     return "Successfully Previewed";
   }
 
-  /* Extract src and destination image names from the tokens and invoke the appropriate method of
-   * image repository provided by the imageRepositoryMethodInvoker for the command.*/
+  /**
+   * Extract src and destination image names from the tokens and invoke the appropriate method of
+   * image repository provided by the imageRepositoryMethodInvoker for the command.
+   **/
   protected String extractTokensAndInvokeMethod(String[] tokens, ImageRepository imageRepository) {
     String srcImageName = tokens[srcIndex];
     String destImageName = tokens[destIndex];
@@ -124,26 +128,43 @@ public abstract class AbstractCommand implements Command {
    *
    * @param tokens          the tokens received for the command
    * @param imageRepository the imageRepository to be used for the method invocation
-   * @return a BiConsumer that provides a function expecting two string which will call the
-   * appropriate method inside the imageRepository for the command.
+   * @return a BiConsumer that provides a function expecting two string.
    */
-  protected BiConsumer<String, String> imageRepositoryMethodInvoker(
-          String[] tokens, ImageRepository imageRepository) {
+  protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
+      ImageRepository imageRepository) {
     return null;
   }
 
+  /**
+   * This method ensures that the correct number of tokens is provided for the command, and if not,
+   * it throws an IllegalArgumentException.
+   *
+   * @param tokens The array of tokens representing the command arguments.
+   * @return The full command string for the image processing operation.
+   * @throws IllegalArgumentException If an invalid number of tokens is provided for the command.
+   **/
   @Override
   public String constructCommand(String[] tokens) {
-    if (tokens.length != tokensRequired - 1 ) {
-      throw new IllegalArgumentException(new StringBuilder()
-              .append("Invalid number of tokens provided. ")
+    if (tokens.length != tokensRequired - 1) {
+      throw new IllegalArgumentException(
+          new StringBuilder().append("Invalid number of tokens provided. ")
               .append(commandEnum.getRepresentation()).append(" requires ")
               .append(tokensRequired - 1).append(" tokens.").toString());
     }
     return Arrays.stream(tokens)
-            .reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
+        .reduce(commandEnum.getRepresentation(), (command, token) -> command + " " + token);
   }
 
+  /**
+   * Constructs the command string for previewing the image processing operation with a specified
+   * preview percentage. This method is applicable to operations that support splitting or
+   * previewing.
+   *
+   * @param tokens         The array of tokens representing the command arguments.
+   * @param previewPercent The percentage of the image to be previewed.
+   * @return The command string for previewing the image processing operation.
+   * @throws IllegalArgumentException If the operation does not support splitting or previewing.
+   */
   @Override
   public String constructPreviewCommand(String[] tokens, int previewPercent) {
     if (!splitSupport) {

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class makes use of the concrete class gui controller instead of interface because this
+ * implementation of features is dependent on gui controller. this class was introduced only to
+ * prevent the view from being able to get the controller interface's public methods.
+ **/
 public class FeaturesImpl implements Features {
 
   private static final String activeImage = "guiImage";
@@ -19,9 +24,7 @@ public class FeaturesImpl implements Features {
   private boolean isPreview;
 
   /**
-   * This class makes use of the concrete class gui controller instead of interface because this
-   * implementation of features is dependent on gui controller. this class was introduced only to
-   * prevent the view from being able to get the controller interface's public methods.
+   * constructor that instantiates the objects.
    *
    * @param controller gui controller.
    */
@@ -34,7 +37,7 @@ public class FeaturesImpl implements Features {
   private boolean invokeCommand(CommandEnum commandEnum, String[] tokens) {
     String command = controller.knownCommands.get(commandEnum).constructCommand(tokens);
     String histogramCommand = controller.knownCommands.get(CommandEnum.histogram)
-            .constructCommand(new String[]{activeImage, histogram});
+        .constructCommand(new String[]{activeImage, histogram});
     boolean commandSuccess = controller.executeCommand(command);
     if (commandSuccess) {
       controller.executeCommand(histogramCommand);
@@ -50,7 +53,7 @@ public class FeaturesImpl implements Features {
     controller.setupOperation(false, false);
     if (unsavedImagePrompt) {
       if (!controller.getConfirmation(
-              "Current image is unsaved. Do you want to overwrite the image?")) {
+          "Current image is unsaved. Do you want to overwrite the image?")) {
         return;
       }
     }
@@ -126,7 +129,7 @@ public class FeaturesImpl implements Features {
     try {
       int compressPercent = getValueWithConstraint("compression factor", 0, 100);
       setCommandTokens(CommandEnum.compress,
-              Arrays.asList(String.valueOf(compressPercent), activeImage));
+          Arrays.asList(String.valueOf(compressPercent), activeImage));
       controller.setupOperation(true, false);
     } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
@@ -155,7 +158,7 @@ public class FeaturesImpl implements Features {
       m = getValueWithConstraint("mid point", b + 1, 254);
       w = getValueWithConstraint("white point", m + 1, 255);
       setCommandTokens(CommandEnum.levels_adjust,
-              Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+          Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
       controller.setupOperation(true, true);
     } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
@@ -224,7 +227,7 @@ public class FeaturesImpl implements Features {
     try {
       int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
       String command = controller.knownCommands.get(chosenCommand)
-              .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
+          .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
       controller.executeCommand(command);
       controller.updateImage(preview);
       isPreview = true;

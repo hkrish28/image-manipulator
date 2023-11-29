@@ -1,9 +1,9 @@
 package ime.controller;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class FeaturesImplTest {
 
@@ -46,9 +46,12 @@ public class FeaturesImplTest {
     features.loadImage();
     assertEquals("loadImage called and guiImage passed\n", mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "message displayed Image Repository failed\n", mockGUIView.getLogger());
+        + "message displayed Image Repository failed\n", mockGUIView.getLogger());
   }
 
+  /**
+   * test to check the behaviour when image is overwritten when user cancels.
+   */
   @Test
   public void testOverwritingImageCancel() {
     mockGUIView.setFail(true);
@@ -57,20 +60,23 @@ public class FeaturesImplTest {
     features.applyChosenOperation();
     features.loadImage();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "blurImage called guiImage and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "blurImage called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-                    + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-                    + "preview has been enabled\n" + "image has been set\n" + "histogram has been set\n"
-                    + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
-                    + "user canceled Current image is unsaved. Do you want to overwrite the image?\n",
-            mockGUIView.getLogger());
+            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+            + "preview has been enabled\n" + "image has been set\n" + "histogram has been set\n"
+            + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
+            + "user canceled Current image is unsaved. Do you want to overwrite the image?\n",
+        mockGUIView.getLogger());
   }
 
+  /**
+   * test to check the behaviour when image is overwritten and user confirms it.
+   */
   @Test
   public void testOverwritingImageConfirm() {
     features.loadImage();
@@ -78,24 +84,27 @@ public class FeaturesImplTest {
     features.applyChosenOperation();
     features.loadImage();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "blurImage called guiImage and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "loadImage called and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "blurImage called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "loadImage called and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-                    + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-                    + "preview has been enabled\n" + "image has been set\n" + "histogram has been set\n"
-                    + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
-                    + "confirmation received Current image is unsaved. Do you want to overwrite the image?\n"
-                    + "load success\n" + "image has been set\n" + "histogram has been set\n",
-            mockGUIView.getLogger());
+            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+            + "preview has been enabled\n" + "image has been set\n" + "histogram has been set\n"
+            + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
+            + "confirmation received Current image is unsaved. Do you want to overwrite the image?\n"
+            + "load success\n" + "image has been set\n" + "histogram has been set\n",
+        mockGUIView.getLogger());
   }
 
+  /**
+   * test to load and operate on an image without applying.
+   */
   @Test
   public void testLoadImageNotApply() {
     features.loadImage();
@@ -103,24 +112,26 @@ public class FeaturesImplTest {
     features.previewChosenOperation();
     features.loadImage();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "preview called 0.0 and guiImage and previewImage passed\n"
-                    + "blurImage called guiImage and previewImage passed\n"
-                    + "getImage called and previewImage passed\n" + "loadImage called and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "preview called 0.0 and guiImage and previewImage passed\n"
+            + "blurImage called guiImage and previewImage passed\n"
+            + "getImage called and previewImage passed\n" + "loadImage called and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-            + "preview has been enabled\n"
-            + "input is received Enter value between 0 - 100 for preview percentage\n"
-            + "image has been set\n" + "toggle has been enabled\n" + "Apply has been disabled\n"
-            + "preview has been disabled\n" + "load success\n" + "image has been set\n"
-            + "histogram has been set\n", mockGUIView.getLogger());
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+        + "preview has been enabled\n"
+        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "image has been set\n" + "toggle has been enabled\n" + "Apply has been disabled\n"
+        + "preview has been disabled\n" + "load success\n" + "image has been set\n"
+        + "histogram has been set\n", mockGUIView.getLogger());
   }
 
-  // one op another op (3) apply
+  /**
+   * test when multiple operations are selected and applied.
+   */
   @Test
   public void testMultipleOperations() {
     features.loadImage();
@@ -129,20 +140,22 @@ public class FeaturesImplTest {
     features.chooseSepia();
     features.applyChosenOperation();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "sepia called guiImage and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "sepia called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-            + "preview has been enabled\n" + "Apply has been enabled\n" + "preview has been disabled\n"
-            + "Apply has been enabled\n" + "preview has been enabled\n" + "image has been set\n"
-            + "histogram has been set\n" + "toggle has been disabled\n", mockGUIView.getLogger());
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+        + "preview has been enabled\n" + "Apply has been enabled\n" + "preview has been disabled\n"
+        + "Apply has been enabled\n" + "preview has been enabled\n" + "image has been set\n"
+        + "histogram has been set\n" + "toggle has been disabled\n", mockGUIView.getLogger());
   }
 
-  // one op another(compress)view-fail apply
+  /**
+   * test when multiple operations are selected and an operation asks for user input.
+   */
   @Test
   public void testMultipleOperationWithUserInput() {
     features.loadImage();
@@ -150,20 +163,23 @@ public class FeaturesImplTest {
     features.chooseCompression();
     features.applyChosenOperation();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "compress called guiImage and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "compress called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-            + "preview has been disabled\n"
-            + "input is received Enter value between 0 - 100 for compression factor\n"
-            + "Apply has been enabled\n" + "preview has been disabled\n" + "image has been set\n"
-            + "histogram has been set\n" + "toggle has been disabled\n", mockGUIView.getLogger());
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+        + "preview has been disabled\n"
+        + "input is received Enter value between 0 - 100 for compression factor\n"
+        + "Apply has been enabled\n" + "preview has been disabled\n" + "image has been set\n"
+        + "histogram has been set\n" + "toggle has been disabled\n", mockGUIView.getLogger());
   }
 
+  /**
+   * test to check the whole flow and multiple loads are done.
+   */
   @Test
   public void testWholeFlow() {
     mockGUIView.setFail(true);
@@ -175,27 +191,27 @@ public class FeaturesImplTest {
     features.saveImage();
     features.loadImage();
     assertEquals(
-            "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "blue channel called guiImage and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "getImage called and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
-                    + "loadImage called and guiImage passed\n"
-                    + "histogram called guiImage and hist passed\n"
-                    + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
-            mockImgRepo.getLogger());
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "blue channel called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "getImage called and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n"
+            + "loadImage called and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
     assertEquals("Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
-            + "preview has been disabled\n" + "image has been set\n" + "histogram has been set\n"
-            + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
-            + "user canceled Current image is unsaved. Do you want to overwrite the image?\n"
-            + "Apply has been disabled\n" + "preview has been disabled\n" + "save success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been disabled\n"
-            + "preview has been disabled\n" + "load success\n" + "image has been set\n"
-            + "histogram has been set\n", mockGUIView.getLogger());
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n"
+        + "preview has been disabled\n" + "image has been set\n" + "histogram has been set\n"
+        + "toggle has been disabled\n" + "Apply has been disabled\n" + "preview has been disabled\n"
+        + "user canceled Current image is unsaved. Do you want to overwrite the image?\n"
+        + "Apply has been disabled\n" + "preview has been disabled\n" + "save success\n"
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been disabled\n"
+        + "preview has been disabled\n" + "load success\n" + "image has been set\n"
+        + "histogram has been set\n", mockGUIView.getLogger());
   }
 
   /**
@@ -269,7 +285,7 @@ public class FeaturesImplTest {
   public void testChooseCompression() {
     features.chooseCompression();
     String expected = "input is received Enter value between 0 - 100 for compression factor\n"
-            + "Apply has been enabled\n" + "preview has been disabled\n";
+        + "Apply has been enabled\n" + "preview has been disabled\n";
     assertEquals(expected, mockGUIView.getLogger());
   }
 
@@ -298,9 +314,9 @@ public class FeaturesImplTest {
   public void testChooseLevelsAdjust() {
     features.chooseLevelsAdjust();
     String expected = "input is received Enter value between 0 - 253 for black point\n"
-            + "input is received Enter value between 1 - 254 for mid point\n"
-            + "input is received Enter value between 2 - 255 for white point\n"
-            + "Apply has been enabled\n" + "preview has been enabled\n";
+        + "input is received Enter value between 1 - 254 for mid point\n"
+        + "input is received Enter value between 2 - 255 for white point\n"
+        + "Apply has been enabled\n" + "preview has been enabled\n";
     assertEquals(expected, mockGUIView.getLogger());
     assertEquals("", mockImgRepo.getLogger());
   }
@@ -330,13 +346,11 @@ public class FeaturesImplTest {
   @Test
   public void testLoadImage() {
     features.loadImage();
-    String expected =
-            "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n" +
-                    "image has been set\n" + "histogram has been set\n";
-    String expectedImgRepo = "loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n" +
-            "getImage called and guiImage passed\n" +
-            "getImage called and hist passed\n";
+    String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
+        + "image has been set\n" + "histogram has been set\n";
+    String expectedImgRepo =
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n";
     assertEquals(expected, mockGUIView.getLogger());
     assertEquals(expectedImgRepo, mockImgRepo.getLogger());
   }
@@ -349,8 +363,8 @@ public class FeaturesImplTest {
     mockGUIView.setIOFail(true);
     features.loadImage();
     String expected =
-            "Apply has been disabled\n" + "preview has been disabled\n" + "load unsuccessful\n"
-                    + "message displayed Invalid file format provided.\n";
+        "Apply has been disabled\n" + "preview has been disabled\n" + "load unsuccessful\n"
+            + "message displayed Invalid file format provided.\n";
     assertEquals(expected, mockGUIView.getLogger());
     assertEquals("", mockImgRepo.getLogger());
   }
@@ -364,8 +378,8 @@ public class FeaturesImplTest {
 
     features.saveImage();
     String expected =
-            "Apply has been disabled\n" + "preview has been disabled\n" + "save unsuccessful\n"
-                    + "message displayed Invalid file format provided.\n";
+        "Apply has been disabled\n" + "preview has been disabled\n" + "save unsuccessful\n"
+            + "message displayed Invalid file format provided.\n";
     assertEquals(expected, mockGUIView.getLogger());
     assertEquals("getImage called and guiImage passed\n", mockImgRepo.getLogger());
   }
@@ -390,16 +404,13 @@ public class FeaturesImplTest {
     mockGUIView.setFail(true);
     features.loadImage();
     features.previewChosenOperation();
-    String expectedView = "Apply has been disabled\n" +
-            "preview has been disabled\n" +
-            "load success\n" +
-            "image has been set\n" +
-            "histogram has been set\n" +
-            "message displayed Operation not chosen\n";
-    String expectedImgRepo = "loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n" +
-            "getImage called and guiImage passed\n" +
-            "getImage called and hist passed\n";
+    String expectedView =
+        "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
+            + "image has been set\n" + "histogram has been set\n"
+            + "message displayed Operation not chosen\n";
+    String expectedImgRepo =
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n";
     assertEquals(expectedView, mockGUIView.getLogger());
     assertEquals(expectedImgRepo, mockImgRepo.getLogger());
   }
@@ -422,9 +433,8 @@ public class FeaturesImplTest {
   @Test
   public void testSaveImage() {
     features.saveImage();
-    String expected =
-            "Apply has been disabled\n" + "preview has been disabled\n" + "save success\n" +
-                    "image has been set\n" + "histogram has been set\n";
+    String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "save success\n"
+        + "image has been set\n" + "histogram has been set\n";
     assertEquals(expected, mockGUIView.getLogger());
   }
 
@@ -442,15 +452,14 @@ public class FeaturesImplTest {
   private void assertApplyOperation(Runnable operation, boolean previewSupport, String name) {
     features.loadImage();
     operation.run();
-    String expected =
-            "Apply has been disabled\n" + "preview has been disabled\n" + "load success\nimage has been set\n" +
-                    "histogram has been set\n";
+    String expected = "Apply has been disabled\n" + "preview has been disabled\n"
+        + "load success\nimage has been set\n" + "histogram has been set\n";
     if (name.equals("compress")) {
       expected += "input is received Enter value between 0 - 100 for compression factor\n";
     } else if (name.equals("levels adjust")) {
       expected += "input is received Enter value between 0 - 253 for black point\n"
-              + "input is received Enter value between 1 - 254 for mid point\n"
-              + "input is received Enter value between 2 - 255 for white point\n";
+          + "input is received Enter value between 1 - 254 for mid point\n"
+          + "input is received Enter value between 2 - 255 for white point\n";
     }
     expected += "Apply has been enabled\n";
     features.applyChosenOperation();
@@ -461,12 +470,13 @@ public class FeaturesImplTest {
     }
     expected += "image has been set\n" + "histogram has been set\n" + "toggle has been disabled\n";
     assertEquals(expected, mockGUIView.getLogger());
-    assertEquals("loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n" +
-            "getImage called and guiImage passed\n" +
-            "getImage called and hist passed\n" + name + " called guiImage and guiImage passed\n"
-            + "histogram called guiImage and hist passed\n" + "getImage called and guiImage passed\n"
-            + "getImage called and hist passed\n", mockImgRepo.getLogger());
+    assertEquals(
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n" + name
+            + " called guiImage and guiImage passed\n"
+            + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n",
+        mockImgRepo.getLogger());
   }
 
   /**
@@ -549,43 +559,48 @@ public class FeaturesImplTest {
     assertApplyOperation(() -> features.chooseLevelsAdjust(), true, "levels adjust");
   }
 
-  private void assertPreviewWorks(Runnable operation, String operationName, boolean previewSupport) {
+  private void assertPreviewWorks(Runnable operation, String operationName,
+      boolean previewSupport) {
     String unsupportedCommand = "preview has been disabled\n"
-            + "input is received Enter value between 0 - 100 for preview percentage\n"
-            + "message displayed This operation can not be previewed.\n";
+        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed This operation can not be previewed.\n";
     String supportedCommand = "preview has been enabled\n"
-            + "input is received Enter value between 0 - 100 for preview percentage\n"
-            + "image has been set\n" + "toggle has been enabled\n";
+        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "image has been set\n" + "toggle has been enabled\n";
     String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n";
+        + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n";
 
     expected += previewSupport ? supportedCommand : unsupportedCommand;
     assertPreviewWorks(operation, expected, operationName, previewSupport);
   }
 
   private void assertPreviewWorks(Runnable operation, String expectedString, String operationName,
-                                  boolean previewSupport) {
+      boolean previewSupport) {
     features.loadImage();
     operation.run();
     features.previewChosenOperation();
     assertEquals(expectedString, mockGUIView.getLogger());
-    String expectedImgRepoLogger = previewSupport ? "loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n"
-            + "getImage called and guiImage passed\n"
-            + "getImage called and hist passed\npreview called 0.0 and guiImage and previewImage passed\n"
-            + operationName + " called guiImage and previewImage passed\n"
-            + "getImage called and previewImage passed\n"
-            : "loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n" + "getImage called and guiImage passed\n"
-            + "getImage called and hist passed\n";
+    String expectedImgRepoLogger = previewSupport ? "loadImage called and guiImage passed\n"
+        + "histogram called guiImage and hist passed\n" + "getImage called and guiImage passed\n"
+        + "getImage called and hist passed\npreview called 0.0 and guiImage and previewImage passed\n"
+        + operationName + " called guiImage and previewImage passed\n"
+        + "getImage called and previewImage passed\n"
+        : "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n" + "getImage called and hist passed\n";
     assertEquals(expectedImgRepoLogger, mockImgRepo.getLogger());
   }
 
+  /**
+   * test blur operation.
+   */
   @Test
   public void testPreviewBlur() {
     assertPreviewWorks(() -> features.chooseBlur(), "blurImage", true);
   }
 
+  /**
+   * test preview operation when horizontally flipped.
+   */
   //shouldnt throw exception when operation that is not previewable is previewed.
   @Test
   public void testPreviewHFlip() {
@@ -593,60 +608,85 @@ public class FeaturesImplTest {
     assertPreviewWorks(() -> features.chooseHorizontalFlip(), "horizontal flip", false);
   }
 
+  /**
+   * test preview when vertically flipped.
+   */
   @Test
   public void testPreviewVFlip() {
 
     assertPreviewWorks(() -> features.chooseVerticalFlip(), "vertical flip", false);
   }
 
+  /**
+   * test preview and visualise red.
+   */
   @Test
   public void testPreviewVisualiseRed() {
     assertPreviewWorks(() -> features.chooseVisualizeRed(), "visualize red", false);
   }
 
+  /**
+   * test preview and visualise blue.
+   */
   @Test
   public void testPreviewVisualiseBlue() {
     assertPreviewWorks(() -> features.chooseVisualizeBlue(), "blue channel", false);
   }
 
+  /**
+   * test preview and visualise green.
+   */
   @Test
   public void testPreviewVisualiseGreen() {
     assertPreviewWorks(() -> features.chooseVisualizeGreen(), "green channel", false);
   }
 
+  /**
+   * test preview and sepia operation.
+   */
   @Test
   public void testPreviewSepia() {
     assertPreviewWorks(() -> features.chooseSepia(), "sepia", true);
   }
 
+  /**
+   * test compression and preview.
+   */
   @Test
   public void testPreviewCompression() {
     String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n"
-            + "input is received Enter value between 0 - 100 for compression factor\n"
-            + "Apply has been enabled\n" + "preview has been disabled\n"
-            + "input is received Enter value between 0 - 100 for preview percentage\n"
-            + "message displayed This operation can not be previewed.\n";
+        + "image has been set\n" + "histogram has been set\n"
+        + "input is received Enter value between 0 - 100 for compression factor\n"
+        + "Apply has been enabled\n" + "preview has been disabled\n"
+        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed This operation can not be previewed.\n";
     assertPreviewWorks(() -> features.chooseCompression(), expected, "compression", false);
   }
 
+  /**
+   * test preview and grey scale.
+   */
   @Test
   public void testPreviewGreyScale() {
     assertPreviewWorks(() -> features.chooseLumaGreyscale(), "luma gs", true);
   }
 
+  /**
+   * test preview and levels adjust.
+   */
   @Test
   public void testPreviewLevelsAdjust() {
     String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-            + "image has been set\n" + "histogram has been set\n"
-            + "input is received Enter value between 0 - 253 for black point\n"
-            + "input is received Enter value between 1 - 254 for mid point\n"
-            + "input is received Enter value between 2 - 255 for white point\n"
-            + "Apply has been enabled\n" + "preview has been enabled\n"
-            + "input is received Enter value between 0 - 100 for preview percentage\n"
-            + "image has been set\n" + "toggle has been enabled\n";
-    String expectedImageRepoLogger = "loadImage called and guiImage passed\n" +
-            "histogram called guiImage and hist passed\n" + "getImage called and guiImage passed\n"
+        + "image has been set\n" + "histogram has been set\n"
+        + "input is received Enter value between 0 - 253 for black point\n"
+        + "input is received Enter value between 1 - 254 for mid point\n"
+        + "input is received Enter value between 2 - 255 for white point\n"
+        + "Apply has been enabled\n" + "preview has been enabled\n"
+        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "image has been set\n" + "toggle has been enabled\n";
+    String expectedImageRepoLogger =
+        "loadImage called and guiImage passed\n" + "histogram called guiImage and hist passed\n"
+            + "getImage called and guiImage passed\n"
             + "getImage called and hist passed\npreview called 3.0 and guiImage and previewImage passed\n"
             + "levels adjust called guiImage and previewImage passed\n"
             + "getImage called and previewImage passed\n";
