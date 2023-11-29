@@ -13,7 +13,7 @@ public class MockGUIView implements GUIView {
   private StringBuilder methodCallLogger;
   private int inputValue;
   private Boolean fail;
-  private Boolean IOFail;
+  private Boolean iOFail;
 
   /**
    * Initializes the MockGUIView with an empty method call log and default values.
@@ -22,11 +22,11 @@ public class MockGUIView implements GUIView {
     this.methodCallLogger = new StringBuilder();
     this.fail = false;
     this.inputValue = 0;
-    this.IOFail = false;
+    this.iOFail = false;
   }
 
   public void setIOFail(Boolean show) {
-    IOFail = show;
+    iOFail = show;
   }
 
   /**
@@ -148,7 +148,7 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public String getFilePathToLoad(List<String> supportedFormats) {
-    if (IOFail) {
+    if (iOFail) {
       methodCallLogger.append("load unsuccessful\n");
       return "Invalid.txt";
     }
@@ -164,7 +164,7 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public String getFilePathToSave() {
-    if (IOFail) {
+    if (iOFail) {
       methodCallLogger.append("save unsuccessful\n");
       return "Invalid.txt";
     }
