@@ -39,10 +39,10 @@ levels of the image. Three input dialog boxes comes up specifying the input cons
 <h3>Supported commands (For script and CLI)</h3>
 
 <ul>
-<b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name.
+<b>load image-path image-name</b>: Load an image from the specified path and refer it to henceforth in the program by the given image name(image names should not contain any spaces).
 
 <b>save image-path image-name</b>: Save the image with the given name to the specified path which
-should include the name of the file.
+should include the name of the file(image names should not contain any spaces).
 
 <b>red-component image-name dest-image-name</b>: Create an image with the red-component of the image
 with the given name, and refer to it henceforth in the program by the given destination name.
