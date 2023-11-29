@@ -18,6 +18,13 @@ public class FeaturesImpl implements Features {
 
   private boolean isPreview;
 
+  /**
+   * This class makes use of the concrete class gui controller instead of interface because this
+   * implementation of features is dependent on gui controller. this class was introduced only to
+   * prevent the view from being able to get the controller interface's public methods.
+   *
+   * @param controller gui controller.
+   */
   public FeaturesImpl(GUIController controller) {
     this.controller = controller;
     isPreview = false;
@@ -118,9 +125,10 @@ public class FeaturesImpl implements Features {
   public void chooseCompression() {
     try {
       int compressPercent = getValueWithConstraint("compression factor", 0, 100);
-      setCommandTokens(CommandEnum.compress, Arrays.asList(String.valueOf(compressPercent), activeImage));
+      setCommandTokens(CommandEnum.compress,
+              Arrays.asList(String.valueOf(compressPercent), activeImage));
       controller.setupOperation(true, false);
-    } catch (IllegalStateException e){
+    } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
     }
   }
@@ -146,7 +154,8 @@ public class FeaturesImpl implements Features {
       b = getValueWithConstraint("black point", 0, 253);
       m = getValueWithConstraint("mid point", b + 1, 254);
       w = getValueWithConstraint("white point", m + 1, 255);
-      setCommandTokens(CommandEnum.levels_adjust, Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
+      setCommandTokens(CommandEnum.levels_adjust,
+              Arrays.asList(String.valueOf(b), String.valueOf(m), String.valueOf(w), activeImage));
       controller.setupOperation(true, true);
     } catch (IllegalStateException e) {
       controller.setupOperation(false, false);
@@ -186,7 +195,7 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void applyChosenOperation() {
-    if(chosenCommand == null){
+    if (chosenCommand == null) {
       controller.sendDisplayMessage("Operation not chosen");
       return;
     }
@@ -201,7 +210,7 @@ public class FeaturesImpl implements Features {
 
   @Override
   public void previewChosenOperation() {
-    if(chosenCommand == null){
+    if (chosenCommand == null) {
       controller.sendDisplayMessage("Operation not chosen");
       return;
     }
@@ -212,7 +221,7 @@ public class FeaturesImpl implements Features {
   }
 
   private void previewOperation(List<String> commandTokens) {
-    try{
+    try {
       int previewPercent = getValueWithConstraint("preview percentage", 0, 100);
       String command = controller.knownCommands.get(chosenCommand)
               .constructPreviewCommand(commandTokens.toArray(new String[0]), previewPercent);
@@ -220,9 +229,9 @@ public class FeaturesImpl implements Features {
       controller.updateImage(preview);
       isPreview = true;
       controller.setToggle(true);
-    } catch (IllegalStateException e){
+    } catch (IllegalStateException e) {
       //preview failed since user cancelled operation. Do nothing here.
-    } catch (IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       controller.sendDisplayMessage(e.getMessage()); //When operation can't be previewed
     }
   }
