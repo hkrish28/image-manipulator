@@ -1,7 +1,6 @@
 package ime.controller;
 
-
-import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;

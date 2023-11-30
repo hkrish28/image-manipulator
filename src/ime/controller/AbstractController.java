@@ -131,7 +131,6 @@ public abstract class AbstractController implements ImageProcessingController {
   }
 
   /**
-   *
    * Handles the case where the command execution is successful. This method has to be
    * overridden by the Controller Implementations if the default behaviour is to be overridden.
    *
