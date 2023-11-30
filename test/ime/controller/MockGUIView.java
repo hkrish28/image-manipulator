@@ -2,6 +2,7 @@ package ime.controller;
 
 import ime.view.GUIView;
 import java.awt.Image;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,9 +12,10 @@ import java.util.List;
 public class MockGUIView implements GUIView {
 
   private StringBuilder methodCallLogger;
-  private int inputValue;
+  private int inputValueCounter;
   private Boolean fail;
   private Boolean iOFail;
+  private List<Integer> inputValues;
 
   /**
    * Initializes the MockGUIView with an empty method call log and default values.
@@ -21,8 +23,9 @@ public class MockGUIView implements GUIView {
   public MockGUIView() {
     this.methodCallLogger = new StringBuilder();
     this.fail = false;
-    this.inputValue = 0;
+    this.inputValueCounter = 0;
     this.iOFail = false;
+    this.inputValues = Arrays.asList(-1, 101, 0, 100, 120, 150, 0, 1, 2);
   }
 
   public void setIOFail(Boolean show) {
@@ -117,11 +120,15 @@ public class MockGUIView implements GUIView {
    */
   @Override
   public int getInput(String message) {
-    methodCallLogger.append("input is received" + " " + message + "\n");
     if (fail) {
       throw new IllegalStateException("user cancels operation\n");
     }
-    return inputValue++;
+    if (inputValueCounter == inputValues.size()) {
+      inputValueCounter = 0;
+    }
+    int returnValue = inputValues.get(inputValueCounter++);
+    methodCallLogger.append(returnValue + " input is received" + " " + message + "\n");
+    return returnValue;
   }
 
   /**
@@ -172,6 +179,10 @@ public class MockGUIView implements GUIView {
     return "valid.jpg";
   }
 
+  public void setInputValueCounter(int val) {
+    inputValueCounter = val;
+  }
+
   /**
    * Records the display of a message in the method call log.
    *
@@ -182,6 +193,11 @@ public class MockGUIView implements GUIView {
     methodCallLogger.append("message displayed" + " " + message + "\n");
   }
 
+  /**
+   * set fail flag.
+   *
+   * @param fail
+   */
   public void setFail(Boolean fail) {
     this.fail = fail;
   }
