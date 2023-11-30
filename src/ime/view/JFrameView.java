@@ -124,26 +124,6 @@ public class JFrameView extends JFrame implements GUIView {
     addButtonToPanel("Preview", previewPanel, event -> features.previewChosenOperation());
   }
 
-  private void addImagePane() {
-    JPanel imagePanel = new JPanel();
-    //a border around the panel with a caption
-    imagePanel.setBorder(BorderFactory.createTitledBorder("Active Image"));
-    imagePanel.setLayout(new BorderLayout());
-    mainPanel.add(imagePanel);
-    mainImage = new JLabel();
-    JScrollPane imageScrollPane = new JScrollPane(mainImage);
-    imageScrollPane.setPreferredSize(new Dimension(320, 256));
-    histogramImage = new JLabel();
-    JScrollPane imageScrollPaneHistogram = new JScrollPane(histogramImage);
-    imageScrollPaneHistogram.setPreferredSize(new Dimension(256, 256));
-
-    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, imageScrollPane,
-        imageScrollPaneHistogram);
-    splitPane.setOneTouchExpandable(true);
-
-    splitPane.setResizeWeight(0.7);
-    imagePanel.add(splitPane);
-  }
 
   @Override
   public void setFeatures(Features features) {
@@ -227,5 +207,26 @@ public class JFrameView extends JFrame implements GUIView {
   @Override
   public void displayMessage(String message) {
     JOptionPane.showMessageDialog(this, message);
+  }
+
+  private void addImagePane() {
+    JPanel imagePanel = new JPanel();
+    //a border around the panel with a caption
+    imagePanel.setBorder(BorderFactory.createTitledBorder("Active Image"));
+    imagePanel.setLayout(new BorderLayout());
+    mainPanel.add(imagePanel);
+    mainImage = new JLabel();
+    JScrollPane imageScrollPane = new JScrollPane(mainImage);
+    imageScrollPane.setPreferredSize(new Dimension(320, 256));
+    histogramImage = new JLabel();
+    JScrollPane imageScrollPaneHistogram = new JScrollPane(histogramImage);
+    imageScrollPaneHistogram.setPreferredSize(new Dimension(256, 256));
+
+    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, imageScrollPane,
+            imageScrollPaneHistogram);
+    splitPane.setOneTouchExpandable(true);
+
+    splitPane.setResizeWeight(0.7);
+    imagePanel.add(splitPane);
   }
 }

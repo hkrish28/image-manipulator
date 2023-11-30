@@ -1,25 +1,25 @@
 package ime.controller;
 
 
-import ime.controller.commands.Command;
-import ime.model.ImageRepository;
-import ime.view.GUIView;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import ime.controller.commands.Command;
+import ime.model.ImageRepository;
+import ime.view.GUIView;
+
 /**
- * controller that interacts with the guiview.It passes sets of callback function through @link
- * featuresimpl class which was implemented seperately to prevent view from accessing the public
+ * Controller that interacts with the {@link GUIView}.It passes sets of callback function through
+ * {@link Features} class which was implemented separately to prevent view from accessing the public
  * methods of the controller.
  */
 public class GUIController extends AbstractController {
 
   private final GUIView view;
-  protected ImageRepository imgRepo;
 
   /**
    * constructor to initialise and set the view and imageRepository objects.
@@ -29,10 +29,9 @@ public class GUIController extends AbstractController {
    * @param fileHandlerProvider object of filehandler provider class.
    */
   public GUIController(ImageRepository imageRepository, GUIView view,
-      FileHandlerProvider fileHandlerProvider) {
+                       FileHandlerProvider fileHandlerProvider) {
     super(fileHandlerProvider, imageRepository, view);
     this.view = view;
-    this.imgRepo = imageRepository;
   }
 
   /**
@@ -40,7 +39,8 @@ public class GUIController extends AbstractController {
    */
   @Override
   public void execute() {
-    view.setFeatures(new FeaturesImpl(this));
+    Features features = new FeaturesImpl(this);
+    view.setFeatures(features);
   }
 
   /**
@@ -65,7 +65,7 @@ public class GUIController extends AbstractController {
    * to update the view.
    *
    * @param imageName  name of the image.
-   * @param viewMethod view method is a consumer method that takes in Image object.
+   * @param viewMethod view method is either of setHistogram method or setImage method of view.
    */
   private void updateViewImage(String imageName, Consumer<Image> viewMethod) {
     try {
@@ -99,7 +99,7 @@ public class GUIController extends AbstractController {
   }
 
   /**
-   * is toggle set or not.
+   * To enable the toggle option in the view.
    *
    * @param show boolean value.
    */
@@ -108,19 +108,19 @@ public class GUIController extends AbstractController {
   }
 
   /**
-   * to display the message.
+   * to display the message in view.
    *
-   * @param message message by controller.
+   * @param message Message to be displayed.
    */
   protected void sendDisplayMessage(String message) {
     view.displayMessage(message);
   }
 
   /**
-   * gets the confirmation message.
+   * Method to get confirmation from view.
    *
    * @param message message.
-   * @return the confirmation message by the controller.
+   * @return the confirmation Message to display to receive confirmation.
    */
   protected boolean getConfirmation(String message) {
     return view.getConfirmation(message);
@@ -142,7 +142,7 @@ public class GUIController extends AbstractController {
    */
   protected String openFileAction() {
     List<String> supportedFormats = Arrays.stream(FileFormatEnum.values())
-        .map(FileFormatEnum::name).collect(Collectors.toList());
+            .map(FileFormatEnum::name).collect(Collectors.toList());
     return view.getFilePathToLoad(supportedFormats);
   }
 
@@ -156,7 +156,8 @@ public class GUIController extends AbstractController {
   }
 
   /**
-   * GUI controller returns true when the command executes without no error.
+   * GUI controller returns true when the command executes without no error and overrides the
+   * default behaviour of returning false.
    **/
   @Override
   protected boolean returnValueNoError() {

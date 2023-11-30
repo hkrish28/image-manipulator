@@ -14,7 +14,6 @@ import ime.view.View;
 public class ControllerImpl extends AbstractController {
 
   private final boolean userPrompt;
-  private final View view;
   private final Scanner in;
 
   /**
@@ -25,7 +24,6 @@ public class ControllerImpl extends AbstractController {
                         FileHandlerProvider fileHandlerProvider, Boolean userPrompt) {
     super(fileHandlerProvider, imgRepo, view);
     this.in = in;
-    this.view = view;
     this.userPrompt = userPrompt;
   }
 

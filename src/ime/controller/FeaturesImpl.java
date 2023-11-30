@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class makes use of the concrete class gui controller instead of interface because this
- * implementation of features is dependent on gui controller. this class was introduced only to
- * prevent the view from being able to get the controller interface's public methods.
+ * This class implements the {@link Features} interface and implements the callback methods for the
+ * {@link ime.view.GUIView}. The creation of this class requires an object of the concrete class
+ * {@link GUIController} because this implementation of features can be
+ * considered an extension of the gui controller. This class was introduced only to prevent the
+ * view from being able to access the controller interface's public methods.
  **/
 public class FeaturesImpl implements Features {
 
@@ -165,6 +167,8 @@ public class FeaturesImpl implements Features {
     }
   }
 
+  /* This method prompts for input and retries until it gets an input that satisfies the min and max
+     values. The method throws IllegalStateException if the user cancels the operation */
   private int getValueWithConstraint(String message, int min, int max) {
     int val = controller.getInput("Enter value between " + min + " - " + max + " for " + message);
     while (val < min || val > max) {

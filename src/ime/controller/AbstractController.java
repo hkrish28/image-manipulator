@@ -35,9 +35,9 @@ import java.util.Map;
 public abstract class AbstractController implements ImageProcessingController {
 
   private final FileHandlerProvider fileHandlerProvider;
-  private final ImageRepository imgRepo;
+  protected final ImageRepository imgRepo;
   protected Map<CommandEnum, Command> knownCommands;
-  private View view;
+  protected View view;
 
   /**
    * constructor for the controller that initialises the objects.
@@ -121,16 +121,19 @@ public abstract class AbstractController implements ImageProcessingController {
   }
 
   /**
-   * Handles the case where the command execution returns an error.
+   * Handles the case where the command execution results in an error. This method has to be
+   * overridden by the Controller Implementations if the default behaviour is to be overridden.
    *
-   * @return False to indicate an error condition.
+   * @return Returns false by default.
    */
   protected boolean returnValueError() {
     return false;
   }
 
   /**
-   * Handles the case where the command execution is successful.
+   *
+   * Handles the case where the command execution is successful. This method has to be
+   * overridden by the Controller Implementations if the default behaviour is to be overridden.
    *
    * @return False to indicate a successful execution.
    */
@@ -141,7 +144,7 @@ public abstract class AbstractController implements ImageProcessingController {
   /**
    * Handles the case where the command tokens are empty.
    *
-   * @return False to indicate an empty command.
+   * @return Returns false by default
    */
   private static boolean emptyCommandStatus() {
     return false;
