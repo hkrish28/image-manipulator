@@ -11,7 +11,6 @@ import org.junit.Test;
 public class FeaturesImplTest {
 
   private FeaturesImpl features;
-
   private MockGUIView mockGUIView;
   private MockImgRepo mockImgRepo;
 
@@ -25,6 +24,7 @@ public class FeaturesImplTest {
     FileHandlerProvider fileHandlerProvider = new FileHandlerProviderImpl();
     GUIController guiController = new GUIController(mockImgRepo, mockGUIView, fileHandlerProvider);
     features = new FeaturesImpl(guiController);
+    mockGUIView.setInputValueCounter(6);
   }
 
   /**
@@ -156,7 +156,7 @@ public class FeaturesImplTest {
         + "histogram has been set\n"
         + "Apply has been enabled\n"
         + "preview has been enabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "0 input is received Enter value between 0 - 100 for preview percentage\n"
         + "image has been set\n"
         + "toggle has been enabled\n"
         + "Apply has been disabled\n"
@@ -224,7 +224,7 @@ public class FeaturesImplTest {
         + "image has been set\n" + "histogram has been set\n"
         + "Apply has been enabled\n"
         + "preview has been disabled\n"
-        + "input is received Enter value between 0 - 100 for compression factor\n"
+        + "0 input is received Enter value between 0 - 100 for compression factor\n"
         + "Apply has been enabled\n"
         + "preview has been disabled\n"
         + "image has been set\n"
@@ -355,7 +355,7 @@ public class FeaturesImplTest {
   @Test
   public void testChooseCompression() {
     features.chooseCompression();
-    String expected = "input is received Enter value between 0 - 100 for compression factor\n"
+    String expected = "0 input is received Enter value between 0 - 100 for compression factor\n"
         + "Apply has been enabled\n" + "preview has been disabled\n";
     assertEquals(expected, mockGUIView.getLogger());
   }
@@ -384,9 +384,9 @@ public class FeaturesImplTest {
   @Test
   public void testChooseLevelsAdjust() {
     features.chooseLevelsAdjust();
-    String expected = "input is received Enter value between 0 - 253 for black point\n"
-        + "input is received Enter value between 1 - 254 for mid point\n"
-        + "input is received Enter value between 2 - 255 for white point\n"
+    String expected = "0 input is received Enter value between 0 - 253 for black point\n"
+        + "1 input is received Enter value between 1 - 254 for mid point\n"
+        + "2 input is received Enter value between 2 - 255 for white point\n"
         + "Apply has been enabled\n" + "preview has been enabled\n";
     assertEquals(expected, mockGUIView.getLogger());
     assertEquals("", mockImgRepo.getLogger());
@@ -526,11 +526,11 @@ public class FeaturesImplTest {
     String expected = "Apply has been disabled\n" + "preview has been disabled\n"
         + "load success\nimage has been set\n" + "histogram has been set\n";
     if (name.equals("compress")) {
-      expected += "input is received Enter value between 0 - 100 for compression factor\n";
+      expected += "0 input is received Enter value between 0 - 100 for compression factor\n";
     } else if (name.equals("levels adjust")) {
-      expected += "input is received Enter value between 0 - 253 for black point\n"
-          + "input is received Enter value between 1 - 254 for mid point\n"
-          + "input is received Enter value between 2 - 255 for white point\n";
+      expected += "0 input is received Enter value between 0 - 253 for black point\n"
+          + "1 input is received Enter value between 1 - 254 for mid point\n"
+          + "2 input is received Enter value between 2 - 255 for white point\n";
     }
     expected += "Apply has been enabled\n";
     features.applyChosenOperation();
@@ -633,10 +633,10 @@ public class FeaturesImplTest {
   private void assertPreviewWorks(Runnable operation, String operationName,
       boolean previewSupport) {
     String unsupportedCommand = "preview has been disabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "0 input is received Enter value between 0 - 100 for preview percentage\n"
         + "message displayed This operation can not be previewed.\n";
     String supportedCommand = "preview has been enabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "0 input is received Enter value between 0 - 100 for preview percentage\n"
         + "image has been set\n" + "toggle has been enabled\n";
     String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
         + "image has been set\n" + "histogram has been set\n" + "Apply has been enabled\n";
@@ -674,9 +674,88 @@ public class FeaturesImplTest {
   }
 
   /**
+   * test invalid input for horizontal flip.
+   */
+  @Test
+  public void testInvalidInput() {
+    mockGUIView.setInputValueCounter(0);
+    features.loadImage();
+    features.chooseHorizontalFlip();
+    features.previewChosenOperation();
+    assertEquals("Apply has been disabled\n"
+        + "preview has been disabled\n"
+        + "load success\n"
+        + "image has been set\n"
+        + "histogram has been set\n"
+        + "Apply has been enabled\n"
+        + "preview has been disabled\n"
+        + "-1 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "101 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "0 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed This operation can not be previewed.\n", mockGUIView.getLogger());
+  }
+
+  /**
+   * test invalid input for blur.
+   */
+  @Test
+  public void testInvalidInputBlur() {
+    mockGUIView.setInputValueCounter(0);
+    features.chooseBlur();
+    features.previewChosenOperation();
+    assertEquals(
+        "Apply has been enabled\n"
+            + "preview has been enabled\n"
+            + "-1 input is received Enter value between 0 - 100 for preview percentage\n"
+            + "message displayed Invalid value. Please try again\n"
+            + "101 input is received Enter value between 0 - 100 for preview percentage\n"
+            + "message displayed Invalid value. Please try again\n"
+            + "0 input is received Enter value between 0 - 100 for preview percentage\n"
+            + "image has been set\n"
+            + "toggle has been enabled\n", mockGUIView.getLogger());
+  }
+
+  /**
+   * test invalid input for compression.
+   */
+  @Test
+  public void testInvalidInputCompression() {
+    mockGUIView.setInputValueCounter(0);
+    features.chooseCompression();
+    assertEquals("-1 input is received Enter value between 0 - 100 for compression factor\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "101 input is received Enter value between 0 - 100 for compression factor\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "0 input is received Enter value between 0 - 100 for compression factor\n"
+        + "Apply has been enabled\n"
+        + "preview has been disabled\n", mockGUIView.getLogger());
+  }
+
+  /**
+   * test invalid input for levels adjust.
+   */
+  @Test
+  public void testInvalidInputLevelsAdjust() {
+    mockGUIView.setInputValueCounter(0);
+    features.chooseLevelsAdjust();
+    assertEquals("-1 input is received Enter value between 0 - 253 for black point\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "101 input is received Enter value between 0 - 253 for black point\n"
+        + "0 input is received Enter value between 102 - 254 for mid point\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "100 input is received Enter value between 102 - 254 for mid point\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "120 input is received Enter value between 102 - 254 for mid point\n"
+        + "150 input is received Enter value between 121 - 255 for white point\n"
+        + "Apply has been enabled\n"
+        + "preview has been enabled\n", mockGUIView.getLogger());
+  }
+
+  /**
    * test preview operation when horizontally flipped.
    */
-  //shouldnt throw exception when operation that is not previewable is previewed.
   @Test
   public void testPreviewHFlip() {
 
@@ -731,9 +810,9 @@ public class FeaturesImplTest {
   public void testPreviewCompression() {
     String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
         + "image has been set\n" + "histogram has been set\n"
-        + "input is received Enter value between 0 - 100 for compression factor\n"
+        + "0 input is received Enter value between 0 - 100 for compression factor\n"
         + "Apply has been enabled\n" + "preview has been disabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
+        + "1 input is received Enter value between 0 - 100 for preview percentage\n"
         + "message displayed This operation can not be previewed.\n";
     assertPreviewWorks(() -> features.chooseCompression(), expected, "compression", false);
   }
@@ -751,20 +830,29 @@ public class FeaturesImplTest {
    */
   @Test
   public void testPreviewLevelsAdjust() {
-    String expected = "Apply has been disabled\n" + "preview has been disabled\n" + "load success\n"
-        + "image has been set\n" + "histogram has been set\n"
-        + "input is received Enter value between 0 - 253 for black point\n"
-        + "input is received Enter value between 1 - 254 for mid point\n"
-        + "input is received Enter value between 2 - 255 for white point\n"
-        + "Apply has been enabled\n" + "preview has been enabled\n"
-        + "input is received Enter value between 0 - 100 for preview percentage\n"
-        + "image has been set\n" + "toggle has been enabled\n";
+    String expected = "Apply has been disabled\n"
+        + "preview has been disabled\n"
+        + "load success\n"
+        + "image has been set\n"
+        + "histogram has been set\n"
+        + "0 input is received Enter value between 0 - 253 for black point\n"
+        + "1 input is received Enter value between 1 - 254 for mid point\n"
+        + "2 input is received Enter value between 2 - 255 for white point\n"
+        + "Apply has been enabled\n"
+        + "preview has been enabled\n"
+        + "-1 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "101 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "message displayed Invalid value. Please try again\n"
+        + "0 input is received Enter value between 0 - 100 for preview percentage\n"
+        + "image has been set\n"
+        + "toggle has been enabled\n";
     String expectedImageRepoLogger =
         "loadImage called and guiImage passed\n"
             + "histogram called guiImage and hist passed\n"
             + "getImage called and guiImage passed\n"
             + "getImage called and hist passed\n"
-            + "preview called 3.0 and guiImage and previewImage passed\n"
+            + "preview called 0.0 and guiImage and previewImage passed\n"
             + "levels adjust called guiImage and previewImage passed\n"
             + "getImage called and previewImage passed\n";
     features.loadImage();
