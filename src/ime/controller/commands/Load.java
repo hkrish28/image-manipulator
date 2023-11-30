@@ -1,10 +1,10 @@
 package ime.controller.commands;
 
+import java.io.IOException;
+
 import ime.controller.CommandEnum;
 import ime.controller.FileHandlerProvider;
 import ime.model.ImageRepository;
-import java.io.IOException;
-import java.util.StringJoiner;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that loads an
@@ -23,18 +23,18 @@ public class Load extends AbstractCommand {
   }
 
   /* Validate token count, proceed to extract tokens and invoke appropriate method from
-  ImageRepository (if command supports preview operation and the input tokens has valid params
-   for the same, invoke the preview method of ImageRepository.*/
+    ImageRepository (if command supports preview operation and the input tokens has valid params
+    for the same, invoke the preview method of ImageRepository.*/
   @Override
   public String proceed(String[] tokens, ImageRepository imageRepository) {
     if (tokens.length < tokensRequired) {
       throw new IllegalArgumentException("Invalid number of tokens passed for the given command");
     }
-    StringJoiner stringJoiner = new StringJoiner("");
-    for (int i = 1; i < tokens.length - 1; i++) {
-      stringJoiner.add(tokens[i]);
+    StringBuilder concatenatedString = new StringBuilder(tokens[1]);
+    for (int i = 2; i < tokens.length - 1; i++) {
+      concatenatedString.append(" " + tokens[i]);
     }
-    String path = stringJoiner.toString();
+    String path = concatenatedString.toString();
     String imageName = tokens[tokens.length - 1];
     try {
       float[][][] imagePixels = fileHandlerProvider.getFileHandler(path).loadImage(path);

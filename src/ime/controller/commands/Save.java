@@ -1,9 +1,10 @@
 package ime.controller.commands;
 
+import java.io.IOException;
+
 import ime.controller.CommandEnum;
 import ime.controller.FileHandlerProvider;
 import ime.model.ImageRepository;
-import java.io.IOException;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that saves an
@@ -31,8 +32,8 @@ public class Save extends AbstractCommand {
       throw new IllegalArgumentException("Invalid number of tokens passed for the given command");
     }
     StringBuilder concatenatedString = new StringBuilder(tokens[1]);
-    for (int i = 1; i < tokens.length - 1; i++) {
-      concatenatedString.append(tokens[i]);
+    for (int i = 2; i < tokens.length - 1; i++) {
+      concatenatedString.append(" " + tokens[i]);
     }
     String file = concatenatedString.toString();
     String imageName = tokens[tokens.length - 1];
@@ -46,6 +47,7 @@ public class Save extends AbstractCommand {
 
   }
 
+  ///Users/hari/Documents/Coursework/PDP/image-manipulator/./res/bird2.jpg
   @Override
   protected String messageSenderHelper(String[] tokens) {
     return "Saved successfully.";

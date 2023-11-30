@@ -1,28 +1,17 @@
 package ime.view;
 
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-
-import ime.controller.Features;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import ime.controller.Features;
+
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 
 /**
@@ -167,7 +156,7 @@ public class JFrameView extends JFrame implements GUIView {
       return Integer.parseInt(input);
     } catch (NumberFormatException e) {
       JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid integer.", "Error",
-          JOptionPane.ERROR_MESSAGE);
+              JOptionPane.ERROR_MESSAGE);
       return getInput(message);
     }
   }
@@ -175,7 +164,7 @@ public class JFrameView extends JFrame implements GUIView {
   @Override
   public boolean getConfirmation(String message) {
     int confirmation = JOptionPane.showConfirmDialog(this, message, "Overwrite changes",
-        YES_NO_OPTION);
+            YES_NO_OPTION);
     return confirmation == JOptionPane.YES_OPTION;
   }
 
@@ -183,7 +172,7 @@ public class JFrameView extends JFrame implements GUIView {
   public String getFilePathToLoad(List<String> supportedFormats) {
     final JFileChooser fchooser = new JFileChooser(".");
     FileNameExtensionFilter filter = new FileNameExtensionFilter("Supported : " + supportedFormats,
-        supportedFormats.toArray(new String[0]));
+            supportedFormats.toArray(new String[0]));
     fchooser.setFileFilter(filter);
     int retvalue = fchooser.showOpenDialog(null);
     if (retvalue == JFileChooser.APPROVE_OPTION) {
@@ -197,9 +186,13 @@ public class JFrameView extends JFrame implements GUIView {
   public String getFilePathToSave() {
     final JFileChooser fchooser = new JFileChooser(".");
     int retvalue = fchooser.showSaveDialog(null);
-    if (retvalue == JFileChooser.APPROVE_OPTION) {
-      File f = fchooser.getSelectedFile();
-      return f.getAbsolutePath();
+    try {
+      if (retvalue == JFileChooser.APPROVE_OPTION) {
+        File f = fchooser.getSelectedFile();
+        return f.getCanonicalPath();
+      }
+    } catch (IOException e) {
+      //This would not occur when user chooses a file
     }
     return null;
   }
