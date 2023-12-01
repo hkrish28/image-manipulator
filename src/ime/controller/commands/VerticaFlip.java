@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
 
@@ -13,7 +14,7 @@ public class VerticaFlip extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public VerticaFlip() {
-    super(3, 1, 2);
+    super(3, 1, 2, CommandEnum.verticalFlip);
   }
 
   @Override
