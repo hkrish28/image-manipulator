@@ -1,7 +1,7 @@
 package ime.controller;
 
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 /**
@@ -74,8 +74,8 @@ public class ImageDrawerImpl implements ImageDrawer {
   public void setColor(int[] colorPalette) {
     validateCanvas();
     if (colorPalette.length != channelCount) {
-      throw new IllegalArgumentException("Color Palette should contain three values corresponding" +
-              "to Red, Green, and Blue values.");
+      throw new IllegalArgumentException("Color Palette should contain three values corresponding"
+          + "to Red, Green, and Blue values.");
     }
     graphics.setColor(new Color(colorPalette[0], colorPalette[1], colorPalette[2]));
   }

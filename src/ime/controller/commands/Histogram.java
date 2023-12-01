@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.controller.ImageDrawerImpl;
 import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
@@ -14,7 +15,7 @@ public class Histogram extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public Histogram() {
-    super(3);
+    super(3, CommandEnum.histogram);
   }
 
   @Override

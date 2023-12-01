@@ -47,6 +47,7 @@ public class MockImgRepo implements ImageRepository {
   public MockImgRepo() {
     methodCallLogger = new StringBuilder();
     fail = false;
+    lastLoadedFloat = new float[][][]{{{0,0,0}}};
   }
 
   /**

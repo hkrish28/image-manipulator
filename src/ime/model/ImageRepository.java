@@ -140,7 +140,7 @@ public interface ImageRepository {
    * @param imageNameDest destination image name
    * @throws IllegalArgumentException if {@param imageNameSrc} has not been created/tagged yet.
    */
-  void toSepiaImage(String imageNameSrc, String imageNameDest)
+  void toSepiaImage(String imageNameSrc, String imageNameDest )
       throws IllegalArgumentException;
 
   /**

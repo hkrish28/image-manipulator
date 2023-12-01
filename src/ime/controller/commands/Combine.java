@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Combine extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public Combine() {
-    super(5, 0, 1);
+    super(5, 0, 1, CommandEnum.rgb_combine);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +16,7 @@ public class RgbSplit extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public RgbSplit() {
-    super(5, 1, 0);
+    super(5, 1, 0, CommandEnum.rgb_split);
   }
 
   @Override

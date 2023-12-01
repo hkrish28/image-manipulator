@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.controller.ControllerImpl;
 import ime.controller.FileHandlerProvider;
 import ime.model.ImageRepository;
@@ -22,7 +23,7 @@ public class Run extends AbstractCommand {
    * new controller object.
    */
   public Run(View view, FileHandlerProvider fileHandlerProvider) {
-    super(2);
+    super(2, CommandEnum.run);
     this.view = view;
     this.fileHandlerProvider = fileHandlerProvider;
   }

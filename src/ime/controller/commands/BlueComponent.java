@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
 
@@ -13,7 +14,7 @@ public class BlueComponent extends AbstractCommand {
    * Constructor to initialize the fields.
    */
   public BlueComponent() {
-    super(3);
+    super(3, CommandEnum.blue_component);
   }
 
   @Override

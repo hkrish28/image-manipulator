@@ -1,8 +1,8 @@
 package ime.controller.commands;
 
-import java.util.function.BiConsumer;
-
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
+import java.util.function.BiConsumer;
 
 /**
  * This class extends the AbstractCommand class and represents a specific command that adjusts the
@@ -11,13 +11,13 @@ import ime.model.ImageRepository;
 public class LevelsAdjust extends AbstractCommand {
 
   public LevelsAdjust() {
-    super(6, 4, 5, true);
+    super(6, 4, 5, true, CommandEnum.levels_adjust);
   }
 
   @Override
   protected BiConsumer<String, String> imageRepositoryMethodInvoker(String[] tokens,
-                                                                    ImageRepository imageRepository)
-          throws IllegalArgumentException {
+      ImageRepository imageRepository)
+      throws IllegalArgumentException {
     try {
       int b = Integer.parseInt(tokens[1]);
       int m = Integer.parseInt(tokens[2]);

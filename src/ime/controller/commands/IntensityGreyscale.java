@@ -1,5 +1,6 @@
 package ime.controller.commands;
 
+import ime.controller.CommandEnum;
 import ime.model.ImageRepository;
 import java.util.function.BiConsumer;
 
@@ -10,7 +11,7 @@ import java.util.function.BiConsumer;
 public class IntensityGreyscale extends AbstractCommand {
 
   public IntensityGreyscale() {
-    super(3, 1, 2, true);
+    super(3, 1, 2, true, CommandEnum.intensity_component);
   }
 
   @Override
