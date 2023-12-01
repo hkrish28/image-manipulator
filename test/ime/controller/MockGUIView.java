@@ -196,7 +196,7 @@ public class MockGUIView implements GUIView {
   /**
    * set fail flag.
    *
-   * @param fail
+   * @param fail value for fail field
    */
   public void setFail(Boolean fail) {
     this.fail = fail;
