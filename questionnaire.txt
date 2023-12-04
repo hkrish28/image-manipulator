@@ -37,7 +37,6 @@ Flip an image vertically from GUI: Y
 
 Brighten/darken image implementation: Y
 Script command to bright/darken image: Y
-Brighten/darken image from GUI: N
 
 Blur an image implementation: Y
 Script command to blur an image: Y
@@ -51,7 +50,25 @@ Sepia implementation: Y
 Script command for sepia: Y
 Sepia from GUI: Y
 
+Compression implementation: Y
+Script command for Compression: Y
+Compression from GUI: Y
+
 Histogram visualization from GUI: Y
+
+Levels-adjust implementation: Y
+Script command for levels adjustment: Y
+Levels-adjust from GUI: Y
+
+Color correction implementation: Y
+Script command for Color correction: Y
+Color correction from GUI: Y
+
+Split preview implementation: Y
+Split preview in GUI: Y
+
+
+
 
 Program:
 
