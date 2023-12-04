@@ -71,8 +71,18 @@ public interface GUIView extends View {
    */
   boolean getConfirmation(String message);
 
+  /**
+   * Prompt the user to choose image to laod.
+   *
+   * @param supportedFormats formats supported
+   * @return filename chosen
+   */
   String getFilePathToLoad(List<String> supportedFormats);
 
+  /**
+   * Prompt the user to choose filename to save.
+   * @return filename chosen
+   */
   String getFilePathToSave();
 
 }
